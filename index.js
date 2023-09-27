@@ -125,7 +125,7 @@ function createOutput(numVal, manipulatedName) {
     case typeEnum[1]:
       return `requirement/${numVal}-${manipulatedName}/${numVal}-${manipulatedName}`;
     case typeEnum[2]:
-      return `requirement/${numVal}-${manipulatedName}/task/${TaskNumInput.value}-${TaskNameInput.value}`;
+      return `requirement/${numVal}-${manipulatedName}/task/${TaskNumInput.value}-${TaskNameInput.value.trim().replace(/\s+/g, "-").toLowerCase()}`;
     case typeEnum[3]:
       return `bug/${numVal}-${manipulatedName}/${numVal}-${manipulatedName}`;
   }
@@ -136,7 +136,7 @@ function toggleVisibility(elements, visibility) {
     element.style.display = visibility ? "block" : "none";
   });
 }
-
+// to do
 // add icons
 // alert when user types forbidden chars (letters in num input for instance)
 // move to TS
