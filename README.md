@@ -17,4 +17,4 @@ This script is a utility for generating formatted strings based on different tas
 If you have any questions, suggestions, or encounter issues while using this script, feel free to contact me, my Email: efraim.gelder@brainlab.com
 
 ## Version
-Current Version: 1.0.0
+Current Version: 1.0.1
