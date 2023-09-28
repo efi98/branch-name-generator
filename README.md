@@ -1,4 +1,4 @@
-# Branch name gelerator
+# Branch name geמerator
 
 ## Description
 This script is a utility for generating formatted strings based on different tasks. It allows you to create output strings for conventional branch name for Requirements, Tasks, and Bugs.
