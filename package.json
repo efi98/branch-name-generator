@@ -2,5 +2,9 @@
   "name": "branch-name-generator",
   "version": "1.0.1",
   "description": "",
-  "author": "Efi"
+  "author": "Efi",
+
+  "scripts": {
+      "start": "node scripts/run.js"
+  }
 }
