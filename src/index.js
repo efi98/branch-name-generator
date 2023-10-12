@@ -137,6 +137,7 @@ function toggleVisibility(elements, visibility) {
   });
 }
 // to do
+// save last state (requ, task. bug)
 // add icons
 // alert when user types forbidden chars (letters in num input for instance)
 // move to TS

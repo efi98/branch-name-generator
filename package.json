@@ -5,6 +5,5 @@
   "author": "Efi",
 
   "scripts": {
-      "start": "node scripts/run.js"
   }
 }
