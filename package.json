@@ -16,6 +16,8 @@
     "browser-sync": "^2.29.3",
     "gulp-cleanhtml": "^1.0.3",
     "gulp-webserver": "^0.9.1",
-    "gulp-uglify-es": "^3.0.0"
+    "gulp-uglify-es": "^3.0.0",
+    "typescript": "^5.2.2",
+    "sass": "^1.69.3"
   }
 }
