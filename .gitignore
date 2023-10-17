@@ -1,3 +1,4 @@
 node_modules
 new-folder
-Newfolde/dist
+dist
+package-lock.json
