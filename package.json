@@ -5,5 +5,17 @@
   "author": "Efi",
 
   "scripts": {
+    "start": "gulp prod"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-sass": "^5.1.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-clean-css": "^4.3.0",
+    "browser-sync": "^2.29.3",
+    "gulp-cleanhtml": "^1.0.3",
+    "gulp-webserver": "^0.9.1",
+    "gulp-uglify-es": "^3.0.0"
   }
 }
