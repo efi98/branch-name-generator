@@ -6,13 +6,17 @@ const cleanCSS = require("gulp-clean-css");
 const browserSync = require("browser-sync").create();
 const cleanhtml = require("gulp-cleanhtml");
 const server = require("gulp-webserver");
-const uglify = require('gulp-uglify-es').default;
+const uglify = require("gulp-uglify-es").default;
 
 const tsProject = ts.createProject("tsconfig.json");
 
 // Compile TypeScript files
 gulp.task("compile-ts", () => {
-  return tsProject.src().pipe(tsProject()).js.pipe(uglify()).pipe(gulp.dest("dist"));
+  return tsProject
+    .src()
+    .pipe(tsProject())
+    .js.pipe(uglify())
+    .pipe(gulp.dest("dist"));
 });
 
 // Process Sass and CSS
@@ -36,10 +40,10 @@ gulp.task("copy-assets", () => {
 
 // Watch for changes and reload the browser
 gulp.task("watch", () => {
-  gulp.src("dist").pipe(
+  gulp.src("dist", { allowEmpty: true }).pipe(
     server({
-      host: 'localhost',
-      path: '/',
+      host: "localhost",
+      path: "/",
       livereload: true,
       open: true,
       port: 3000, // set a port to avoid conflicts with other local apps
@@ -56,22 +60,14 @@ gulp.task("watch", () => {
 // Default task
 gulp.task(
   "default",
-  gulp.parallel(
-    "compile-ts",
-    "compile-sass",
-    "copy-html",
-    "copy-assets",
+  gulp.series(
+    gulp.parallel("compile-ts", "compile-sass", "copy-html", "copy-assets"),
     "watch"
   )
 );
 
-// Default task
+// Prod task
 gulp.task(
   "prod",
-  gulp.parallel(
-    "compile-ts",
-    "compile-sass",
-    "copy-html",
-    "copy-assets"
-  )
+  gulp.parallel("compile-ts", "compile-sass", "copy-html", "copy-assets")
 );
