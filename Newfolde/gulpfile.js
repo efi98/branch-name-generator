@@ -64,3 +64,14 @@ gulp.task(
     "watch"
   )
 );
+
+// Default task
+gulp.task(
+  "prod",
+  gulp.parallel(
+    "compile-ts",
+    "compile-sass",
+    "copy-html",
+    "copy-assets"
+  )
+);
