@@ -66,4 +66,4 @@ jobs:
           app-name: 'demo-node3'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DD42EC03C7F04D0C85535A5739B6953D }}
-          package: ./dist
+          package: ./dist/index.html
