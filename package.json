@@ -3,21 +3,23 @@
   "version": "1.0.1",
   "description": "",
   "author": "Efi",
-
   "scripts": {
     "start": "gulp prod"
   },
   "devDependencies": {
-    "gulp": "^4.0.2",
-    "gulp-typescript": "^6.0.0-alpha.1",
-    "gulp-sass": "^5.1.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-clean-css": "^4.3.0",
     "browser-sync": "^2.29.3",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
     "gulp-cleanhtml": "^1.0.3",
-    "gulp-webserver": "^0.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^5.1.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-uglify-es": "^3.0.0",
-    "typescript": "^5.2.2",
-    "sass": "^1.69.3"
+    "gulp-webserver": "^0.9.1",
+    "sass": "^1.69.3",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   }
 }
