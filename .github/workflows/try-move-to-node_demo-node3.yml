@@ -68,5 +68,3 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DD42EC03C7F04D0C85535A5739B6953D }}
           package: .
           
-      - name: serve the app
-        run: node server.js
