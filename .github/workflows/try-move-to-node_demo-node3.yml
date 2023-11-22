@@ -40,5 +40,3 @@ jobs:
           slot-name: 'production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DD42EC03C7F04D0C85535A5739B6953D }}
           package: ./dist
-          enable-prune: true
-          web-config-include: ./dist/web.config
