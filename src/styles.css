@@ -131,6 +131,7 @@ label#output-label {
   bottom: 0;
   width: -webkit-fill-available;
   flex-direction: column;
+  font-family: 'Poppins', sans-serif;
 }
 
 .footer p {
@@ -139,10 +140,8 @@ label#output-label {
 
 .footer .credit {
   color: #7f7f7f;
-  font-family: 'Poppins', sans-serif;
 }
 .footer .version {
-  font-family: "Mooli", sans-serif;
   font-weight: 700;
   font-size: 12px;
 }
