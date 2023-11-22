@@ -4,7 +4,7 @@
   "description": "",
   "author": "Efi",
   "scripts": {
-    "start": "gulp prod"
+    "build": "gulp prod"
   },
   "devDependencies": {
     "browser-sync": "^2.29.3",
