@@ -21,19 +21,19 @@
     </div>
     <div class="num">
       <label for="num" id="numLabel">number:</label>
-      <input type="text" id="num" oninput="validateNum(this)" />
+      <input type="text" id="num" oninput="validateNum(this)" placeholder="Enter number (e.g. 12345)" />
     </div>
     <div class="name">
       <label for="name" id="nameLabel">name:</label>
-      <input type="text" id="name" />
+      <input type="text" id="name" oninput="validateName(this)" placeholder="Enter name (e.g. my branch name)" />
     </div>
     <div id="taskNumContainer">
       <label for="taskNum" id="taskNumLabel">Task number:</label>
-      <input type="text" id="taskNum" oninput="validateNum(this)" />
+      <input type="text" id="taskNum" oninput="validateNum(this)" placeholder="Enter number (e.g. 12345)" />
     </div>
     <div id="taskNameContainer">
       <label for="taskName" id="taskNameLabel">Task name:</label>
-      <input type="text" id="taskName" />
+      <input type="text" id="taskName" oninput="validateName(this)" placeholder="Enter name (e.g. my branch name)" />
     </div>
   </form>
   <hr />
