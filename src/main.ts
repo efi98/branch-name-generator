@@ -27,7 +27,7 @@ const typeBtns: NodeListOf<HTMLButtonElement> =
 let selectedType: SelectedType = 2;
 
 window.onload = (event: any) => {
-  typeBtnClicked({ target: typeBtns[1] });
+typeBtnClicked({ target: typeBtns[1] });
 };
 
 copyButton.addEventListener("click", copyButtonClicked);
@@ -141,6 +141,12 @@ function validateNum(element: { value: string }): void {
   element.value = cleanedInput; // Update the input value with only digits
 }
 
+function validateName(element: { value: string }): void {
+  const currentInput: string = element.value;
+  const cleanedInput: string = currentInput.replace(/[*^\\:?~]/g, ""); // Remove specific characters
+  element.value = cleanedInput; // Update the input value with only digits
+}
+
 function createOutput(numVal: string, manipulatedName: string): string {
   const typeEnumVal: string = typeEnum[selectedType];
   switch (typeEnumVal) {
@@ -164,10 +170,14 @@ function toggleVisibility(elements: any[], visibility: boolean) {
   });
 }
 // to do:
-// name can't contains: "*^\:?~"
+// move to TS (almost there)
 // save last state (requ, task. bug)
 // add icons
-// alert when user types forbidden chars (letters in num input for instance)
-// move to TS
+// alert when user types forbidden chars (letters in num input, or "*^\:?~" on mane input)
 // new style
 // add tips (not too long desc)
+// add dropdown option to 'bug' that replaced to 'bug under req.' (with the logic that req. num. and req. name are also stays)
+// when not all are filled - "Fill all the fiels to genegate the branch name." Else - "Click on 'copy' branch name will appear here."
+// add setting page with: 
+// - the setting "advanced mode" toggle that replace the main page with advanced page, this will  contains the auto detector for names (not design yet)
+// - reset saved data as preppered settings and last state
