@@ -96,11 +96,10 @@ label#output-label {
 }
 
 .output-content {
-  flex: 30;
+  flex: 15;
   padding: 0;
   margin: 0;
   color: #ccc;
-  user-select: text;
 }
 
 #copyButton {
@@ -124,6 +123,7 @@ label#output-label {
 }
 
 .footer {
+  gap: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -143,4 +143,13 @@ label#output-label {
 }
 .footer .version {
   font-weight: 700;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

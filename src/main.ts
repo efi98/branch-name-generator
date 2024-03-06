@@ -1,9 +1,20 @@
+// types
+type SelectedType = 1 | 2 | 3;
+type Settings = { selectedType: number };
+
+// conf
+const initialSettings: Settings = {
+  selectedType: 2,
+};
+
+// main code
+let settings: Settings = initialSettings;
+
 const typeEnum: { 1: string; 2: string; 3: string } = {
   1: "Requirement",
   2: "Task",
   3: "Bug",
 };
-type SelectedType = 1 | 2 | 3;
 
 const outputContent: HTMLElement = document.querySelector(".output-content");
 const numInput = document.getElementById("num") as HTMLInputElement;
@@ -25,7 +36,15 @@ const typeBtns: NodeListOf<HTMLButtonElement> =
 let selectedType: SelectedType = 2;
 
 window.onload = (event: any) => {
-  typeBtnClicked({ target: typeBtns[1] });
+  try {
+    settings = getDataFromLocalStorage();
+  } catch (e) {
+    console.error(e);
+    setDataToLocalStorage(initialSettings);
+  }
+
+  // Trigger the click event for the corresponding type button based on the last selected state
+  typeBtnClicked({ target: typeBtns[settings.selectedType - 1] });
 };
 
 copyButton.addEventListener("click", copyButtonClicked);
@@ -46,6 +65,9 @@ function typeBtnClicked(event: { target: any }): void {
 
   // Update the selectedButton variable
   selectedType = currValue;
+
+  // Save the selected state to local storage
+  setDataToLocalStorage({ ...settings, selectedType });
 
   // Access the corresponding enum value
   const typeEnumVal: string =
@@ -71,6 +93,7 @@ function typeBtnClicked(event: { target: any }): void {
 function copyButtonClicked(): void {
   // Reset outputContent styles
   outputContent.style.color = "#000";
+  outputContent.style.userSelect = "text";
 
   const nameVal: string = nameInput.value;
 
@@ -104,7 +127,7 @@ function copyButtonClicked(): void {
       );
       copyButton.textContent = "Copied!";
       setTimeout(() => {
-        copyButton.textContent = "Copy";
+        copyButton.textContent = "Generate & Copy";
       }, 3000);
     })
     .catch((err) => {
@@ -130,6 +153,13 @@ function checkFields(): void {
   } else {
     // For other types, check only 'numValue' and 'nameValue'
     copyButton.disabled = !(numValue && nameValue);
+  }
+
+  // Update output content based on field validation
+  if (copyButton.disabled) {
+    outputContent.textContent = "Fill all the fields to generate the branch name.";
+  } else {
+    outputContent.textContent = "Click on 'copy' and branch name will appear here.";
   }
 }
 
@@ -167,15 +197,32 @@ function toggleVisibility(elements: any[], visibility: boolean) {
     element.style.display = visibility ? "block" : "none";
   });
 }
+
+function getDataFromLocalStorage() {
+  let results = JSON.parse(localStorage.getItem("settings"));
+  if (results) {
+    return results;
+  } else {
+    throw new Error("There is no data such as `settings`.");
+  }
+}
+
+function setDataToLocalStorage(settings: Settings) {
+  localStorage.setItem("settings", JSON.stringify(settings));
+}
+
+function resetLocalStorageData() {
+  localStorage.setItem("settings", JSON.stringify(initialSettings));
+  settings = initialSettings;
+}
 // to do:
 // move to TS (almost there)
-// save last state (requ, task. bug)
 // add icons
+// add notfications
 // alert when user types forbidden chars (letters in num input, or "*^\:?~" on name input)
-// new style
+// new style and also dark mode
 // add tips (not too long desc)
 // add dropdown option to 'bug' that replaced to 'bug under req.' (with the logic that req. num. and req. name are also stays)
-// when not all are filled - "Fill all the fiels to genegate the branch name." Else - "Click on 'copy' branch name will appear here."
 // add setting page with:
-// - the setting "advanced mode" toggle that replace the main page with advanced page, this will  contains the auto detector for names (not design yet)
+// - the setting "advanced mode" toggle that replace the main page with advanced page, this will contains the auto detector for names (not design yet)
 // - reset saved data as preppered settings and last state
