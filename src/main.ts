@@ -5,9 +5,7 @@ const typeEnum: { 1: string; 2: string; 3: string } = {
 };
 type SelectedType = 1 | 2 | 3;
 
-const outputContent: HTMLElement = document.querySelector(
-  ".output-content"
-) as HTMLElement;
+const outputContent: HTMLElement = document.querySelector(".output-content");
 const numInput = document.getElementById("num") as HTMLInputElement;
 const numLabel = document.getElementById("numLabel") as HTMLInputElement;
 const taskNumContainer = document.getElementById(
@@ -27,7 +25,7 @@ const typeBtns: NodeListOf<HTMLButtonElement> =
 let selectedType: SelectedType = 2;
 
 window.onload = (event: any) => {
-typeBtnClicked({ target: typeBtns[1] });
+  typeBtnClicked({ target: typeBtns[1] });
 };
 
 copyButton.addEventListener("click", copyButtonClicked);
@@ -173,11 +171,11 @@ function toggleVisibility(elements: any[], visibility: boolean) {
 // move to TS (almost there)
 // save last state (requ, task. bug)
 // add icons
-// alert when user types forbidden chars (letters in num input, or "*^\:?~" on mane input)
+// alert when user types forbidden chars (letters in num input, or "*^\:?~" on name input)
 // new style
 // add tips (not too long desc)
 // add dropdown option to 'bug' that replaced to 'bug under req.' (with the logic that req. num. and req. name are also stays)
 // when not all are filled - "Fill all the fiels to genegate the branch name." Else - "Click on 'copy' branch name will appear here."
-// add setting page with: 
+// add setting page with:
 // - the setting "advanced mode" toggle that replace the main page with advanced page, this will  contains the auto detector for names (not design yet)
 // - reset saved data as preppered settings and last state
