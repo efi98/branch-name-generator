@@ -4,6 +4,7 @@
   "description": "",
   "author": "Efi",
   "scripts": {
+    "start": "gulp",
     "build": "gulp prod"
   },
   "devDependencies": {
