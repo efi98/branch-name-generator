@@ -36,6 +36,7 @@ const typeBtns: NodeListOf<HTMLButtonElement> =
 let selectedType: SelectedType = 2;
 
 window.onload = (event: any) => {
+
   try {
     settings = getDataFromLocalStorage();
   } catch (e) {
@@ -55,9 +56,7 @@ nameInput.addEventListener("input", checkFields);
 taskNumInput.addEventListener("input", checkFields);
 taskNameInput.addEventListener("input", checkFields);
 
-typeBtns.forEach((typeBtn) => {
-  typeBtn.addEventListener("click", typeBtnClicked);
-});
+typeBtns.forEach((typeBtn) => typeBtn.addEventListener("click", typeBtnClicked));
 
 function typeBtnClicked(event: { target: any }): void {
   const currBtn: any = event.target;
@@ -93,7 +92,7 @@ function typeBtnClicked(event: { target: any }): void {
 function copyButtonClicked(): void {
   // Reset outputContent styles
   outputContent.setAttribute('isDisabled', 'false');
-  
+
   const nameVal: string = nameInput.value;
 
   // Manipulate the name
@@ -120,9 +119,9 @@ function copyButtonClicked(): void {
       console.log(
         "%cText copied to clipboard: " + "%c" + outputString,
         "background: #efefef; border-radius: 5px 0 0 5px; border: 1px black solid;" +
-          "padding: 3px 0 3px 3px; border-right: 0; font-family: Calibri,sans-serif;",
+        "padding: 3px 0 3px 3px; border-right: 0; font-family: Calibri,sans-serif;",
         "color: #007bff; background: #efefef; border-radius: 0 5px 5px 0; border: 1px black solid;" +
-          "padding: 3px 3px 3px 0; border-left: 0; font-family: Calibri,sans-serif;"
+        "padding: 3px 3px 3px 0; border-left: 0; font-family: Calibri,sans-serif;"
       );
       copyButton.textContent = "Copied!";
       setTimeout(() => {
