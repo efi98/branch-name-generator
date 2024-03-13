@@ -40,33 +40,33 @@ body {
   flex: 1;
 }
 
-.type-btn-set {
+.btn-wrapper {
   display: flex;
-}
 
-.type-btn {
-  padding: 10px;
-  background-color: $background;
-  color: $text-secondary;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  border: solid 2px $secondary;
-
-  &:hover {
-    background-color: $background-hover;
-  }
-
-  &.selected {
-    background-color: $background-selected;
-    color: $text-selected;
+  .btn {
+    padding: 10px;
+    background-color: $background;
+    color: $text-secondary;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: solid 2px $secondary;
 
     &:hover {
-      background-color: $background-selected-hover;
+      background-color: $background-hover;
     }
-  }
 
-  &:not(:first-child) {
-    border-left: 0;
+    &.selected {
+      background-color: $background-selected;
+      color: $text-selected;
+
+      &:hover {
+        background-color: $background-selected-hover;
+      }
+    }
+
+    &:not(:first-child) {
+      border-left: 0;
+    }
   }
 }
 
@@ -84,6 +84,10 @@ input[type="text"] {
 
   &:focus {
     border: solid 2px $secondary-focus;
+  }
+
+  &::placeholder {
+    color: $text-disabled-secondary;
   }
 }
 

@@ -32,7 +32,7 @@ const taskNameInput = document.getElementById("taskName") as HTMLInputElement;
 const copyButton = document.getElementById("copyButton") as HTMLButtonElement;
 
 const typeBtns: NodeListOf<HTMLButtonElement> =
-  document.querySelectorAll(".type-btn");
+  document.querySelectorAll("button[uid='type-btn']");
 let selectedType: SelectedType = 2;
 
 window.onload = (event: any) => {
