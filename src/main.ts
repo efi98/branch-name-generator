@@ -92,9 +92,8 @@ function typeBtnClicked(event: { target: any }): void {
 
 function copyButtonClicked(): void {
   // Reset outputContent styles
-  outputContent.style.color = "#000";
-  outputContent.style.userSelect = "text";
-
+  outputContent.setAttribute('isDisabled', 'false');
+  
   const nameVal: string = nameInput.value;
 
   // Manipulate the name
@@ -215,6 +214,7 @@ function resetLocalStorageData() {
   localStorage.setItem("settings", JSON.stringify(initialSettings));
   settings = initialSettings;
 }
+
 // to do:
 // move to TS (almost there)
 // add icons

@@ -1,5 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Sofia+Sans+Semi+Condensed:ital,wght@0,300;0,700;1,300;1,700&family=Poppins:wght@300&family=Mooli&family=Nunito:wght@300&display=swap");
 
+// Color Variables
+$primary: #007bff;
+$primary-hover: darken($primary, 10%);
+$secondary: #767676;
+$secondary-focus: darken($secondary, 40%);
+$background: #efefef;
+$background-hover: darken($background, 10%);
+$background-selected: $primary;
+$background-selected-hover: $primary-hover;
+$background-disabled: #cccccc85;
+$text-primary: #fff;
+$text-secondary: #000;
+$text-tertiary: #7f7f7f;
+$text-selected: $text-primary;
+$text-disabled-primary: #818181;
+$text-disabled-secondary: #ccc;
+
 body {
   font-family: Calibri, sans-serif;
   margin: 40px;
@@ -7,6 +24,16 @@ body {
   user-select: none;
   position: relative;
   height: calc(100vh - 80px);
+
+  ::selection {
+    background-color: $background-selected;
+    color: $text-primary;
+  }
+
+  ::-moz-selection {
+    background-color: $background-selected;
+    color: $text-primary;
+  }
 }
 
 .button-set {
@@ -19,28 +46,28 @@ body {
 
 .type-btn {
   padding: 10px;
-  background-color: #efefef;
-  color: #000;
+  background-color: $background;
+  color: $text-secondary;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  border: solid 2px rgb(118, 118, 118);
-}
+  border: solid 2px $secondary;
 
-.type-btn:hover {
-  background-color: #dcdcdc;
-}
+  &:hover {
+    background-color: $background-hover;
+  }
 
-.type-btn.selected {
-  background-color: #007bff;
-  color: #fff;
-}
+  &.selected {
+    background-color: $background-selected;
+    color: $text-selected;
 
-.type-btn.selected:hover {
-  background-color: #0056b3;
-}
+    &:hover {
+      background-color: $background-selected-hover;
+    }
+  }
 
-.type-btn:not(:first-child) {
-  border-left: 0;
+  &:not(:first-child) {
+    border-left: 0;
+  }
 }
 
 label {
@@ -52,12 +79,12 @@ label {
 input[type="text"] {
   width: -webkit-fill-available;
   padding: 10px;
-  border: solid 2px rgb(131, 131, 131);
+  border: solid 2px $secondary;
   outline: none;
-}
 
-input[type="text"]:focus {
-  border: solid 2px rgb(16, 16, 16);
+  &:focus {
+    border: solid 2px $secondary-focus;
+  }
 }
 
 .input-wrapper {
@@ -85,7 +112,7 @@ input[type="text"]:focus {
 
 #output-wrapper {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid $text-disabled-secondary;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -99,27 +126,33 @@ label#output-label {
   flex: 15;
   padding: 0;
   margin: 0;
-  color: #ccc;
+  color: $text-secondary;
+  user-select: text;
+
+  &[isDisabled="true"] {
+    color: $text-disabled-secondary;
+    user-select: none;
+  }
 }
 
 #copyButton {
   flex: 1;
   padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: $primary;
+  color: $text-primary;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
 
-#copyButton:disabled {
-  background-color: #cccccc85;
-  cursor: not-allowed;
-  color: #818181;
-}
+  &:disabled {
+    background-color: $background-disabled;
+    cursor: not-allowed;
+    color: $text-disabled-primary;
+  }
 
-#copyButton:hover:not(:disabled) {
-  background-color: #0056b3;
+  &:hover:not(:disabled) {
+    background-color: $primary-hover;
+  }
 }
 
 .footer {
@@ -132,24 +165,25 @@ label#output-label {
   flex-direction: column;
   font-family: "Mooli", sans-serif;
   font-size: 12px;
-}
 
-.footer p {
-  margin: 0;
-}
+  p {
+    margin: 0;
+  }
 
-.footer .credit {
-  color: #7f7f7f;
-}
-.footer .version {
-  font-weight: 700;
-}
+  .credit {
+    color: $text-tertiary;
+  }
 
-a {
-  color: #007bff;
-  text-decoration: none;
+  .version {
+    font-weight: 700;
+  }
 
-  &:hover {
-    text-decoration: underline;
+  a {
+    color: $primary;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
