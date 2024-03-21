@@ -1,38 +1,85 @@
 @import url("https://fonts.googleapis.com/css2?family=Sofia+Sans+Semi+Condensed:ital,wght@0,300;0,700;1,300;1,700&family=Poppins:wght@300&family=Mooli&family=Nunito:wght@300&display=swap");
 
-// Color Variables
-$primary: #007bff;
-$primary-hover: darken($primary, 10%);
-$secondary: #767676;
-$secondary-focus: darken($secondary, 40%);
-$background: #efefef;
-$background-hover: darken($background, 10%);
-$background-selected: $primary;
-$background-selected-hover: $primary-hover;
-$background-disabled: #cccccc85;
-$text-primary: #fff;
-$text-secondary: #000;
-$text-tertiary: #7f7f7f;
-$text-selected: $text-primary;
-$text-disabled-primary: #818181;
-$text-disabled-secondary: #ccc;
+:root {
+  .light {
+    --primary: #007bff;
+    --primary-10: #0665ca;
+    --primary-hover: #0056b3;
+    --secondary: #767676;
+    --secondary-focus: #101010;
+
+    --background-primary: var(--primary);
+    --background-primary-hover: var(--primary-hover);
+    --background-secondary: #efefef;
+    --background-secondary-hover: #dcdcdc;
+    --background-tertiary: #fbfbfb;
+    --background-disabled: #cccccc85;
+
+    --text-primary: #ffffff;
+    --text-secondary: #000000;
+    --text-tertiary: #7f7f7f;
+    --text-selected: var(--text-primary);
+    --text-disabled-primary: #818181;
+    --text-disabled-secondary: #cccccc;
+  }
+
+  .dark {
+    --primary: #0062cc;
+    --primary-10: #73a6db;
+    --primary-hover: #00458f;
+    --secondary: #655e53;
+    --secondary-focus: #877d6f;
+
+    --background-primary: var(--primary);
+    --background-primary-hover: var(--primary-hover);
+
+    --background-secondary: #212425;
+    --background-secondary-hover: #2c2f31;
+    --background-tertiary: #303030;
+    --background-disabled: #35393b;
+
+    --text-primary: #e8e6e3;
+    --text-secondary: #e8e6e3;
+    --text-tertiary: #988f81;
+    --text-selected: var(--text-primary);
+    --text-disabled-primary: #989082;
+    --text-disabled-secondary: #c8c3bc80;
+  }
+}
 
 body {
+  & * {
+    transition: all 0.3s ease;
+  }
+
+  background-color: var(--background-tertiary);
   font-family: Calibri, sans-serif;
   margin: 40px;
   cursor: default;
   user-select: none;
   position: relative;
   height: calc(100vh - 80px);
-
+  transition: all 0.3s ease;
+  
   ::selection {
-    background-color: $background-selected;
-    color: $text-primary;
+    background-color: var(--background-primary);
+    color: var(--text-primary);
   }
 
   ::-moz-selection {
-    background-color: $background-selected;
-    color: $text-primary;
+    background-color: var(--background-primary);
+    color: var(--text-primary);
+  }
+}
+
+.theme-wrapper {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  .btn {
+    padding: 1px 6px !important;
   }
 }
 
@@ -45,22 +92,21 @@ body {
 
   .btn {
     padding: 10px;
-    background-color: $background;
-    color: $text-secondary;
+    background-color: var(--background-secondary);
+    color: var(--text-secondary);
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    border: solid 2px $secondary;
+    border: solid 2px var(--secondary);
 
     &:hover {
-      background-color: $background-hover;
+      background-color: var(--background-secondary-hover);
     }
 
     &.selected {
-      background-color: $background-selected;
-      color: $text-selected;
+      background-color: var(--background-primary);
+      color: var(--text-selected);
 
       &:hover {
-        background-color: $background-selected-hover;
+        background-color: var(--background-primary-hover);
       }
     }
 
@@ -71,23 +117,26 @@ body {
 }
 
 label {
+  color: var(--text-secondary);
   display: block;
   margin-bottom: 5px;
   font-size: 20px;
 }
 
 input[type="text"] {
+  color: var(--text-secondary);
+  background-color: var(--background-secondary);
   width: -webkit-fill-available;
   padding: 10px;
-  border: solid 2px $secondary;
+  border: solid 2px var(--secondary);
   outline: none;
 
   &:focus {
-    border: solid 2px $secondary-focus;
+    border: solid 2px var(--secondary-focus);
   }
 
   &::placeholder {
-    color: $text-disabled-secondary;
+    color: var(--text-disabled-secondary);
   }
 }
 
@@ -116,7 +165,7 @@ input[type="text"] {
 
 #output-wrapper {
   padding: 10px;
-  border: 1px solid $text-disabled-secondary;
+  border: 1px solid var(--text-disabled-secondary);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -130,11 +179,11 @@ label#output-label {
   flex: 15;
   padding: 0;
   margin: 0;
-  color: $text-secondary;
+  color: var(--text-secondary);
   user-select: text;
 
   &[isDisabled="true"] {
-    color: $text-disabled-secondary;
+    color: var(--text-disabled-secondary);
     user-select: none;
   }
 }
@@ -142,20 +191,19 @@ label#output-label {
 #copyButton {
   flex: 1;
   padding: 10px 20px;
-  background-color: $primary;
-  color: $text-primary;
+  background-color: var(--primary);
+  color: var(--text-primary);
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 
   &:disabled {
-    background-color: $background-disabled;
+    background-color: var(--background-disabled);
     cursor: not-allowed;
-    color: $text-disabled-primary;
+    color: var(--text-disabled-primary);
   }
 
   &:hover:not(:disabled) {
-    background-color: $primary-hover;
+    background-color: var(--primary-hover);
   }
 }
 
@@ -175,15 +223,16 @@ label#output-label {
   }
 
   .credit {
-    color: $text-tertiary;
+    color: var(--text-tertiary);
   }
 
   .version {
+    color: var(--text-secondary);
     font-weight: 700;
   }
 
   a {
-    color: $primary;
+    color: var(--primary-10);
     text-decoration: none;
 
     &:hover {

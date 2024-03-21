@@ -1,14 +1,15 @@
 // types
-type SelectedType = 1 | 2 | 3;
-type Settings = { selectedType: number };
+type Theme = "light" | "dark" | "os";
+type Settings = { selectedType: 1 | 2 | 3; selectedTheme: Theme };
 
 // conf
-const initialSettings: Settings = {
+const defaultSettings: Settings = {
   selectedType: 2,
+  selectedTheme: "os",
 };
 
 // main code
-let settings: Settings = initialSettings;
+let settings: Settings = defaultSettings;
 
 const typeEnum: { 1: string; 2: string; 3: string } = {
   1: "Requirement",
@@ -16,36 +17,79 @@ const typeEnum: { 1: string; 2: string; 3: string } = {
   3: "Bug",
 };
 
-const outputContent: HTMLElement = document.querySelector(".output-content");
-const numInput = document.getElementById("num") as HTMLInputElement;
-const numLabel = document.getElementById("numLabel") as HTMLInputElement;
-const taskNumContainer = document.getElementById(
+const themeSwitch: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
+  "button[uid='theme-btn']"
+);
+
+const outputContent: HTMLElement = document.querySelector(
+  ".output-content"
+) as HTMLElement;
+
+const numInput: HTMLInputElement = document.getElementById(
+  "num"
+) as HTMLInputElement;
+const numLabel: HTMLInputElement = document.getElementById(
+  "numLabel"
+) as HTMLInputElement;
+const taskNumContainer: HTMLInputElement = document.getElementById(
   "taskNumContainer"
 ) as HTMLInputElement;
-const nameInput = document.getElementById("name") as HTMLInputElement;
-const nameLabel = document.getElementById("nameLabel") as HTMLInputElement;
-const taskNameContainer = document.getElementById(
+
+const nameInput: HTMLInputElement = document.getElementById(
+  "name"
+) as HTMLInputElement;
+const nameLabel: HTMLInputElement = document.getElementById(
+  "nameLabel"
+) as HTMLInputElement;
+const taskNameContainer: HTMLInputElement = document.getElementById(
   "taskNameContainer"
 ) as HTMLInputElement;
-const taskNumInput = document.getElementById("taskNum") as HTMLInputElement;
-const taskNameInput = document.getElementById("taskName") as HTMLInputElement;
-const copyButton = document.getElementById("copyButton") as HTMLButtonElement;
+const taskNumInput: HTMLInputElement = document.getElementById(
+  "taskNum"
+) as HTMLInputElement;
+const taskNameInput: HTMLInputElement = document.getElementById(
+  "taskName"
+) as HTMLInputElement;
+const copyButton: HTMLButtonElement = document.getElementById(
+  "copyButton"
+) as HTMLButtonElement;
 
-const typeBtns: NodeListOf<HTMLButtonElement> =
-  document.querySelectorAll("button[uid='type-btn']");
-let selectedType: SelectedType = 2;
+const typeBtns: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
+  "button[uid='type-btn']"
+);
 
 window.onload = (event: any) => {
-
   try {
-    settings = getDataFromLocalStorage();
+    settings = getSettingsFromLocalStorage();
+    const selectedThemeButton: HTMLElement = document.querySelector(
+      `[uid="theme-btn"][value="${settings.selectedTheme}"]`
+    ) as HTMLElement;
+    if (selectedThemeButton) {
+      selectedThemeButton.click();
+    }
   } catch (e) {
     console.error(e);
-    setDataToLocalStorage(initialSettings);
+    saveSettingsToLocalStorage(defaultSettings);
+
+    const osThemeButton: HTMLElement = document.querySelector(
+      '[uid="theme-btn"][value="os"]'
+    ) as HTMLElement;
+    if (osThemeButton) {
+      osThemeButton.click();
+    }
+
+    // Set theme based on system preference
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.body.className = "dark";
+    } else {
+      document.body.className = "light";
+    }
   }
 
   // Trigger the click event for the corresponding type button based on the last selected state
-  typeBtnClicked({ target: typeBtns[settings.selectedType - 1] });
+  typeBtnClicked({
+    target: typeBtns[settings.selectedType - 1],
+  });
 };
 
 copyButton.addEventListener("click", copyButtonClicked);
@@ -56,29 +100,37 @@ nameInput.addEventListener("input", checkFields);
 taskNumInput.addEventListener("input", checkFields);
 taskNameInput.addEventListener("input", checkFields);
 
-typeBtns.forEach((typeBtn) => typeBtn.addEventListener("click", typeBtnClicked));
+typeBtns.forEach((typeBtn) =>
+  typeBtn.addEventListener("click", typeBtnClicked)
+);
+
+themeSwitch.forEach((typeBtn) =>
+  typeBtn.addEventListener("click", changeTheme)
+);
 
 function typeBtnClicked(event: { target: any }): void {
   const currBtn: any = event.target;
   const currValue: any = currBtn.getAttribute("value");
 
   // Update the selectedButton variable
-  selectedType = currValue;
+  settings.selectedType = currValue;
 
   // Save the selected state to local storage
-  setDataToLocalStorage({ ...settings, selectedType });
+  saveSettingsToLocalStorage(settings);
 
   // Access the corresponding enum value
   const typeEnumVal: string =
-    selectedType == 3 ? typeEnum[selectedType] : typeEnum[1];
+    settings.selectedType == 3 ? typeEnum[settings.selectedType] : typeEnum[1];
 
   // Update the titles based on the selected type
   numLabel.textContent = `${typeEnumVal} number:`;
   nameLabel.textContent = `${typeEnumVal} name:`;
 
   // toggle the visibility of the task input
-
-  toggleVisibility([taskNumContainer, taskNameContainer], selectedType == 2);
+  toggleVisibility(
+    [taskNumContainer, taskNameContainer],
+    settings.selectedType == 2
+  );
 
   // Remove the 'selected' class from all buttons
   typeBtns.forEach((btn) => btn.classList.remove("selected"));
@@ -89,9 +141,31 @@ function typeBtnClicked(event: { target: any }): void {
   checkFields();
 }
 
+function changeTheme(event: any) {
+  themeSwitch.forEach((btn) => btn.classList.remove("selected"));
+  const themeButton = event.target as HTMLButtonElement;
+  const newTheme: Theme = themeButton.value as Theme;
+  themeButton.classList.add("selected");
+
+  // Update body class
+  if (newTheme === "os") {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.body.className = "dark";
+    } else {
+      document.body.className = "light";
+    }
+  } else {
+    document.body.className = newTheme;
+  }
+
+  // Update settings
+  settings.selectedTheme = newTheme as Theme;
+  saveSettingsToLocalStorage(settings);
+}
+
 function copyButtonClicked(): void {
   // Reset outputContent styles
-  outputContent.setAttribute('isDisabled', 'false');
+  outputContent.setAttribute("isDisabled", "false");
 
   const nameVal: string = nameInput.value;
 
@@ -119,9 +193,9 @@ function copyButtonClicked(): void {
       console.log(
         "%cText copied to clipboard: " + "%c" + outputString,
         "background: #efefef; border-radius: 5px 0 0 5px; border: 1px black solid;" +
-        "padding: 3px 0 3px 3px; border-right: 0; font-family: Calibri,sans-serif;",
+          "padding: 3px 0 3px 3px; border-right: 0; font-family: Calibri,sans-serif;",
         "color: #007bff; background: #efefef; border-radius: 0 5px 5px 0; border: 1px black solid;" +
-        "padding: 3px 3px 3px 0; border-left: 0; font-family: Calibri,sans-serif;"
+          "padding: 3px 3px 3px 0; border-left: 0; font-family: Calibri,sans-serif;"
       );
       copyButton.textContent = "Copied!";
       setTimeout(() => {
@@ -138,7 +212,7 @@ function checkFields(): void {
   const numValue: string = numInput.value.trim();
   const nameValue: string = nameInput.value.trim();
 
-  if (selectedType == 2) {
+  if (settings.selectedType == 2) {
     // If the type is 'task', check 'taskNum' and 'taskName' also.
     const taskNumValue: string = taskNumInput.value.trim();
     const taskNameValue: string = taskNameInput.value.trim();
@@ -153,11 +227,15 @@ function checkFields(): void {
     copyButton.disabled = !(numValue && nameValue);
   }
 
+  outputContent.setAttribute("isDisabled", "true");
+
   // Update output content based on field validation
   if (copyButton.disabled) {
-    outputContent.textContent = "Fill all the fields to generate the branch name.";
+    outputContent.textContent =
+      "Fill all the fields to generate the branch name.";
   } else {
-    outputContent.textContent = "Click on 'copy' and branch name will appear here.";
+    outputContent.textContent =
+      "Click on 'copy' and branch name will appear here.";
   }
 }
 
@@ -174,7 +252,7 @@ function validateName(element: { value: string }): void {
 }
 
 function createOutput(numVal: string, manipulatedName: string): string {
-  const typeEnumVal: string = typeEnum[selectedType];
+  const typeEnumVal: string = typeEnum[settings.selectedType];
   switch (typeEnumVal) {
     case typeEnum[1]:
       return `requirement/${numVal}-${manipulatedName}/${numVal}-${manipulatedName}`;
@@ -196,8 +274,8 @@ function toggleVisibility(elements: any[], visibility: boolean) {
   });
 }
 
-function getDataFromLocalStorage() {
-  let results = JSON.parse(localStorage.getItem("settings"));
+function getSettingsFromLocalStorage() {
+  let results = JSON.parse(localStorage.getItem("settings") ?? "");
   if (results) {
     return results;
   } else {
@@ -205,13 +283,13 @@ function getDataFromLocalStorage() {
   }
 }
 
-function setDataToLocalStorage(settings: Settings) {
+function saveSettingsToLocalStorage(settings: Settings) {
   localStorage.setItem("settings", JSON.stringify(settings));
 }
 
 function resetLocalStorageData() {
-  localStorage.setItem("settings", JSON.stringify(initialSettings));
-  settings = initialSettings;
+  localStorage.setItem("settings", JSON.stringify(defaultSettings));
+  settings = defaultSettings;
 }
 
 // to do:
