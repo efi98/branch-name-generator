@@ -28,7 +28,7 @@ First of all, make sure to install the necessary dependencies by running `npm in
 If you have any questions, suggestions, or encounter issues while using this App, feel free to contact me via email: efigal148@gmail.com
 
 ## Version
-Current Version: 1.0.2
+Current Version: 2.0.0
 
 ## Release updates
 - added link to source code

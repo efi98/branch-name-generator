@@ -1,0 +1,169 @@
+
+// .theme-wrapper {
+//     display: flex;
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+  
+//     .btn {
+//       padding: 1px 6px !important;
+//     }
+//   }
+  
+//   .button-set {
+//     flex: 1;
+//   }
+  
+//   .btn-wrapper {
+//     display: flex;
+  
+//     .btn {
+//       padding: 10px;
+//       background-color: var(--background-secondary);
+//       color: var(--text-secondary);
+//       cursor: pointer;
+//       border: solid 2px var(--secondary);
+  
+//       &:hover {
+//         background-color: var(--background-secondary-hover);
+//       }
+  
+//       &.selected {
+//         background-color: var(--background-primary);
+//         color: var(--text-selected);
+  
+//         &:hover {
+//           background-color: var(--background-primary-hover);
+//         }
+//       }
+  
+//       &:not(:first-child) {
+//         border-left: 0;
+//       }
+//     }
+//   }
+  
+//   label {
+//     color: var(--text-secondary);
+//     display: block;
+//     margin-bottom: 5px;
+//     font-size: 20px;
+//   }
+  
+//   input[type="text"] {
+//     color: var(--text-secondary);
+//     background-color: var(--background-secondary);
+//     width: -webkit-fill-available;
+//     padding: 10px;
+//     border: solid 2px var(--secondary);
+//     outline: none;
+  
+//     &:focus {
+//       border: solid 2px var(--secondary-focus);
+//     }
+  
+//     &::placeholder {
+//       color: var(--text-disabled-secondary);
+//     }
+//   }
+  
+//   .input-wrapper {
+//     display: flex;
+//     flex-wrap: wrap;
+//     gap: 10px;
+//     margin-bottom: 20px;
+//   }
+  
+//   .num,
+//   #taskNumContainer {
+//     flex: 1;
+//   }
+  
+//   .name,
+//   #taskNameContainer {
+//     flex: 12;
+//   }
+  
+//   @media (max-width: 1200px) {
+//     .input-wrapper {
+//       flex-direction: column;
+//     }
+//   }
+  
+//   #output-wrapper {
+//     padding: 10px;
+//     border: 1px solid var(--text-disabled-secondary);
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//   }
+  
+//   label#output-label {
+//     margin-top: 20px;
+//   }
+  
+//   .output-content {
+//     flex: 15;
+//     padding: 0;
+//     margin: 0;
+//     color: var(--text-secondary);
+//     user-select: text;
+  
+//     &[isDisabled="true"] {
+//       color: var(--text-disabled-secondary);
+//       user-select: none;
+//     }
+//   }
+  
+//   #copyButton {
+//     flex: 1;
+//     padding: 10px 20px;
+//     background-color: var(--primary);
+//     color: var(--text-primary);
+//     border: none;
+//     cursor: pointer;
+  
+//     &:disabled {
+//       background-color: var(--background-disabled);
+//       cursor: not-allowed;
+//       color: var(--text-disabled-primary);
+//     }
+  
+//     &:hover:not(:disabled) {
+//       background-color: var(--primary-hover);
+//     }
+//   }
+  
+//   .footer {
+//     gap: 5px;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     margin-top: 100px;
+//     width: -webkit-fill-available;
+//     flex-direction: column;
+//     font-family: "Mooli", sans-serif;
+//     font-size: 12px;
+  
+//     p {
+//       margin: 0;
+//     }
+  
+//     .credit {
+//       color: var(--text-tertiary);
+//     }
+  
+//     .version {
+//       color: var(--text-secondary);
+//       font-weight: 700;
+//     }
+  
+//     a {
+//       color: var(--primary-10);
+//       text-decoration: none;
+  
+//       &:hover {
+//         text-decoration: underline;
+//       }
+//     }
+//   }
