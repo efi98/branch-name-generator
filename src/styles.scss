@@ -26,48 +26,9 @@
   --text-disabled-secondary: #cccccc;
 
   .light {
-    --primary: #007bff;
-    --primary-10: #0665ca;
-    --primary-hover: #0056b3;
-    --secondary: #767676;
-    --secondary-focus: #101010;
-
-    --background-primary: var(--primary);
-    --background-primary-hover: var(--primary-hover);
-    --background-secondary: #efefef;
-    --background-secondary-hover: #dcdcdc;
-    --background-tertiary: #fbfbfb;
-    --background-disabled: #cccccc85;
-
-    --text-primary: #ffffff;
-    --text-secondary: #000000;
-    --text-tertiary: #7f7f7f;
-    --text-selected: var(--text-primary);
-    --text-disabled-primary: #818181;
-    --text-disabled-secondary: #cccccc;
   }
 
   .dark {
-    --primary: #0062cc;
-    --primary-10: #73a6db;
-    --primary-hover: #00458f;
-    --secondary: #655e53;
-    --secondary-focus: #877d6f;
-
-    --background-primary: var(--primary);
-    --background-primary-hover: var(--primary-hover);
-
-    --background-secondary: #212425;
-    --background-secondary-hover: #2c2f31;
-    --background-tertiary: #303030;
-    --background-disabled: #35393b;
-
-    --text-primary: #e8e6e3;
-    --text-secondary: #e8e6e3;
-    --text-tertiary: #988f81;
-    --text-selected: var(--text-primary);
-    --text-disabled-primary: #989082;
-    --text-disabled-secondary: #c8c3bc80;
   }
 }
 
@@ -78,7 +39,6 @@ html {
     font-size: 14px;
   }
 
-  
   @media screen and (min-width: 992px) {
     font-size: 16px;
   }
@@ -115,4 +75,8 @@ body {
 
 a:hover {
   text-decoration: underline !important;
+}
+
+.p-tooltip {
+   max-width: 30rem;
 }

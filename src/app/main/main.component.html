@@ -1,39 +1,43 @@
+<br>
 <form [formGroup]="generatorForm">
-    <input formControlName="generalTask">
-</form>
-
-<!-- 
-<form class="input-wrapper">
-  <div class="button-set">
-    <label for="typeBtnSet">Type:</label>
-    <div id="typeBtnSet" class="btn-wrapper">
-      <button uid="type-btn" class="btn" value="1" type="button">requirement</button>
-      <button uid="type-btn" class="btn" value="2" type="button">task</button>
-      <button uid="type-btn" class="btn" value="3" type="button">bug</button>
+    <div class="flex flex-column gap-2">
+        <label class="flex align-items-baseline gap-1" for="workItem"><i class="pi pi-pencil text-xs"></i>
+            work Item:</label>
+        <div class="p-inputgroup">
+            <input formControlName="workItem" id="workItem" pInputText>
+            <button (click)="pasteTextFromClipboard()" [pTooltip]="'Click here to paste your work item title'"
+                    label="paste" pButton
+                    tooltipPosition="top" type="button"></button>
+        </div>
+        <small id="workItem-help">Enter work item title
+            <i class="pi pi-question text-xs vertical-align-top text-color-secondary"
+               [pTooltip]="'in this format:\n[(work item type) (work item number): (work item title)]'"
+               tooltipPosition="top"></i></small>
+        <ng-container *ngIf="generatorForm.get('workItem')?.errors && generatorForm.get('workItem')?.dirty">
+            <small *ngIf="generatorForm.get('workItem')?.hasError('required')" class="text-red-600">This field is
+                required.</small>
+            <small *ngIf="generatorForm.get('workItem')?.hasError('workItemSyntax')" class="text-red-600">Please enter value in the format.</small>
+            <small *ngIf="generatorForm.get('workItem')?.hasError('forbiddenChars')" class="text-red-600">These chars (*^\:?~) and Hebrew chars are not
+                allowed on branch name!</small>
+        </ng-container>
     </div>
-  </div>
-  <div class="num">
-    <label for="num" id="numLabel">number:</label>
-    <input type="text" id="num" oninput="validateNum(this)" placeholder="Enter number (e.g. 12345)" />
-  </div>
-  <div class="name">
-    <label for="name" id="nameLabel">name:</label>
-    <input type="text" id="name" oninput="validateName(this)" placeholder="Enter name (e.g. my branch name)" />
-  </div>
-  <div id="taskNumContainer">
-    <label for="taskNum" id="taskNumLabel">Task number:</label>
-    <input type="text" id="taskNum" oninput="validateNum(this)" placeholder="Enter number (e.g. 12345)" />
-  </div>
-  <div id="taskNameContainer">
-    <label for="taskName" id="taskNameLabel">Task name:</label>
-    <input type="text" id="taskName" oninput="validateName(this)" placeholder="Enter name (e.g. my branch name)" />
-  </div>
+    <div *ngIf="false" class="flex flex-column gap-2">
+        <label for="req">Requirement:</label>
+        <input formControlName="requirement" id="req" pInputText>
+        <small id="req-help">Enter Req. title</small>
+        <ng-container *ngIf="generatorForm.get('requirement')?.errors && generatorForm.get('workItem')?.dirty">
+            <small *ngIf="generatorForm.get('requirement')?.hasError('required')"
+                   class="text-red-600">This field is required.</small>
+            <small *ngIf="generatorForm.get('requirement')?.hasError('pattern')"
+                   class="text-red-600">these chars are not allowed!</small>
+        </ng-container>
+    </div>
+
+    <p-checkbox *ngIf="false" [binary]="true" formControlName="isReqIncluded" id="isReqIncluded"
+                label="is Req. Included"></p-checkbox>
+    <span class="p-buttonset">
+    <button *ngIf="false" (click)="onPrev()" [disabled]="!buttonsStatus.prev" class="p-button-secondary" icon="pi pi-angle-left" label="Prev." pButton></button>
+    <button *ngIf="false" (click)="onNext()" [disabled]="!buttonsStatus.next" icon="pi pi-angle-right" label="next" pButton></button>
+    <button *ngIf="false" (click)="onSubmit()" [disabled]="!buttonsStatus.submit" class="p-button-success" icon="pi pi-send" label="Submit" pButton></button>
+</span>
 </form>
-<hr />
-<label id="output-label">Resault:</label>
-<div id="output-wrapper">
-  <p class="output-content" isDisabled="true">
-    Fill all the fields to generate the branch name.
-  </p>
-  <button id="copyButton" disabled>Generate & Copy</button>
-</div> -->

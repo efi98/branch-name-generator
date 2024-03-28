@@ -9,6 +9,10 @@ import { MainComponent } from './main/main.component';
 import { ToastModule } from 'primeng/toast';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {ReactiveFormsModule} from "@angular/forms";
+import {CheckboxModule} from "primeng/checkbox";
+import {InputTextModule} from "primeng/inputtext";
+import {RippleModule} from "primeng/ripple";
+import {TooltipModule} from "primeng/tooltip";
 
 @NgModule({
   declarations: [
@@ -22,7 +26,11 @@ import {ReactiveFormsModule} from "@angular/forms";
         ButtonModule,
         ToastModule,
         BrowserAnimationsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        CheckboxModule,
+        InputTextModule,
+        RippleModule,
+        TooltipModule
     ],
   providers: [],
   bootstrap: [AppComponent]
