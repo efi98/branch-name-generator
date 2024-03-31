@@ -1,5 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {templateWorkItemFormat, workItemTypes} from "../../utils";
 
 @Component({
     selector: "app-main",
@@ -10,8 +12,9 @@ export class MainComponent implements OnInit {
     generatorForm!: FormGroup;
     buttonsStatus: { next: boolean, prev: boolean, submit: boolean } = {next: false, prev: false, submit: false};
     workItemType!: workItemTypes;
+    parsedWorkItem!: { type: workItemTypes, number: number, title: string };
 
-    constructor(private formBuilder: FormBuilder) {
+    constructor(private formBuilder: FormBuilder, private confirmationService: ConfirmationService, private messageService: MessageService) {
     }
 
     ngOnInit(): void {
@@ -69,11 +72,8 @@ export class MainComponent implements OnInit {
     onSubmit() {
         //
     }
-}
 
-
-enum workItemTypes {
-    Requirement = 'Requirement',
-    Task = 'Task',
-    Bug = 'Bug'
+    showWorkItemFormatModal() {
+        this.confirmationService.confirm({header: 'Work item Format:', message: templateWorkItemFormat})
+    }
 }

@@ -10,14 +10,17 @@
                     tooltipPosition="top" type="button"></button>
         </div>
         <small id="workItem-help">Enter work item title
-            <i class="pi pi-question text-xs vertical-align-top text-color-secondary"
-               [pTooltip]="'in this format:\n[(work item type) (work item number): (work item title)]'"
+            <i (click)="showWorkItemFormatModal()"
+               class="pi pi-question text-xs vertical-align-top text-color-secondary"
+               pTooltip="Click for more details"
                tooltipPosition="top"></i></small>
         <ng-container *ngIf="generatorForm.get('workItem')?.errors && generatorForm.get('workItem')?.dirty">
             <small *ngIf="generatorForm.get('workItem')?.hasError('required')" class="text-red-600">This field is
                 required.</small>
-            <small *ngIf="generatorForm.get('workItem')?.hasError('workItemSyntax')" class="text-red-600">Please enter value in the format.</small>
-            <small *ngIf="generatorForm.get('workItem')?.hasError('forbiddenChars')" class="text-red-600">These chars (*^\:?~) and Hebrew chars are not
+            <small *ngIf="generatorForm.get('workItem')?.hasError('workItemSyntax')" class="text-red-600">Please enter
+                value in the format.</small>
+            <small *ngIf="generatorForm.get('workItem')?.hasError('forbiddenChars')" class="text-red-600">These chars
+                (*^\:?~) and Hebrew chars are not
                 allowed on branch name!</small>
         </ng-container>
     </div>
@@ -36,8 +39,11 @@
     <p-checkbox *ngIf="false" [binary]="true" formControlName="isReqIncluded" id="isReqIncluded"
                 label="is Req. Included"></p-checkbox>
     <span class="p-buttonset">
-    <button *ngIf="false" (click)="onPrev()" [disabled]="!buttonsStatus.prev" class="p-button-secondary" icon="pi pi-angle-left" label="Prev." pButton></button>
-    <button *ngIf="false" (click)="onNext()" [disabled]="!buttonsStatus.next" icon="pi pi-angle-right" label="next" pButton></button>
-    <button *ngIf="false" (click)="onSubmit()" [disabled]="!buttonsStatus.submit" class="p-button-success" icon="pi pi-send" label="Submit" pButton></button>
+    <button (click)="onPrev()" *ngIf="false" [disabled]="!buttonsStatus.prev" class="p-button-secondary"
+            icon="pi pi-angle-left" label="Prev." pButton></button>
+    <button (click)="onNext()" *ngIf="false" [disabled]="!buttonsStatus.next" icon="pi pi-angle-right" label="next"
+            pButton></button>
+    <button (click)="onSubmit()" *ngIf="false" [disabled]="!buttonsStatus.submit" class="p-button-success"
+            icon="pi pi-send" label="Submit" pButton></button>
 </span>
 </form>

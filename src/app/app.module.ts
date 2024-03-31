@@ -13,6 +13,7 @@ import {CheckboxModule} from "primeng/checkbox";
 import {InputTextModule} from "primeng/inputtext";
 import {RippleModule} from "primeng/ripple";
 import {TooltipModule} from "primeng/tooltip";
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {TooltipModule} from "primeng/tooltip";
         CheckboxModule,
         InputTextModule,
         RippleModule,
-        TooltipModule
+        TooltipModule,
+        ConfirmDialogModule
     ],
   providers: [],
   bootstrap: [AppComponent]
