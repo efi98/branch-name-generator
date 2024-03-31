@@ -1,56 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" dir="ltr">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8">
   <title>branch name generator</title>
-  <link rel="icon" href="./assets/favicon.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="./styles.css" />
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 
 <body>
-  <form class="input-wrapper">
-    <div class="button-set">
-      <label for="typeBtnSet">Type:</label>
-      <div id="typeBtnSet" class="btn-wrapper">
-        <button uid="type-btn" class="btn" value="1" type="button">requirement</button>
-        <button uid="type-btn" class="btn" value="2" type="button">task</button>
-        <button uid="type-btn" class="btn" value="3" type="button">bug</button>
-      </div>
-    </div>
-    <div class="num">
-      <label for="num" id="numLabel">number:</label>
-      <input type="text" id="num" oninput="validateNum(this)" placeholder="Enter number (e.g. 12345)" />
-    </div>
-    <div class="name">
-      <label for="name" id="nameLabel">name:</label>
-      <input type="text" id="name" oninput="validateName(this)" placeholder="Enter name (e.g. my branch name)" />
-    </div>
-    <div id="taskNumContainer">
-      <label for="taskNum" id="taskNumLabel">Task number:</label>
-      <input type="text" id="taskNum" oninput="validateNum(this)" placeholder="Enter number (e.g. 12345)" />
-    </div>
-    <div id="taskNameContainer">
-      <label for="taskName" id="taskNameLabel">Task name:</label>
-      <input type="text" id="taskName" oninput="validateName(this)" placeholder="Enter name (e.g. my branch name)" />
-    </div>
-  </form>
-  <hr />
-  <label id="output-label">Resault:</label>
-  <div id="output-wrapper">
-    <p class="output-content" isDisabled="true">
-      Fill all the fields to generate the branch name.
-    </p>
-    <button id="copyButton" disabled>Generate & Copy</button>
-  </div>
-  <div class="footer">
-    <p class="credit">
-      Created by Efi (<a href="https://github.com/efi98/branch-name-generator" target="_blank">source code</a>)
-    </p>
-    <p class="version">V. 1.0.2</p>
-  </div>
-  <script src="main.js"></script>
+  <app-root></app-root>
 </body>
 
 </html>
