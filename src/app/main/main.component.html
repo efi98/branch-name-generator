@@ -39,11 +39,14 @@
     <p-checkbox *ngIf="false" [binary]="true" formControlName="isReqIncluded" id="isReqIncluded"
                 label="is Req. Included"></p-checkbox>
     <span class="p-buttonset">
-    <button (click)="onPrev()" *ngIf="false" [disabled]="!buttonsStatus.prev" class="p-button-secondary"
+    <button (click)="onPrev()" *ngIf="buttonsStatus.prev.isDisplayed" [disabled]="!buttonsStatus.prev.isEnabled"
+            class="p-button-secondary"
             icon="pi pi-angle-left" label="Prev." pButton></button>
-    <button (click)="onNext()" *ngIf="false" [disabled]="!buttonsStatus.next" icon="pi pi-angle-right" label="next"
+    <button (click)="onNext()" *ngIf="buttonsStatus.next.isDisplayed" [disabled]="!buttonsStatus.next.isEnabled"
+            icon="pi pi-angle-right" label="next"
             pButton></button>
-    <button (click)="onSubmit()" *ngIf="false" [disabled]="!buttonsStatus.submit" class="p-button-success"
+    <button (click)="onSubmit()" *ngIf="buttonsStatus.submit.isDisplayed" [disabled]="!buttonsStatus.submit.isEnabled"
+            class="p-button-success"
             icon="pi pi-send" label="Submit" pButton></button>
 </span>
 </form>

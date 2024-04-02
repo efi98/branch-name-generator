@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {ConfirmationService, MessageService} from "primeng/api";
-import {templateWorkItemFormat, workItemTypes} from "../../utils";
+import {ButtonsState, ParsedWorkItem, templateWorkItemFormat, workItemTypes} from "../../utils";
 
 @Component({
     selector: "app-main",
@@ -10,9 +10,13 @@ import {templateWorkItemFormat, workItemTypes} from "../../utils";
 })
 export class MainComponent implements OnInit {
     generatorForm!: FormGroup;
-    buttonsStatus: { next: boolean, prev: boolean, submit: boolean } = {next: false, prev: false, submit: false};
+    buttonsStatus: ButtonsState = {
+        next: {isDisplayed: true, isEnabled: false},
+        prev: {isDisplayed: true, isEnabled: false},
+        submit: {isDisplayed: false, isEnabled: false}
+    };
     workItemType!: workItemTypes;
-    parsedWorkItem!: { type: workItemTypes, number: number, title: string };
+    parsedWorkItem!: ParsedWorkItem;
 
     constructor(private formBuilder: FormBuilder, private confirmationService: ConfirmationService, private messageService: MessageService) {
     }
@@ -25,7 +29,7 @@ export class MainComponent implements OnInit {
         });
 
         this.generatorForm.get('workItem')?.valueChanges.subscribe(workItemValue => {
-            this.buttonsStatus.next = !this.generatorForm.get('workItem')?.errors;
+            this.buttonsStatus.next.isEnabled = !this.generatorForm.get('workItem')?.errors;
         })
 
         this.generatorForm.valueChanges.subscribe((formValue: {
@@ -62,11 +66,15 @@ export class MainComponent implements OnInit {
     }
 
     onNext() {
-        this.buttonsStatus.prev = true;
+        this.buttonsStatus.prev.isEnabled = true;
+        this.buttonsStatus.next.isDisplayed = false;
+        this.buttonsStatus.submit.isDisplayed = true;
     }
 
     onPrev() {
-        this.buttonsStatus.prev = false;
+        this.buttonsStatus.prev.isEnabled = false;
+        this.buttonsStatus.next.isDisplayed = true;
+        this.buttonsStatus.submit.isDisplayed = false;
     }
 
     onSubmit() {
