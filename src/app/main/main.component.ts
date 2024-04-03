@@ -1,8 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {ConfirmationService, MessageService} from "primeng/api";
-import {ButtonsState, ParsedWorkItem, templateReqFormat, templateWorkItemFormat, workItemTypes} from "../../utils";
-import {Subject, takeUntil} from "rxjs";
+import {FieldType, ParsedWorkItem, templateWorkItemFormat, workItemTypes} from "@app-utils";
 
 @Component({
     selector: "app-main",
@@ -11,65 +10,48 @@ import {Subject, takeUntil} from "rxjs";
 })
 export class MainComponent implements OnInit {
     generatorForm!: FormGroup;
-    buttonsStatus: ButtonsState = {
-        next: {isDisplayed: true, isEnabled: false},
-        prev: {isDisplayed: true, isEnabled: false},
-        submit: {isDisplayed: false, isEnabled: false}
-    };
-    fieldStatusDisplay: { workItem: boolean, requirement: boolean, isReqIncluded: boolean } = {
-        workItem: true,
-        requirement: false,
-        isReqIncluded: false
-    };
     parsedWorkItem!: ParsedWorkItem;
-    private unsubscribeFromReqStatusChanges$ = new Subject<void>();
-    private unsubscribeFromIsReqIncludeChanges$ = new Subject<void>();
 
     constructor(private formBuilder: FormBuilder, private confirmationService: ConfirmationService, private messageService: MessageService) {
     }
 
     ngOnInit(): void {
         this.generatorForm = this.formBuilder.group({
-            workItem: ['', [Validators.required, this.workItemValidator()]],
-            requirement: [{value: '', disabled: true}, [Validators.required, this.requirementValidator()]],
+            workItem: [{value: '', disabled: false}, [Validators.required, this.workItemValidator('workItem')]],
+            requirement: [{value: '', disabled: true}, [Validators.required, this.workItemValidator('requirement')]],
             isReqIncluded: [{value: false, disabled: true}]
         });
 
-        this.generatorForm.get('workItem')?.valueChanges.subscribe(workItemValue => {
-            this.buttonsStatus.next.isEnabled = !this.generatorForm.get('workItem')?.errors;
-        })
+        this.generatorForm.get('workItem')?.valueChanges
+            .subscribe((workItemValue: string) => {
+                if (this.generatorForm.get('workItem')?.valid) {
+                    this.parseWorkItem();
+                    this.handleWorkItemsByType();
+                } else {
+                    this.generatorForm.get('requirement')?.disable({emitEvent: false});
+                    this.generatorForm.get('isReqIncluded')?.disable({emitEvent: false});
+                }
+            });
+        this.generatorForm.get('isReqIncluded')?.valueChanges
+            .subscribe((isReqIncludedValue: boolean) => {
+                this.generatorForm.get('requirement')?.[isReqIncludedValue ? 'enable' : 'disable']({emitEvent: false});
+            });
+    }
 
-        this.generatorForm.valueChanges.subscribe((formValue: {
-            workItem: string,
-            requirement: string,
-            isReqIncluded: boolean
-        }) => {
-            console.log(formValue);
-            console.warn(this.generatorForm.get('workItem')?.errors);
+    pasteTextFromClipboard(type: FieldType) {
+        navigator.clipboard.readText().then(text => {
+            this.generatorForm.get(type)?.setValue(text);
+            this.generatorForm.get(type)?.markAsDirty();
+        }).catch(err => {
+            console.error(err);
         });
     }
 
-    pasteTextFromClipboard() {
-        navigator.clipboard.readText().then(text => {
-            this.generatorForm.get('workItem')?.setValue(text);
-            this.generatorForm.get('workItem')?.markAsDirty();
-        }).catch(err => {
-            console.error(err);
-        })
-    }
+    workItemValidator(type: FieldType): ValidatorFn {
+        const validWorkItemTypes: string = type === 'workItem' ? 'Bug|Task|Requirement' : 'Requirement';
+        const workItemRegExp: RegExp = new RegExp(`^(${validWorkItemTypes})\\s\\d{5}:\\s.+$`);
+        const branchRegExp: RegExp = new RegExp(`^(${validWorkItemTypes})\\s\\d{5}:\\s([^*^\\\\:?~\\u05D0-\\u05EA]+)$`);
 
-    pasteTextFromClipboardToReq() {
-        navigator.clipboard.readText().then(text => {
-            this.generatorForm.get('requirement')?.setValue(text);
-            this.generatorForm.get('requirement')?.markAsDirty();
-        }).catch(err => {
-            console.error(err);
-        })
-    }
-
-    workItemValidator(): ValidatorFn {
-        const workItemRegExp = new RegExp(/^(Bug|Task|Requirement)\s\d{5}:\s.+$/);
-        const branchRegExp = new RegExp(/^(Bug|Task|Requirement)\s\d{5}:\s([^*^\\:?~\u05D0-\u05EA]+)$/);
         return (control: AbstractControl): ValidationErrors | null => {
             if (!workItemRegExp.test(control.value) && control.value.length) {
                 return {workItemSyntax: true};
@@ -81,58 +63,19 @@ export class MainComponent implements OnInit {
         };
     }
 
-    requirementValidator(): ValidatorFn {
-        const workItemRegExp = new RegExp(/^(Requirement)\s\d{5}:\s.+$/);
-        const branchRegExp = new RegExp(/^(Requirement)\s\d{5}:\s([^*^\\:?~\u05D0-\u05EA]+)$/);
-        return (control: AbstractControl): ValidationErrors | null => {
-            if (!workItemRegExp.test(control.value) && control.value.length) {
-                return {reqSyntax: true};
-            }
-            if (!branchRegExp.test(control.value) && control.value.length) {
-                return {forbiddenChars: true};
-            }
-            return null;
-        };
-    }
-
-    onNext() {
-        this.buttonsStatus.prev.isEnabled = true;
-        this.buttonsStatus.next.isDisplayed = false;
-        this.buttonsStatus.submit.isDisplayed = true;
-        this.parseWorkItem();
-        this.generatorForm.get('workItem')?.disable();
-        this.handleWorkItemsByType();
-    }
-
-    onPrev() {
-        this.buttonsStatus.prev.isEnabled = false;
-        this.buttonsStatus.next.isDisplayed = true;
-        this.buttonsStatus.submit.isDisplayed = false;
-        this.fieldStatusDisplay.requirement = false;
-        this.generatorForm.get('workItem')?.enable();
-        this.generatorForm.get('requirement')?.disable();
-        this.unsubscribeFromReqStatusChanges$.next();
-        this.unsubscribeFromReqStatusChanges$.complete()
-        this.unsubscribeFromReqStatusChanges$ = new Subject<void>();
-        this.unsubscribeFromIsReqIncludeChanges$.next();
-        this.unsubscribeFromIsReqIncludeChanges$.complete()
-        this.unsubscribeFromIsReqIncludeChanges$ = new Subject<void>();
-
-        this.fieldStatusDisplay.isReqIncluded = false;
-        this.generatorForm.get('isReqIncluded')?.disable();
-        this.generatorForm.get('isReqIncluded')?.setValue(false);
-    }
-
     onSubmit() {
         //
     }
 
     showWorkItemFormatModal() {
-        this.confirmationService.confirm({header: 'Work item Format:', message: templateWorkItemFormat})
+        this.confirmationService.confirm({header: 'Work item Format:', message: templateWorkItemFormat('workItem')})
     }
 
     showReqFormatModal() {
-        this.confirmationService.confirm({header: 'Requirement Format:', message: templateReqFormat})
+        this.confirmationService.confirm({
+            header: 'Requirement Format:',
+            message: templateWorkItemFormat('requirement')
+        })
     }
 
     private parseWorkItem() {
@@ -140,41 +83,37 @@ export class MainComponent implements OnInit {
         const regexMatch: any = workItemValue.match(/^(Bug|Task|Requirement)\s(\d{5}):\s([^*^\\:?~\u05D0-\u05EA]+)$/);
         if (regexMatch) {
             const [_, type, number, title] = regexMatch;
-            this.parsedWorkItem = {type: type as workItemTypes, number: parseInt(number), title: title.trim()};
-            console.log(this.parsedWorkItem); // remove spaces
+            this.parsedWorkItem = {
+                type: type as workItemTypes,
+                number: parseInt(number),
+                title: this.replaceSpacesWithHyphen(title)
+            };
+            console.log('parsedWorkItem: ', this.parsedWorkItem);
         }
     }
 
     private handleWorkItemsByType() {
         switch (this.parsedWorkItem.type) {
             case workItemTypes.Requirement:
-                this.buttonsStatus.submit.isEnabled = true;
+                this.generatorForm.get('requirement')?.disable({emitEvent: false});
+                this.generatorForm.get('isReqIncluded')?.disable({emitEvent: false});
                 break;
             case workItemTypes.Task:
-                this.fieldStatusDisplay.requirement = true;
-                this.generatorForm.get('requirement')?.enable();
-                this.generatorForm.get('requirement')?.statusChanges.pipe(takeUntil(this.unsubscribeFromReqStatusChanges$)).subscribe(status => {
-                    this.buttonsStatus.submit.isEnabled = status == 'VALID';
-                });
+                this.generatorForm.get('requirement')?.enable({emitEvent: false});
+                this.generatorForm.get('isReqIncluded')?.disable({emitEvent: false});
                 break;
             case workItemTypes.Bug:
-                this.fieldStatusDisplay.isReqIncluded = true;
-                this.buttonsStatus.submit.isEnabled = true;
-                this.generatorForm.get('isReqIncluded')?.enable();
-                this.generatorForm.get('isReqIncluded')?.valueChanges.pipe(takeUntil(this.unsubscribeFromIsReqIncludeChanges$)).subscribe((value: boolean) => {
-                    this.fieldStatusDisplay.requirement = value;
-                    this.generatorForm.get('requirement')?.[ value ? 'enable' : 'disable']();
-                    if (value) {
-                        this.buttonsStatus.submit.isEnabled = !!this.generatorForm.get('requirement')?.valid;
-                        this.generatorForm.get('requirement')?.statusChanges.pipe(takeUntil(this.unsubscribeFromReqStatusChanges$)).subscribe(status => {
-                            this.buttonsStatus.submit.isEnabled = status == 'VALID';
-                        });
-                    } else {
-                        this.buttonsStatus.submit.isEnabled = true;
-                    }
-                });
+                if (this.generatorForm.get('isReqIncluded')?.value) {
+                    this.generatorForm.get('requirement')?.enable({emitEvent: false});
+                } else {
+                    this.generatorForm.get('requirement')?.disable({emitEvent: false});
+                }
+                this.generatorForm.get('isReqIncluded')?.enable({emitEvent: false});
                 break;
         }
     }
 
+    private replaceSpacesWithHyphen(title: any): string {
+        return title.replace(/[\s_]+/g, '-').replace(/-+/g, '-');
+    }
 }

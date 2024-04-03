@@ -5,7 +5,7 @@
             work Item:</label>
         <div class="p-inputgroup">
             <input formControlName="workItem" id="workItem" pInputText>
-            <button (click)="pasteTextFromClipboard()" [pTooltip]="'Click here to paste your work item title'"
+            <button (click)="pasteTextFromClipboard('workItem')" [pTooltip]="'Click here to paste your work item title'"
                     label="paste" pButton
                     tooltipPosition="top" type="button"></button>
         </div>
@@ -25,15 +25,15 @@
         </ng-container>
     </div>
     <div class="flex gap-5 justify-content-between">
-        <p-checkbox *ngIf="fieldStatusDisplay.isReqIncluded" [binary]="true" formControlName="isReqIncluded"
+        <p-checkbox [binary]="true" formControlName="isReqIncluded"
                     id="isReqIncluded"
                     label="is Req. Included"></p-checkbox>
-        <div *ngIf="fieldStatusDisplay.requirement" class="flex flex-column gap-2 flex-1">
+        <div class="flex flex-column gap-2 flex-1">
             <label class="flex align-items-baseline gap-1" for="req"><i class="pi pi-pencil text-xs"></i>
                 Requirement:</label>
             <div class="p-inputgroup">
                 <input formControlName="requirement" id="req" pInputText>
-                <button (click)="pasteTextFromClipboardToReq()" [pTooltip]="'Click here to paste your Req. title'"
+                <button [disabled]="generatorForm.get('requirement')?.disabled" (click)="pasteTextFromClipboard('requirement')" [pTooltip]="'Click here to paste your Req. title'"
                         label="paste" pButton
                         tooltipPosition="top" type="button"></button>
             </div>
@@ -45,7 +45,7 @@
             <ng-container *ngIf="generatorForm.get('requirement')?.errors && generatorForm.get('requirement')?.dirty">
                 <small *ngIf="generatorForm.get('requirement')?.hasError('required')" class="text-red-600">This field is
                     required.</small>
-                <small *ngIf="generatorForm.get('requirement')?.hasError('reqSyntax')" class="text-red-600">Please enter
+                <small *ngIf="generatorForm.get('requirement')?.hasError('workItemSyntax')" class="text-red-600">Please enter
                     value in the format.</small>
                 <small *ngIf="generatorForm.get('requirement')?.hasError('forbiddenChars')" class="text-red-600">These
                     chars
@@ -55,15 +55,7 @@
         </div>
     </div>
 
-    <span class="p-buttonset align-self-end">
-    <button (click)="onPrev()" *ngIf="buttonsStatus.prev.isDisplayed" [disabled]="!buttonsStatus.prev.isEnabled"
-            class="p-button-secondary"
-            icon="pi pi-angle-left" label="Prev." pButton></button>
-    <button (click)="onNext()" *ngIf="buttonsStatus.next.isDisplayed" [disabled]="!buttonsStatus.next.isEnabled"
-            icon="pi pi-angle-right" label="next"
-            pButton></button>
-    <button (click)="onSubmit()" *ngIf="buttonsStatus.submit.isDisplayed" [disabled]="!buttonsStatus.submit.isEnabled"
-            class="p-button-success"
+    <button (click)="onSubmit()" [disabled]="!generatorForm.valid"
+            class="p-button-success align-self-end"
             icon="pi pi-send" label="Submit" pButton></button>
-</span>
 </form>
