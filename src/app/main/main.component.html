@@ -1,5 +1,5 @@
 <br>
-<form [formGroup]="generatorForm">
+<form [formGroup]="generatorForm" class="flex flex-column gap-3">
     <div class="flex flex-column gap-2">
         <label class="flex align-items-baseline gap-1" for="workItem"><i class="pi pi-pencil text-xs"></i>
             work Item:</label>
@@ -24,21 +24,38 @@
                 allowed on branch name!</small>
         </ng-container>
     </div>
-    <div *ngIf="false" class="flex flex-column gap-2">
-        <label for="req">Requirement:</label>
-        <input formControlName="requirement" id="req" pInputText>
-        <small id="req-help">Enter Req. title</small>
-        <ng-container *ngIf="generatorForm.get('requirement')?.errors && generatorForm.get('workItem')?.dirty">
-            <small *ngIf="generatorForm.get('requirement')?.hasError('required')"
-                   class="text-red-600">This field is required.</small>
-            <small *ngIf="generatorForm.get('requirement')?.hasError('pattern')"
-                   class="text-red-600">these chars are not allowed!</small>
-        </ng-container>
+    <div class="flex gap-5 justify-content-between">
+        <p-checkbox *ngIf="fieldStatusDisplay.isReqIncluded" [binary]="true" formControlName="isReqIncluded"
+                    id="isReqIncluded"
+                    label="is Req. Included"></p-checkbox>
+        <div *ngIf="fieldStatusDisplay.requirement" class="flex flex-column gap-2 flex-1">
+            <label class="flex align-items-baseline gap-1" for="req"><i class="pi pi-pencil text-xs"></i>
+                Requirement:</label>
+            <div class="p-inputgroup">
+                <input formControlName="requirement" id="req" pInputText>
+                <button (click)="pasteTextFromClipboardToReq()" [pTooltip]="'Click here to paste your Req. title'"
+                        label="paste" pButton
+                        tooltipPosition="top" type="button"></button>
+            </div>
+            <small id="req-help">Enter Requirement title
+                <i (click)="showReqFormatModal()"
+                   class="pi pi-question text-xs vertical-align-top text-color-secondary"
+                   pTooltip="Click for more details"
+                   tooltipPosition="top"></i></small>
+            <ng-container *ngIf="generatorForm.get('requirement')?.errors && generatorForm.get('requirement')?.dirty">
+                <small *ngIf="generatorForm.get('requirement')?.hasError('required')" class="text-red-600">This field is
+                    required.</small>
+                <small *ngIf="generatorForm.get('requirement')?.hasError('reqSyntax')" class="text-red-600">Please enter
+                    value in the format.</small>
+                <small *ngIf="generatorForm.get('requirement')?.hasError('forbiddenChars')" class="text-red-600">These
+                    chars
+                    (*^\:?~) and Hebrew chars are not
+                    allowed on branch name!</small>
+            </ng-container>
+        </div>
     </div>
 
-    <p-checkbox *ngIf="false" [binary]="true" formControlName="isReqIncluded" id="isReqIncluded"
-                label="is Req. Included"></p-checkbox>
-    <span class="p-buttonset">
+    <span class="p-buttonset align-self-end">
     <button (click)="onPrev()" *ngIf="buttonsStatus.prev.isDisplayed" [disabled]="!buttonsStatus.prev.isEnabled"
             class="p-button-secondary"
             icon="pi pi-angle-left" label="Prev." pButton></button>
