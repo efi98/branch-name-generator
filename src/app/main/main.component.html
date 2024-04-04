@@ -1,12 +1,11 @@
-<br>
-<form [formGroup]="generatorForm" class="flex flex-column gap-3">
+<form [formGroup]="generatorForm" class="flex flex-column gap-3 mt-3">
     <div class="flex flex-column gap-2">
         <label class="flex align-items-baseline gap-1" for="workItem"><i class="pi pi-pencil text-xs"></i>
             work Item:</label>
         <div class="p-inputgroup">
             <input formControlName="workItem" id="workItem" pInputText>
             <button (click)="pasteTextFromClipboard('workItem')" [pTooltip]="'Click here to paste your work item title'"
-                    label="paste" pButton
+                    label="Paste" pButton
                     tooltipPosition="top" type="button"></button>
         </div>
         <small id="workItem-help">Enter work item title
@@ -15,13 +14,12 @@
                pTooltip="Click for more details"
                tooltipPosition="top"></i></small>
         <ng-container *ngIf="generatorForm.get('workItem')?.errors && generatorForm.get('workItem')?.dirty">
-            <small *ngIf="generatorForm.get('workItem')?.hasError('required')" class="text-red-600">This field is
-                required.</small>
-            <small *ngIf="generatorForm.get('workItem')?.hasError('workItemSyntax')" class="text-red-600">Please enter
-                value in the format.</small>
-            <small *ngIf="generatorForm.get('workItem')?.hasError('forbiddenChars')" class="text-red-600">These chars
-                (*^\:?~) and Hebrew chars are not
-                allowed on branch name!</small>
+            <small *ngIf="generatorForm.get('workItem')?.hasError('required')"
+                   class="text-red-600">This field is required.</small>
+            <small *ngIf="generatorForm.get('workItem')?.hasError('workItemSyntax')"
+                   class="text-red-600">Please enter value in the format.</small>
+            <small *ngIf="generatorForm.get('workItem')?.hasError('forbiddenChars')"
+                   class="text-red-600">These chars (*^\:?~) and Hebrew chars are not allowed on branch name!</small>
         </ng-container>
     </div>
     <div class="flex gap-5 justify-content-between">
@@ -33,8 +31,10 @@
                 Requirement:</label>
             <div class="p-inputgroup">
                 <input formControlName="requirement" id="req" pInputText>
-                <button [disabled]="generatorForm.get('requirement')?.disabled" (click)="pasteTextFromClipboard('requirement')" [pTooltip]="'Click here to paste your Req. title'"
-                        label="paste" pButton
+                <button (click)="pasteTextFromClipboard('requirement')"
+                        [disabled]="generatorForm.get('requirement')?.disabled"
+                        [pTooltip]="'Click here to paste your Req. title'"
+                        label="Paste" pButton
                         tooltipPosition="top" type="button"></button>
             </div>
             <small id="req-help">Enter Requirement title
@@ -42,15 +42,14 @@
                    class="pi pi-question text-xs vertical-align-top text-color-secondary"
                    pTooltip="Click for more details"
                    tooltipPosition="top"></i></small>
-            <ng-container *ngIf="generatorForm.get('requirement')?.errors && generatorForm.get('requirement')?.dirty">
-                <small *ngIf="generatorForm.get('requirement')?.hasError('required')" class="text-red-600">This field is
-                    required.</small>
-                <small *ngIf="generatorForm.get('requirement')?.hasError('workItemSyntax')" class="text-red-600">Please enter
-                    value in the format.</small>
-                <small *ngIf="generatorForm.get('requirement')?.hasError('forbiddenChars')" class="text-red-600">These
-                    chars
-                    (*^\:?~) and Hebrew chars are not
-                    allowed on branch name!</small>
+            <ng-container
+                    *ngIf="generatorForm.get('requirement')?.errors && generatorForm.get('requirement')?.dirty">
+                <small *ngIf="generatorForm.get('requirement')?.hasError('required')"
+                       class="text-red-600">This field is required.</small>
+                <small *ngIf="generatorForm.get('requirement')?.hasError('workItemSyntax')"
+                       class="text-red-600">Please enter value in the format.</small>
+                <small *ngIf="generatorForm.get('requirement')?.hasError('forbiddenChars')" class="text-red-600">
+                    These chars (*^\:?~) and Hebrew chars are not allowed on branch name!</small>
             </ng-container>
         </div>
     </div>

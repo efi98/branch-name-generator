@@ -22,3 +22,14 @@ export const templateWorkItemFormat = (type: FieldType): string => {
     </div>
 </div>`
 };
+
+export const welcomeMessage: string = `
+<div>
+<h4>Here are few guidelines for you:</h4>
+<p>First, Just fill the 'work-item' field with your work item title.<br>
+<i>You can copy it directly from the 'AzureDevOps' then just click 'paste' here.</i></p>
+<p>the app automatically detects the work item type you were paste (like 'Bug', 'Task' or 'Requirement')</p>
+<p>after you filled all relevant fields - click on 'Submit' to get the results</p>
+Enjoy!
+</div>
+`

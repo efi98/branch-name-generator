@@ -47,22 +47,6 @@ export class MainComponent implements OnInit {
         });
     }
 
-    workItemValidator(type: FieldType): ValidatorFn {
-        const validWorkItemTypes: string = type === 'workItem' ? 'Bug|Task|Requirement' : 'Requirement';
-        const workItemRegExp: RegExp = new RegExp(`^(${validWorkItemTypes})\\s\\d{5}:\\s.+$`);
-        const branchRegExp: RegExp = new RegExp(`^(${validWorkItemTypes})\\s\\d{5}:\\s([^*^\\\\:?~\\u05D0-\\u05EA]+)$`);
-
-        return (control: AbstractControl): ValidationErrors | null => {
-            if (!workItemRegExp.test(control.value) && control.value.length) {
-                return {workItemSyntax: true};
-            }
-            if (!branchRegExp.test(control.value) && control.value.length) {
-                return {forbiddenChars: true};
-            }
-            return null;
-        };
-    }
-
     onSubmit() {
         //
     }
@@ -76,6 +60,22 @@ export class MainComponent implements OnInit {
             header: 'Requirement Format:',
             message: templateWorkItemFormat('requirement')
         })
+    }
+
+    private workItemValidator(type: FieldType): ValidatorFn {
+        const validWorkItemTypes: string = type === 'workItem' ? 'Bug|Task|Requirement' : 'Requirement';
+        const workItemRegExp: RegExp = new RegExp(`^(${validWorkItemTypes})\\s\\d{5}:\\s.+$`);
+        const branchRegExp: RegExp = new RegExp(`^(${validWorkItemTypes})\\s\\d{5}:\\s([^*^\\\\:?~\\u05D0-\\u05EA]+)$`);
+
+        return (control: AbstractControl): ValidationErrors | null => {
+            if (!workItemRegExp.test(control.value) && control.value.length) {
+                return {workItemSyntax: true};
+            }
+            if (!branchRegExp.test(control.value) && control.value.length) {
+                return {forbiddenChars: true};
+            }
+            return null;
+        };
     }
 
     private parseWorkItem() {
@@ -117,3 +117,6 @@ export class MainComponent implements OnInit {
         return title.replace(/[\s_]+/g, '-').replace(/-+/g, '-');
     }
 }
+
+// todo:
+// add alert when: 1) user submit, 2) user changed teh form after generating

@@ -2,8 +2,6 @@
     <header
             class="font-medium surface-ground p-2 text-xl vertical-align-middle flex justify-content-between">
         <span class="flex align-items-center gap-2"><i class="pi pi-cog text-lg"></i>Branch name generator</span>
-        <span (click)="toggleTheme()" *ngIf="theme === 'light'"><i class="pi pi-sun text-lg"></i></span>
-        <span (click)="toggleTheme()" *ngIf="theme !== 'light'"><i class="pi pi-moon text-lg"></i></span>
     </header>
     <div class="sm:mx-2 md:mx-0">
         <router-outlet></router-outlet>
@@ -14,7 +12,6 @@
             Created by Efi (<a class="no-underline text-primary" href="https://github.com/efi98/branch-name-generator"
                                target="_blank">source code</a>)
         </p>
-        <span class="font-medium text-400">V. 1.0.2</span>
     </footer>
 </div>
 <p-toast [life]="75000" [preventOpenDuplicates]="true" position="top-center">
