@@ -58,3 +58,14 @@
             class="p-button-success align-self-end"
             icon="pi pi-send" label="Submit" pButton></button>
 </form>
+
+<p-divider></p-divider>
+<div class="result">
+    <p-card [styleClass]="'surface-50'" header="Results:">
+
+        <ng-container *ngIf="true">
+            <div *ngFor="let result of branchNameResult" class="result-line">{{ result.key }}: {{result.value}}</div>
+        </ng-container>
+        <ng-container *ngIf="false">[empty message]</ng-container>
+    </p-card>
+</div>

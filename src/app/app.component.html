@@ -3,19 +3,20 @@
             class="font-medium surface-ground p-2 text-xl vertical-align-middle flex justify-content-between">
         <span class="flex align-items-center gap-2"><i class="pi pi-cog text-lg"></i>Branch name generator</span>
     </header>
-    <div class="sm:mx-2 md:mx-0">
+    <div class="sm:mx-4 md:mx-2 lg:mx-0">
         <router-outlet></router-outlet>
     </div>
     <footer class="surface-ground p-2 bottom-0 absolute w-full
   text-center border-top-1 border-800 text-sm text-color-secondary">
         <p class="m-1">
-            Created by Efi (<a class="no-underline text-primary" href="https://github.com/efi98/branch-name-generator"
-                               target="_blank">source code</a>)
+            <a class="no-underline text-primary" href="https://github.com/efi98/branch-name-generator"
+               target="_blank"><i class="pi pi-github" pTooltip="github.com/efi98/branch-name-generator"
+                                  style="color: var(--surface-900)" tooltipPosition="top"></i></a>
         </p>
     </footer>
 </div>
 <p-toast [life]="75000" [preventOpenDuplicates]="true" position="top-center">
 </p-toast>
-<p-confirmDialog [acceptVisible]="false" [dismissableMask]="true" position="top" [rejectVisible]="false"
-                 defaultFocus="close">
+<p-confirmDialog [acceptVisible]="false" [dismissableMask]="true" [rejectVisible]="false" defaultFocus="close"
+                 position="top">
 </p-confirmDialog>
