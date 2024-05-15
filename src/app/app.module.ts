@@ -16,6 +16,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {RippleModule} from "primeng/ripple";
 import {TooltipModule} from "primeng/tooltip";
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {KeyFilterModule} from "primeng/keyfilter";
 
 @NgModule({
     bootstrap: [AppComponent],
@@ -37,7 +38,8 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
         InputTextModule,
         RippleModule,
         TooltipModule,
-        ConfirmDialogModule
+        ConfirmDialogModule,
+        KeyFilterModule
     ],
     providers: []
 })

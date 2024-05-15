@@ -26,10 +26,18 @@ export const templateWorkItemFormat = (type: FieldType): string => {
 export const welcomeMessage: string = `
 <div>
 <h4>Here are few guidelines for you:</h4>
-<p>First, Just fill the 'work-item' field with your work item title.<br>
+<p>First, fill the 'work-item' field with your work item title.<br>
 <i>You can copy it directly from the 'AzureDevOps' then just click 'paste' here.</i></p>
 <p>the app automatically detects the work item type you were paste (like 'Bug', 'Task' or 'Requirement')</p>
-<p>after you filled all relevant fields - click on 'Submit' to get the results</p>
+<p>after you fill all relevant fields - click on 'Submit' to get the results</p>
 Enjoy!
 </div>
 `
+
+export const initialMessage: string =
+    '//  ___                  _                                                       _           \n' +
+    '// | _ )_ _ __ _ _ _  __| |_    _ _  __ _ _ __  ___   __ _ ___ _ _  ___ _ _ __ _| |_ ___ _ _ \n' +
+    '// | _ \\ \'_/ _` | \' \\/ _| \' \\  | \' \\/ _` | \'  \\/ -_) / _` / -_) \' \\/ -_) \'_/ _` |  _/ _ \\ \'_|\n' +
+    '// |___/_| \\__,_|_||_\\__|_||_| |_||_\\__,_|_|_|_\\___| \\__, \\___|_||_\\___|_| \\__,_|\\__\\___/_|  \n' +
+    '//                                                   |___/                                   \n'
+    + '//  Repo: https://github.com/efi98/branch-name-generator';

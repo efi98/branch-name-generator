@@ -1,7 +1,14 @@
 import {Component, OnInit} from "@angular/core";
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {ConfirmationService, MessageService} from "primeng/api";
-import {branchNameConf, FieldType, ParsedWorkItem, templateWorkItemFormat, workItemTypes} from "@app-utils";
+import {
+    branchNameConf,
+    FieldType,
+    formatTitleWithHyphens,
+    ParsedWorkItem,
+    templateWorkItemFormat,
+    workItemTypes
+} from "@app-utils";
 import {debounceTime, distinctUntilChanged} from "rxjs";
 
 @Component({
@@ -111,6 +118,17 @@ export class MainComponent implements OnInit {
         })
     }
 
+    copyToClipboard(value: string) {
+        navigator.clipboard
+            .writeText(value)
+            .then(() => {
+                // todo: Success message or any other action you want to take on success
+            })
+            .catch((err) => {
+                // todo: Error message
+            });
+    }
+
     private workItemValidator(type: FieldType): ValidatorFn {
         const validWorkItemTypes: string = type === 'workItem' ? 'Bug|Task|Requirement' : 'Requirement';
         const workItemRegExp: RegExp = new RegExp(`^(${validWorkItemTypes})\\s\\d{5}:\\s.+$`);
@@ -134,7 +152,7 @@ export class MainComponent implements OnInit {
             this.parsedWorkItem = {
                 type: type as workItemTypes,
                 number: parseInt(number),
-                title: this.formatTitleWithHyphens(title)
+                title: formatTitleWithHyphens(title)
             };
             console.log('parsedWorkItem: ', this.parsedWorkItem);
         }
@@ -146,13 +164,14 @@ export class MainComponent implements OnInit {
             const [_, number, title] = regexMatch;
             this.parsedRequirement = {
                 number: parseInt(number),
-                title: this.formatTitleWithHyphens(title)
+                title: formatTitleWithHyphens(title)
             };
             console.log('parsedReq: ', this.parsedRequirement);
         }
     }
 
     private handleWorkItemsByType() {
+        // this.messageService.add({summary: '123', severity: 'info', detail: '0088', data: {}})
         switch (this.parsedWorkItem.type) {
             case workItemTypes.Requirement:
                 this.generatorForm.get('requirement')?.disable({emitEvent: false});
@@ -172,13 +191,16 @@ export class MainComponent implements OnInit {
                 break;
         }
     }
-
-    private formatTitleWithHyphens(title: any): string {
-        return title.replace(/[\s_]+/g, '-').replace(/-+/g, '-').replace(/\/+/g, '/').replace(/[-\/]+$/, '');
-    }
 }
 
 // todo:
-// add alert when: 1) user submit, 2) user changed the form after generating
-// add theme switch
-// add limit to title
+// a - add alert when:
+//              1) user clicks on submit 'name generated successfully' [add 'dont show again' option].
+//              2) user clicks on 'copy' icon 'copied successfully' (or text next to the icon for 2 seconds)
+//                  [p.s. alert if we don't succeed to copy to clipboard].
+//              3) user changed the form after generating (wait 3 sec) 'notice you've made changes,
+//                  click `submit` again to apply the changes' (show once after submit clicked)
+//                  [add 'dont show again' option].
+// b - add theme switch
+// c - add limit to branch name
+// d - do order with colors that 1- will be generic (for theme), 2- order the 'surface', 'card' to fit their purpose

@@ -10,6 +10,7 @@
         </div>
         <small id="workItem-help">Enter work item title
             <i (click)="showWorkItemFormatModal()"
+               (keydown)="showWorkItemFormatModal()"
                class="pi pi-question text-xs vertical-align-top text-color-secondary"
                pTooltip="Click for more details"
                tooltipPosition="top"></i></small>
@@ -26,7 +27,8 @@
         <p-checkbox [binary]="true" formControlName="isReqIncluded"
                     id="isReqIncluded"
                     label="is Req. Included"></p-checkbox>
-        <div class="flex flex-column gap-2 flex-1">
+        <div [ngClass]="{'text-600 pointer-events-none': generatorForm.get('requirement')?.disabled}"
+             class="flex flex-column gap-2 flex-1">
             <label class="flex align-items-baseline gap-1" for="req"><i class="pi pi-pencil text-xs"></i>
                 Requirement:</label>
             <div class="p-inputgroup">
@@ -39,6 +41,7 @@
             </div>
             <small id="req-help">Enter Requirement title
                 <i (click)="showReqFormatModal()"
+                   (keydown)="showReqFormatModal()"
                    class="pi pi-question text-xs vertical-align-top text-color-secondary"
                    pTooltip="Click for more details"
                    tooltipPosition="top"></i></small>
@@ -60,12 +63,20 @@
 </form>
 
 <p-divider></p-divider>
-<div class="result">
-    <p-card [styleClass]="'surface-50'" header="Results:">
+<div class="result" [ngClass]="{'opacity-40': !(branchNameResult && branchNameResult.length)}">
+    <p-card [styleClass]="'surface-50 h-13rem'" header="Results:">
 
-        <ng-container *ngIf="true">
-            <div *ngFor="let result of branchNameResult" class="result-line">{{ result.key }}: {{result.value}}</div>
-        </ng-container>
+        <div *ngIf="true" class="flex flex-column gap-3">
+            <div *ngFor="let result of branchNameResult" class="result-line">
+                <div class="flex flex-column gap-1">
+                    <span class="font-semibold">{{ result.key }}:
+                        &nbsp;<i (click)="copyToClipboard(result.value)"
+                                 (keydown)="copyToClipboard(result.value)"
+                                 class="pi pi-copy text-sm border-round-sm hover:text-primary cursor-pointer"></i></span><span
+                        class="result-line-value text-sm">{{ result.value }}</span>
+                </div>
+            </div>
+        </div>
         <ng-container *ngIf="false">[empty message]</ng-container>
     </p-card>
 </div>
