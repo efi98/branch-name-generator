@@ -1,0 +1,15 @@
+header {
+  font-family: "Saira Semi Condensed", serif;
+  letter-spacing: 0.1rem;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), 0 3px 0 rgba(0, 0, 0, 0.1), 0 1px 11px -5px rgb(0 0 0 / 23%);
+
+  & span:not(:first-child):hover {
+    cursor: pointer;
+  }
+}
+
+.main-content {
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%);
+}

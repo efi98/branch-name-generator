@@ -1,0 +1,82 @@
+<form [formGroup]="generatorForm" class="flex flex-column gap-3 mt-3">
+    <div class="flex flex-column gap-2">
+        <label class="flex align-items-baseline gap-1" for="workItem"><i class="pi pi-pencil text-xs"></i>
+            work Item:</label>
+        <div class="p-inputgroup">
+            <input formControlName="workItem" id="workItem" pInputText>
+            <button (click)="pasteTextFromClipboard('workItem')" [pTooltip]="'Click here to paste your work item title'"
+                    label="Paste" pButton
+                    tooltipPosition="top" type="button"></button>
+        </div>
+        <small id="workItem-help">Enter work item title
+            <i (click)="showWorkItemFormatModal()"
+               (keydown)="showWorkItemFormatModal()"
+               class="pi pi-question text-xs vertical-align-top text-color-secondary"
+               pTooltip="Click for more details"
+               tooltipPosition="top"></i></small>
+        <ng-container *ngIf="generatorForm.get('workItem')?.errors && generatorForm.get('workItem')?.dirty">
+            <small *ngIf="generatorForm.get('workItem')?.hasError('required')"
+                   class="text-red-600">This field is required.</small>
+            <small *ngIf="generatorForm.get('workItem')?.hasError('workItemSyntax')"
+                   class="text-red-600">Please enter value in the format.</small>
+            <small *ngIf="generatorForm.get('workItem')?.hasError('forbiddenChars')"
+                   class="text-red-600">These chars (*^\:?~) and Hebrew chars are not allowed on branch name!</small>
+        </ng-container>
+    </div>
+    <div class="flex gap-5 justify-content-between">
+        <p-checkbox [binary]="true" formControlName="isReqIncluded"
+                    id="isReqIncluded"
+                    label="is Req. Included"></p-checkbox>
+        <div [ngClass]="{'text-600 pointer-events-none': generatorForm.get('requirement')?.disabled}"
+             class="flex flex-column gap-2 flex-1">
+            <label class="flex align-items-baseline gap-1" for="req"><i class="pi pi-pencil text-xs"></i>
+                Requirement:</label>
+            <div class="p-inputgroup">
+                <input formControlName="requirement" id="req" pInputText>
+                <button (click)="pasteTextFromClipboard('requirement')"
+                        [disabled]="generatorForm.get('requirement')?.disabled"
+                        [pTooltip]="'Click here to paste your Req. title'"
+                        label="Paste" pButton
+                        tooltipPosition="top" type="button"></button>
+            </div>
+            <small id="req-help">Enter Requirement title
+                <i (click)="showReqFormatModal()"
+                   (keydown)="showReqFormatModal()"
+                   class="pi pi-question text-xs vertical-align-top text-color-secondary"
+                   pTooltip="Click for more details"
+                   tooltipPosition="top"></i></small>
+            <ng-container
+                    *ngIf="generatorForm.get('requirement')?.errors && generatorForm.get('requirement')?.dirty">
+                <small *ngIf="generatorForm.get('requirement')?.hasError('required')"
+                       class="text-red-600">This field is required.</small>
+                <small *ngIf="generatorForm.get('requirement')?.hasError('workItemSyntax')"
+                       class="text-red-600">Please enter value in the format.</small>
+                <small *ngIf="generatorForm.get('requirement')?.hasError('forbiddenChars')" class="text-red-600">
+                    These chars (*^\:?~) and Hebrew chars are not allowed on branch name!</small>
+            </ng-container>
+        </div>
+    </div>
+
+    <button (click)="onSubmit()" [disabled]="!generatorForm.valid"
+            class="p-button-success align-self-end"
+            icon="pi pi-send" label="Submit" pButton></button>
+</form>
+
+<p-divider></p-divider>
+<div class="result" [ngClass]="{'opacity-40': !(branchNameResult && branchNameResult.length)}">
+    <p-card [styleClass]="'surface-50 h-13rem'" header="Results:">
+
+        <div *ngIf="true" class="flex flex-column gap-3">
+            <div *ngFor="let result of branchNameResult" class="result-line">
+                <div class="flex flex-column gap-1">
+                    <span class="font-semibold">{{ result.key }}:
+                        &nbsp;<i (click)="copyToClipboard(result.value)"
+                                 (keydown)="copyToClipboard(result.value)"
+                                 class="pi pi-copy text-sm border-round-sm hover:text-primary cursor-pointer"></i></span><span
+                        class="result-line-value text-sm">{{ result.value }}</span>
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="false">[empty message]</ng-container>
+    </p-card>
+</div>
