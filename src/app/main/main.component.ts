@@ -204,3 +204,8 @@ export class MainComponent implements OnInit {
 // b - add theme switch
 // c - add limit to branch name
 // d - do order with colors that 1- will be generic (for theme), 2- order the 'surface', 'card' to fit their purpose
+// e - add call for feedback and open issues (on readme).
+// f - update readme in order to align to the current data flow.
+// g - remove the " and ' char from branch name also
+// h - icons from another source that will give us more custom icons
+// i - get the validation errors in generic way
