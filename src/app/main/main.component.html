@@ -11,7 +11,7 @@
         <small id="workItem-help">Enter work item title
             <i (click)="showWorkItemFormatModal()"
                (keydown)="showWorkItemFormatModal()"
-               class="pi pi-question text-xs vertical-align-top text-color-secondary"
+               class="pi pi-question text-xs vertical-align-top"
                pTooltip="Click for more details"
                tooltipPosition="top"></i></small>
         <ng-container *ngIf="generatorForm.get('workItem')?.errors && generatorForm.get('workItem')?.dirty">
@@ -42,7 +42,7 @@
             <small id="req-help">Enter Requirement title
                 <i (click)="showReqFormatModal()"
                    (keydown)="showReqFormatModal()"
-                   class="pi pi-question text-xs vertical-align-top text-color-secondary"
+                   class="pi pi-question text-xs vertical-align-top"
                    pTooltip="Click for more details"
                    tooltipPosition="top"></i></small>
             <ng-container
@@ -62,21 +62,17 @@
             icon="pi pi-send" label="Submit" pButton></button>
 </form>
 
-<p-divider></p-divider>
-<div class="result" [ngClass]="{'opacity-40': !(branchNameResult && branchNameResult.length)}">
-    <p-card [styleClass]="'surface-50 h-13rem'" header="Results:">
-
-        <div *ngIf="true" class="flex flex-column gap-3">
-            <div *ngFor="let result of branchNameResult" class="result-line">
-                <div class="flex flex-column gap-1">
+<p-card [styleClass]="'h-13rem mt-3 text-600 surface-card'" header="Results:">
+    <div *ngIf="true" class="flex flex-column gap-3">
+        <div *ngFor="let result of branchNameResult" class="result-line text-900 ">
+            <div class="flex flex-column gap-1">
                     <span class="font-semibold">{{ result.key }}:
                         &nbsp;<i (click)="copyToClipboard(result.value)"
                                  (keydown)="copyToClipboard(result.value)"
-                                 class="pi pi-copy text-sm border-round-sm hover:text-primary cursor-pointer"></i></span><span
-                        class="result-line-value text-sm">{{ result.value }}</span>
-                </div>
+                                 class="pi pi-copy text-sm border-round-sm cursor-pointer"></i></span><span
+                    class="result-line-value text-sm">{{ result.value }}</span>
             </div>
         </div>
-        <ng-container *ngIf="false">[empty message]</ng-container>
-    </p-card>
-</div>
+    </div>
+    <ng-container *ngIf="false">[empty message]</ng-container>
+</p-card>
