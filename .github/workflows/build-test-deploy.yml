@@ -27,24 +27,24 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          
+
       - name: Install Chrome
         run: |
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
-          
+
       - run: npm i
       - run: npm test
 
   deploy:
     needs: test
 
-    permissions: 
+    permissions:
       contents: write
       pages: write
       id-token: write
 
-    environment: 
+    environment:
       name: action-test
       url: ${{ steps.deployment.outputs.page_url }}
 
@@ -54,29 +54,28 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v4
         with:
-         token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: use node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          
-      # - name: configure github pages
-      #   uses: actions/configure-pages-node@v4
-      #   with:
-      #     static_site_generator: next
 
-      - run: npm i
-      - run: npm run build
-      - name: Deploy to gh pages
-        run: |
-          npx angular-cli-ghpages --dir=dist/branch-name-generator
-        env:
-          CI: true
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      # - name: upload artifacts
-      #   uses: actions/upload-pages-artifact@v3
-      #   with:
-      #     path: './out'
-      # - name: deploy
-      #   id: deployment
-      #   uses: actions/deploy-pages@v4
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular app
+        run: npm run build
+
+      - name: configure github pages
+        uses: actions/configure-pages-node@v4
+        with:
+          static_site_generator: other
+
+      - name: upload artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist/branch-name-generator
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
