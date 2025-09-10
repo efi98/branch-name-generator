@@ -14,8 +14,6 @@ jobs:
         with:
           node-version: '20.x'
       - run: npm i
-      - name: Install Angular CLI globally
-        run: npm i -g @angular/cli
       - run: npm run build
 
   test:
@@ -62,28 +60,17 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Install dependencies
-        run: npm i
-
-      - name: Build Angular app
-        run: npm run build
-
-      - id: build-publish
-        uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
+      - name: configure github pages
+        uses: actions/configure-pages-node@v4
         with:
-          path: dist/branch-name-generator
-          build_command: npm run build -- --base-href=/branch-name-generator/
+          static_site_generator: other
 
-#      - name: configure github pages
-#        uses: actions/configure-pages-node@v4
-#        with:
-#          static_site_generator: other
-#
-#      - name: upload artifacts
-#        uses: actions/upload-pages-artifact@v3
-#        with:
-#          path: ./dist/branch-name-generator
-#
-#      - name: Deploy to GitHub Pages
-#        id: deployment
-#        uses: actions/deploy-pages@v4
+      - run: npm i
+      - run: npm run build
+      - name: upload artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './out'
+      - name: deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
