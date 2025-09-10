@@ -66,16 +66,22 @@ jobs:
       - name: Build Angular app
         run: npm run build
 
-      - name: configure github pages
-        uses: actions/configure-pages-node@v4
+      - id: build-publish
+        uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
         with:
-          static_site_generator: other
+          path: dist/${{ github.event.repository.name }}/browser                            # default
+          build_command: npm run build -- --base-href=/${{ github.event.repository.name }}/ # default
 
-      - name: upload artifacts
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist/branch-name-generator
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+#      - name: configure github pages
+#        uses: actions/configure-pages-node@v4
+#        with:
+#          static_site_generator: other
+#
+#      - name: upload artifacts
+#        uses: actions/upload-pages-artifact@v3
+#        with:
+#          path: ./dist/branch-name-generator
+#
+#      - name: Deploy to GitHub Pages
+#        id: deployment
+#        uses: actions/deploy-pages@v4
