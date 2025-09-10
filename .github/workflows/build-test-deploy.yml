@@ -14,6 +14,8 @@ jobs:
         with:
           node-version: '20.x'
       - run: npm i
+      - name: Install Angular CLI globally
+        run: npm i -g @angular/cli
       - run: npm run build
 
   test:
@@ -69,8 +71,8 @@ jobs:
       - id: build-publish
         uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
         with:
-          path: dist/${{ github.event.repository.name }}/browser                            # default
-          build_command: npm run build -- --base-href=/${{ github.event.repository.name }}/ # default
+          path: dist/branch-name-generator
+          build_command: npm run build -- --base-href=/branch-name-generator/
 
 #      - name: configure github pages
 #        uses: actions/configure-pages-node@v4
