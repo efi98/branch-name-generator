@@ -2,19 +2,36 @@ name: build-text-deploy
 
 on: push
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
     steps:
-      - name: checkout repo
-        uses: actions/checkout@v4
-      - name: use node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-      - run: npm i
-      - run: npm run build
+    - id: build-publish
+      uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
+
+
+
+
+
+
+
+  # build:
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: checkout repo
+  #       uses: actions/checkout@v4
+  #     - name: use node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '20.x'
+  #     - run: npm i
+  #     - run: npm run build
 
 #  test:
 #    needs: build
@@ -36,41 +53,41 @@ jobs:
 #      - run: npm i
 #      - run: npm test
 
-  deploy:
+  # deploy:
 #    needs: test
 
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
+    # permissions:
+    #   contents: write
+    #   pages: write
+    #   id-token: write
 
-    environment:
-      name: action-test
-      url: ${{ steps.deployment.outputs.page_url }}
+    # environment:
+    #   name: action-test
+    #   url: ${{ steps.deployment.outputs.page_url }}
 
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
 
-    steps:
-      - name: checkout repo
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: use node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
+    # steps:
+    #   - name: checkout repo
+    #     uses: actions/checkout@v4
+    #     with:
+    #       token: ${{ secrets.GITHUB_TOKEN }}
+    #   - name: use node.js
+    #     uses: actions/setup-node@v4
+    #     with:
+    #       node-version: '20.x'
 
-      - name: configure github pages
-        uses: actions/configure-pages-node@v4
-        with:
-          static_site_generator: other
+    #   - name: configure github pages
+    #     uses: actions/configure-pages-node@v4
+    #     with:
+    #       static_site_generator: other
 
-      - run: npm i
-      - run: npm run build
-      - name: upload artifacts
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './out'
-      - name: deploy
-        id: deployment
-        uses: actions/deploy-pages@v4
+    #   - run: npm i
+    #   - run: npm run build
+    #   - name: upload artifacts
+    #     uses: actions/upload-pages-artifact@v3
+    #     with:
+    #       path: './out'
+    #   - name: deploy
+    #     id: deployment
+    #     uses: actions/deploy-pages@v4
