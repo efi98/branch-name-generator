@@ -15,9 +15,15 @@ export class AppComponent implements OnInit {
                 private messageService: MessageService) {
     }
 
-    ngOnInit() {
-        this.primengConfig.ripple = true;
-        this.primengConfig.inputStyle = "filled";
+    ngOnInit()    {
+
+
+
+
+
+
+        this.primengConfig.ripple =          true;
+                                    this.primengConfig.inputStyle = "filled";
         this.onShowWelcomeMessage();
         console.log(initialMessage);
     }
@@ -35,6 +41,10 @@ export class AppComponent implements OnInit {
                 dismissableMask: false,
                 defaultFocus: "none",
                 accept: (() => {
+
+
+
+
                     localStorage.setItem('showWelcomeMsg', 'false');
                 })
             });
