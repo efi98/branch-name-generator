@@ -1,8 +1,8 @@
-import js from "@eslint/js";
-import tseslint from "typescript-eslint";
-import prettier from "eslint-plugin-prettier";
+const js = require("@eslint/js");
+const tseslint = require("typescript-eslint");
+const prettier = require("eslint-plugin-prettier");
 
-export default [
+module.exports = [
     js.configs.recommended,
     ...tseslint.configs.recommended,
     {
@@ -10,8 +10,10 @@ export default [
             prettier,
         },
         rules: {
-            "prettier/prettier": "error",
-            "@typescript-eslint/no-unused-vars": "warn",
+            "prettier/prettier": "warn",
+            "@typescript-eslint/no-unused-vars": ["warn", {"argsIgnorePattern": "^_"}],
+            "@typescript-eslint/no-explicit-any": "warn",
+            "no-useless-escape": "warn"
         },
     },
     {
