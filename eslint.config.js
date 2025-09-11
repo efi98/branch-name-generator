@@ -15,6 +15,12 @@ export default [
         },
     },
     {
-        ignores: ["dist/", "node_modules/"],
+        ignores: [
+            "dist/",
+            "node_modules/",
+            "karma.conf.js",
+            "src/**/*.spec.ts",
+            "src/test.ts"
+        ],
     },
 ];
