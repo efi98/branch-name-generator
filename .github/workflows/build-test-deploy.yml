@@ -3,7 +3,7 @@ name: build-text-deploy
 on:
   push:
     branches:
-      - git-hub-actions
+      - main
 
 jobs:
 
