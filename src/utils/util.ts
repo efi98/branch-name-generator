@@ -3,5 +3,9 @@ export function stringToBoolean(boolStr: 'false' | 'true'): boolean {
 }
 
 export function formatTitleWithHyphens(title: any): string {
-    return title.replace(/[\s_]+/g, '-').replace(/-+/g, '-').replace(/\/+/g, '/').replace(/[-\/]+$/, '');
+    return title.replace(/"/g, '')
+        .replace(/[\s_]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/\/+/g, '/')
+        .replace(/[-\/]+$/, '');
 }
