@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {ConfirmationService, MessageService, PrimeNGConfig} from 'primeng/api';
-import {initialMessage, stringToBoolean, welcomeMessage} from "@app-utils";
+import { Component, OnInit } from '@angular/core';
+import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
+import { initialMessage, stringToBoolean, welcomeMessage } from "@app-utils";
 
 @Component({
     selector: 'app-root',
@@ -18,13 +18,13 @@ export class AppComponent implements OnInit {
     ngOnInit() {
         this.primengConfig.ripple = true;
         this.primengConfig.inputStyle = "filled";
-        this.showWelcomeMessage();
+        this.onShowWelcomeMessage();
         console.log(initialMessage);
     }
 
-    private showWelcomeMessage() {
-        let firstTimeLoading: boolean = stringToBoolean(localStorage.getItem('firstTimeLoading') as 'false' | 'true');
-        if (firstTimeLoading) {
+    private onShowWelcomeMessage() {
+        let showWelcomeMsg: boolean = stringToBoolean(localStorage.getItem('showWelcomeMsg') as 'false' | 'true');
+        if (showWelcomeMsg) {
             this.confirmationService.confirm({
                 header: 'Welcome to Branch name generator!',
                 message: welcomeMessage,
@@ -33,9 +33,11 @@ export class AppComponent implements OnInit {
                 acceptLabel: 'Ok, Got it!',
                 closeOnEscape: false,
                 dismissableMask: false,
-                defaultFocus: "none"
+                defaultFocus: "none",
+                accept: (() => {
+                    localStorage.setItem('showWelcomeMsg', 'false');
+                })
             });
-            localStorage.setItem('firstTimeLoading', 'false');
         }
     }
 }
