@@ -22,7 +22,8 @@ module.exports = [
             "node_modules/",
             "karma.conf.js",
             "src/**/*.spec.ts",
-            "src/test.ts"
+            "src/test.ts",
+            "eslint.config.js"
         ],
     },
 ];
