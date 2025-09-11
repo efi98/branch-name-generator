@@ -3,7 +3,7 @@ name: build-test-deploy
 on:
   push:
     branches:
-      - main
+      - remove-the-symbol-from-branch-name
 
 jobs:
 
