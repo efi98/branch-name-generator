@@ -1,9 +1,6 @@
 name: build-test-deploy
 
-on:
-  push:
-    branches:
-      - remove-the-symbol-from-branch-name
+on: push
 
 jobs:
 
@@ -75,3 +72,12 @@ jobs:
           build_command: npm run build  -- --base-href /branch-name-generator/
           install_command: npm install
           path: dist/${{ github.event.repository.name }}
+#          ----------------------------------
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/${{ github.event.repository.name }}
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
