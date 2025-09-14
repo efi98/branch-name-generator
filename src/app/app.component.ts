@@ -15,15 +15,9 @@ export class AppComponent implements OnInit {
                 private messageService: MessageService) {
     }
 
-    ngOnInit()    {
-
-
-
-
-
-
-        this.primengConfig.ripple =          true;
-                                    this.primengConfig.inputStyle = "filled";
+  ngOnInit() {
+    this.primengConfig.ripple = true;
+    this.primengConfig.inputStyle = 'filled';
         this.onShowWelcomeMessage();
         console.log(initialMessage);
     }
@@ -32,7 +26,7 @@ export class AppComponent implements OnInit {
         let showWelcomeMsg: boolean = stringToBoolean(localStorage.getItem('showWelcomeMsg') as 'false' | 'true');
         if (showWelcomeMsg) {
             this.confirmationService.confirm({
-                header: "Welcome to Branch name generator!",
+        header: 'Welcome to Branch name generator!',
                 message: welcomeMessage,
                 acceptVisible: true,
                 rejectVisible: false,
@@ -41,11 +35,7 @@ export class AppComponent implements OnInit {
                 dismissableMask: false,
                 defaultFocus: "none",
                 accept: (() => {
-
-
-
-
-                    localStorage.setItem('showWelcomeMsg', 'false');
+          localStorage.setItem('showWelcomeMsg', 'false');
                 })
             });
         }
