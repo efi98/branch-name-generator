@@ -54,6 +54,10 @@ jobs:
   deploy:
     needs: test
 
+    environment:
+      name: 'github-pages'
+      url: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+
     permissions:
       contents: write
       pages: write
@@ -72,12 +76,3 @@ jobs:
           build_command: npm run build  -- --base-href /branch-name-generator/
           install_command: npm install
           path: dist/${{ github.event.repository.name }}
-#          ----------------------------------
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist/${{ github.event.repository.name }}
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
