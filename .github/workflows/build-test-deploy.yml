@@ -34,44 +34,44 @@ jobs:
       - name: Show ESLint fixes
         run: git --no-pager diff
 
-#  test:
-#    needs: [build, lint] # needs: build
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: checkout repo
-#        uses: actions/checkout@v4
-#      - name: use node.js
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: '20.x'
-#
-#      - name: Install Chrome
-#        run: |
-#          sudo apt-get update
-#          sudo apt-get install -y google-chrome-stable
-#
-#      - run: npm i
-#      - run: npm test
-#
-#  deploy:
-#    needs: test
-#
-#    permissions:
-#      contents: write
-#      pages: write
-#      id-token: write
-#
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/setup-node@v4
-#        with:
-#          node-version: 18.19.0
-#
-#      - id: build-publish
-#        uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
-#        with:
-#          build_command: npm run build  -- --base-href /branch-name-generator/
-#          install_command: npm install
-#          path: dist/${{ github.event.repository.name }}
+  test:
+    needs: [build, lint] # needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+      - name: use node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - run: npm i
+      - run: npm test
+
+  deploy:
+    needs: test
+
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18.19.0
+
+      - id: build-publish
+        uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
+        with:
+          build_command: npm run build  -- --base-href /branch-name-generator/
+          install_command: npm install
+          path: dist/${{ github.event.repository.name }}
