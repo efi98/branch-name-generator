@@ -7,5 +7,5 @@ export function formatTitleWithHyphens(title: any): string {
         .replace(/[\s_]+/g, '-')
         .replace(/-+/g, '-')
         .replace(/\/+/g, '/')
-        .replace(/[-\/]+$/, '');
+    .replace(/[-\/]+$/, '');
 }
