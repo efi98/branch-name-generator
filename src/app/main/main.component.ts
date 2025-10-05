@@ -6,7 +6,8 @@ import {
     FieldType,
     formatTitleWithHyphens,
     ParsedWorkItem,
-    snkeOsType, stringToBoolean,
+    snkeOsType,
+    stringToBoolean,
     templateWorkItemFormat,
     workItemTypes
 } from "@app-utils";
@@ -22,7 +23,7 @@ export class MainComponent implements OnInit {
     branchNameResult!: { key: string, value: string }[];
     isSnkeOSMode!: boolean;
     snkeOSForm!: FormGroup;
-    snkeOsOptions!: string[];
+    snkeOsOptions!: { value: snkeOsType, label: snkeOsType, disabled: boolean }[];
     showModeSwitch: boolean = true;
     private hasSubmitted = false;
     private formChangedAfterSubmit = false;
@@ -49,7 +50,13 @@ export class MainComponent implements OnInit {
             this.snkeOSForm.get('snkeosInput')?.updateValueAndValidity();
         });
 
-        this.snkeOsOptions = [snkeOsType.feature, snkeOsType.bugfix, snkeOsType.hotfix, snkeOsType.version];
+        this.snkeOsOptions = [
+            {value: snkeOsType.feature, label: snkeOsType.feature, disabled: false},
+            {value: snkeOsType.bugfix, label: snkeOsType.bugfix, disabled: false},
+            {value: snkeOsType.hotfix, label: snkeOsType.hotfix, disabled: false},
+            {value: snkeOsType.version, label: snkeOsType.version, disabled: true}
+        ];
+
 
         this.generatorForm.get('workItem')?.valueChanges
             .subscribe((workItemValue: string) => {
