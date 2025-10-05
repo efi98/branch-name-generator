@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
         let showWelcomeMsg: boolean = stringToBoolean(localStorage.getItem('showWelcomeMsg') as 'false' | 'true');
         if (showWelcomeMsg) {
             this.confirmationService.confirm({
-        header: 'Welcome to Branch name generator!',
+        header: 'Welcome to the \'Branch Name Generator\'!',
                 message: welcomeMessage,
                 acceptVisible: true,
                 rejectVisible: false,

@@ -1,15 +1,16 @@
-import {Component, OnInit} from "@angular/core";
-import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
-import {ConfirmationService, MessageService} from "primeng/api";
+import { Component, OnInit } from "@angular/core";
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
+import { ConfirmationService, MessageService } from "primeng/api";
 import {
     branchNameConf,
     FieldType,
     formatTitleWithHyphens,
     ParsedWorkItem,
+    snkeOsType,
     templateWorkItemFormat,
     workItemTypes
 } from "@app-utils";
-import {debounceTime, distinctUntilChanged} from "rxjs";
+import { debounceTime, distinctUntilChanged } from "rxjs";
 
 @Component({
     selector: "app-main",
@@ -17,7 +18,10 @@ import {debounceTime, distinctUntilChanged} from "rxjs";
     styleUrls: ["./main.component.scss"],
 })
 export class MainComponent implements OnInit {
+    isSnkeOSMode!: boolean;
     generatorForm!: FormGroup;
+    snkeOSForm!: FormGroup;
+    snkeOsOptions!: string[];
     branchNameResult!: { key: string, value: string }[];
     private parsedWorkItem!: ParsedWorkItem;
     private parsedRequirement!: { number: number, title: string };
@@ -26,11 +30,22 @@ export class MainComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.isSnkeOSMode = localStorage.getItem('isSnkeOSMode') === 'true';
         this.generatorForm = this.formBuilder.group({
             workItem: [{value: '', disabled: false}, [Validators.required, this.workItemValidator('workItem')]],
             requirement: [{value: '', disabled: true}, [Validators.required, this.workItemValidator('requirement')]],
             isReqIncluded: [{value: false, disabled: true}]
         });
+        this.snkeOSForm = this.formBuilder.group({
+            snkeosType: [snkeOsType.feature, [Validators.required]],
+            snkeosInput: ['', [Validators.required, this.snkeosInputValidator()]]
+        });
+
+        this.snkeOSForm.get('snkeosType')?.valueChanges.subscribe(() => {
+            this.snkeOSForm.get('snkeosInput')?.updateValueAndValidity();
+        });
+
+        this.snkeOsOptions = [snkeOsType.feature, snkeOsType.bugfix, snkeOsType.hotfix, snkeOsType.version];
 
         this.generatorForm.get('workItem')?.valueChanges
             .subscribe((workItemValue: string) => {
@@ -54,6 +69,10 @@ export class MainComponent implements OnInit {
             });
     }
 
+    toggleMode() {
+        localStorage.setItem('isSnkeOSMode', this.isSnkeOSMode.toString());
+    }
+
     pasteTextFromClipboard(type: FieldType) {
         navigator.clipboard.readText().then(text => {
             this.generatorForm.get(type)?.setValue(text);
@@ -64,45 +83,67 @@ export class MainComponent implements OnInit {
     }
 
     onSubmit() {
-        this.branchNameResult = [];
-        switch (this.parsedWorkItem.type) {
-            case workItemTypes.Requirement: {
-                const {number, title} = this.parsedWorkItem;
-                this.branchNameResult.push({
-                    key: workItemTypes.Requirement,
-                    value: branchNameConf.Requirement.setBranchName(number.toString(), title)
-                });
-                break;
+        if (this.isSnkeOSMode) {
+            const type = this.snkeOSForm.get('snkeosType')?.value;
+            const input = formatTitleWithHyphens(this.snkeOSForm.get('snkeosInput')?.value);
+            let branch = '';
+            switch (type) {
+                case snkeOsType.feature:
+                    branch = `feat/${input}`;
+                    break;
+                case snkeOsType.bugfix:
+                    branch = `fix/${input}`;
+                    break;
+                case snkeOsType.hotfix:
+                    branch = `hotfix/${input}`;
+                    break;
+                case snkeOsType.version:
+                    branch = input;
+                    break;
             }
-            case workItemTypes.Task: {
-                this.branchNameResult.push({
-                    key: workItemTypes.Requirement,
-                    value: branchNameConf.Requirement.setBranchName(this.parsedRequirement.number, this.parsedRequirement.title)
-                });
-                this.branchNameResult.push({
-                    key: workItemTypes.Task,
-                    value: branchNameConf.Task.setBranchName(this.parsedRequirement.number, this.parsedRequirement.title, this.parsedWorkItem.number, this.parsedWorkItem.title)
-                });
-                break;
-            }
-            case workItemTypes.Bug: {
-                const {number, title} = this.parsedWorkItem;
-                if (this.generatorForm.get('isReqIncluded')?.value) {
+            this.branchNameResult = [{key: type, value: branch}];
+            this.copyToClipboard(branch);
+        } else {
+            this.branchNameResult = [];
+            switch (this.parsedWorkItem.type) {
+                case workItemTypes.Requirement: {
+                    const {number, title} = this.parsedWorkItem;
+                    this.branchNameResult.push({
+                        key: workItemTypes.Requirement,
+                        value: branchNameConf.Requirement.setBranchName(number.toString(), title)
+                    });
+                    break;
+                }
+                case workItemTypes.Task: {
                     this.branchNameResult.push({
                         key: workItemTypes.Requirement,
                         value: branchNameConf.Requirement.setBranchName(this.parsedRequirement.number, this.parsedRequirement.title)
                     });
                     this.branchNameResult.push({
-                        key: workItemTypes.Bug,
-                        value: branchNameConf.Bug.setBranchName(number, title, this.parsedRequirement.number, this.parsedRequirement.title)
+                        key: workItemTypes.Task,
+                        value: branchNameConf.Task.setBranchName(this.parsedRequirement.number, this.parsedRequirement.title, this.parsedWorkItem.number, this.parsedWorkItem.title)
                     });
-                } else {
-                    this.branchNameResult.push({
-                        key: workItemTypes.Bug,
-                        value: branchNameConf.Bug.setBranchName(number, title),
-                    });
+                    break;
                 }
-                break;
+                case workItemTypes.Bug: {
+                    const {number, title} = this.parsedWorkItem;
+                    if (this.generatorForm.get('isReqIncluded')?.value) {
+                        this.branchNameResult.push({
+                            key: workItemTypes.Requirement,
+                            value: branchNameConf.Requirement.setBranchName(this.parsedRequirement.number, this.parsedRequirement.title)
+                        });
+                        this.branchNameResult.push({
+                            key: workItemTypes.Bug,
+                            value: branchNameConf.Bug.setBranchName(number, title, this.parsedRequirement.number, this.parsedRequirement.title)
+                        });
+                    } else {
+                        this.branchNameResult.push({
+                            key: workItemTypes.Bug,
+                            value: branchNameConf.Bug.setBranchName(number, title),
+                        });
+                    }
+                    break;
+                }
             }
         }
     }
@@ -191,6 +232,26 @@ export class MainComponent implements OnInit {
                 break;
         }
     }
+
+    private snkeosInputValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+            const parent = control.parent;
+            const value = control.value;
+            if (!parent) return null;
+            const type = parent.get('snkeosType')?.value;
+            if (type === snkeOsType.version && value) {
+                if (!/^v\d+\.\d+\.\d+$/.test(value)) {
+                    return {versionPattern: true};
+                }
+            } else {
+                if (/^\s+$/.test(value)) {
+                    return {noWhitespace: true};
+                }
+            }
+            return null;
+        };
+    }
+
 }
 
 // todo:

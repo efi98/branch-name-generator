@@ -1,68 +1,96 @@
-<form [formGroup]="generatorForm" class="flex flex-column gap-3 mt-3">
-    <div class="flex flex-column gap-2">
-        <label class="flex align-items-baseline gap-1" for="workItem"><i class="pi pi-pencil text-xs"></i>
-            work Item:</label>
-        <div class="p-inputgroup">
-            <input placeholder="Bug 12345: this is a bug" formControlName="workItem" id="workItem" pInputText>
-            <button (click)="pasteTextFromClipboard('workItem')" [pTooltip]="'Click here to paste your work item title'"
-                    label="Paste" pButton
-                    tooltipPosition="top" type="button"></button>
-        </div>
-        <small id="workItem-help">Enter work item title
-            <i (click)="showWorkItemFormatModal()"
-               (keydown)="showWorkItemFormatModal()"
-               class="pi pi-question text-xs vertical-align-top"
-               pTooltip="Click for more details"
-               tooltipPosition="top"></i></small>
-        <ng-container *ngIf="generatorForm.get('workItem')?.errors && generatorForm.get('workItem')?.dirty">
-            <small *ngIf="generatorForm.get('workItem')?.hasError('required')"
-                   class="text-red-600">This field is required.</small>
-            <small *ngIf="generatorForm.get('workItem')?.hasError('workItemSyntax')"
-                   class="text-red-600">Please enter value in the format.</small>
-            <small *ngIf="generatorForm.get('workItem')?.hasError('forbiddenChars')"
-                   class="text-red-600">These chars (*^\:?~) and Hebrew chars are not allowed on branch name!</small>
-        </ng-container>
-    </div>
-    <div class="flex gap-5 justify-content-between">
-        <p-checkbox [binary]="true" formControlName="isReqIncluded"
-                    id="isReqIncluded"
-                    label="is Req. Included"></p-checkbox>
-        <div [ngClass]="{'text-600 pointer-events-none': generatorForm.get('requirement')?.disabled}"
-             class="flex flex-column gap-2 flex-1">
-            <label class="flex align-items-baseline gap-1" for="req"><i class="pi pi-pencil text-xs"></i>
-                Requirement:</label>
+<div class="flex align-items-center gap-2">
+    <p-inputSwitch (click)="toggleMode()" [(ngModel)]="isSnkeOSMode">
+    </p-inputSwitch>
+    <p>{{ isSnkeOSMode ? '(current: SnkeOS) Switch to azure devops Mode' : '(current: azure) Switch to SnkeOS Mode' }}</p>
+</div>
+<div *ngIf="!isSnkeOSMode">
+    <form [formGroup]="generatorForm" class="flex flex-column gap-3 mt-3">
+        <div class="flex flex-column gap-2">
+            <label class="flex align-items-baseline gap-1" for="workItem"><i class="pi pi-pencil text-xs"></i>
+                work Item:</label>
             <div class="p-inputgroup">
-                <input formControlName="requirement" id="req" pInputText placeholder="Requirement 98777: this is a req.">
-                <button (click)="pasteTextFromClipboard('requirement')"
-                        [disabled]="generatorForm.get('requirement')?.disabled"
-                        [pTooltip]="'Click here to paste your Req. title'"
+                <input formControlName="workItem" id="workItem" pInputText placeholder="Bug 12345: this is a bug">
+                <button (click)="pasteTextFromClipboard('workItem')"
+                        [pTooltip]="'Click here to paste your work item title'"
                         label="Paste" pButton
                         tooltipPosition="top" type="button"></button>
             </div>
-            <small id="req-help">Enter Requirement title
-                <i (click)="showReqFormatModal()"
-                   (keydown)="showReqFormatModal()"
+            <small id="workItem-help">Enter work item title
+                <i (click)="showWorkItemFormatModal()"
+                   (keydown)="showWorkItemFormatModal()"
                    class="pi pi-question text-xs vertical-align-top"
                    pTooltip="Click for more details"
                    tooltipPosition="top"></i></small>
-            <ng-container
-                    *ngIf="generatorForm.get('requirement')?.errors && generatorForm.get('requirement')?.dirty">
-                <small *ngIf="generatorForm.get('requirement')?.hasError('required')"
+            <ng-container *ngIf="generatorForm.get('workItem')?.errors && generatorForm.get('workItem')?.dirty">
+                <small *ngIf="generatorForm.get('workItem')?.hasError('required')"
                        class="text-red-600">This field is required.</small>
-                <small *ngIf="generatorForm.get('requirement')?.hasError('workItemSyntax')"
+                <small *ngIf="generatorForm.get('workItem')?.hasError('workItemSyntax')"
                        class="text-red-600">Please enter value in the format.</small>
-                <small *ngIf="generatorForm.get('requirement')?.hasError('forbiddenChars')" class="text-red-600">
-                    These chars (*^\:?~) and Hebrew chars are not allowed on branch name!</small>
+                <small *ngIf="generatorForm.get('workItem')?.hasError('forbiddenChars')"
+                       class="text-red-600">These chars (*^\:?~) and Hebrew chars are not allowed on branch
+                    name!</small>
             </ng-container>
         </div>
-    </div>
+        <div class="flex gap-5 justify-content-between">
+            <p-checkbox [binary]="true" formControlName="isReqIncluded"
+                        id="isReqIncluded"
+                        label="is Req. Included"></p-checkbox>
+            <div [ngClass]="{'text-600 pointer-events-none': generatorForm.get('requirement')?.disabled}"
+                 class="flex flex-column gap-2 flex-1">
+                <label class="flex align-items-baseline gap-1" for="req"><i class="pi pi-pencil text-xs"></i>
+                    Requirement:</label>
+                <div class="p-inputgroup">
+                    <input formControlName="requirement" id="req" pInputText
+                           placeholder="Requirement 98777: this is a req.">
+                    <button (click)="pasteTextFromClipboard('requirement')"
+                            [disabled]="generatorForm.get('requirement')?.disabled"
+                            [pTooltip]="'Click here to paste your Req. title'"
+                            label="Paste" pButton
+                            tooltipPosition="top" type="button"></button>
+                </div>
+                <small id="req-help">Enter Requirement title
+                    <i (click)="showReqFormatModal()"
+                       (keydown)="showReqFormatModal()"
+                       class="pi pi-question text-xs vertical-align-top"
+                       pTooltip="Click for more details"
+                       tooltipPosition="top"></i></small>
+                <ng-container
+                        *ngIf="generatorForm.get('requirement')?.errors && generatorForm.get('requirement')?.dirty">
+                    <small *ngIf="generatorForm.get('requirement')?.hasError('required')"
+                           class="text-red-600">This field is required.</small>
+                    <small *ngIf="generatorForm.get('requirement')?.hasError('workItemSyntax')"
+                           class="text-red-600">Please enter value in the format.</small>
+                    <small *ngIf="generatorForm.get('requirement')?.hasError('forbiddenChars')" class="text-red-600">
+                        These chars (*^\:?~) and Hebrew chars are not allowed on branch name!</small>
+                </ng-container>
+            </div>
+        </div>
 
-    <button (click)="onSubmit()" [disabled]="!generatorForm.valid"
-            class="p-button-success align-self-end"
-            icon="pi pi-send" label="Submit" pButton></button>
-</form>
-
-<p-card [styleClass]="'h-13rem mt-3 text-600 surface-card'" header="Results:">
+        <button (click)="onSubmit()" [disabled]="!generatorForm.valid"
+                class="p-button-success align-self-end"
+                icon="pi pi-send" label="Submit" pButton></button>
+    </form>
+</div>
+<div *ngIf="isSnkeOSMode">
+    <form [formGroup]="snkeOSForm">
+        <div class="flex h-3rem gap-2">
+            <div>
+                <p-selectButton [allowEmpty]="false" [options]="snkeOsOptions"
+                                formControlName="snkeosType"
+                                id="snkeosType">
+                </p-selectButton>
+            </div>
+            <div class="flex-1 p-inputgroup flex-column">
+                <input class="flex-1 w-full" formControlName="snkeosInput" id="snkeosInput" pInputText>
+                <small *ngIf="snkeOSForm.get('snkeosInput')?.hasError('versionPattern') && snkeOSForm.get('snkeosInput')?.dirty" class="text-red-600">
+                    Version must be in the format vMAJOR.MINOR.PATCH (e.g., v1.2.3)
+                </small>
+            </div>
+            <button (click)="onSubmit()" [disabled]="!snkeOSForm.valid" pButton>Submit & copy</button>
+        </div>
+    </form>
+</div>
+<p-card *ngIf="!isSnkeOSMode" [styleClass]="'h-13rem mt-3 text-600 surface-card'" header="Results:">
     <div *ngIf="true" class="flex flex-column gap-3">
         <div *ngFor="let result of branchNameResult" class="result-line text-900 ">
             <div class="flex flex-column gap-1">

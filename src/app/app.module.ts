@@ -10,13 +10,15 @@ import {FieldsetModule} from 'primeng/fieldset';
 import {ToastModule} from 'primeng/toast';
 import {DividerModule} from 'primeng/divider';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ReactiveFormsModule} from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {CheckboxModule} from "primeng/checkbox";
 import {InputTextModule} from "primeng/inputtext";
 import {RippleModule} from "primeng/ripple";
 import {TooltipModule} from "primeng/tooltip";
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {KeyFilterModule} from "primeng/keyfilter";
+import { InputSwitchModule } from "primeng/inputswitch";
+import { SelectButtonModule } from "primeng/selectbutton";
 
 @NgModule({
     bootstrap: [AppComponent],
@@ -39,7 +41,10 @@ import {KeyFilterModule} from "primeng/keyfilter";
         RippleModule,
         TooltipModule,
         ConfirmDialogModule,
-        KeyFilterModule
+        KeyFilterModule,
+        InputSwitchModule,
+        FormsModule,
+        SelectButtonModule
     ],
     providers: []
 })
