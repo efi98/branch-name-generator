@@ -18,11 +18,13 @@ import { debounceTime, distinctUntilChanged } from "rxjs";
     styleUrls: ["./main.component.scss"],
 })
 export class MainComponent implements OnInit {
-    isSnkeOSMode!: boolean;
     generatorForm!: FormGroup;
+    branchNameResult!: { key: string, value: string }[];
+    isSnkeOSMode!: boolean;
     snkeOSForm!: FormGroup;
     snkeOsOptions!: string[];
-    branchNameResult!: { key: string, value: string }[];
+    private hasSubmitted = false;
+    private formChangedAfterSubmit = false;
     private parsedWorkItem!: ParsedWorkItem;
     private parsedRequirement!: { number: number, title: string };
 
@@ -67,6 +69,8 @@ export class MainComponent implements OnInit {
                     this.parseReq(requirement);
                 }
             });
+        this.generatorForm.valueChanges.subscribe(() => this.handleFormChange());
+        this.snkeOSForm.valueChanges.subscribe(() => this.handleFormChange());
     }
 
     toggleMode() {
@@ -78,7 +82,11 @@ export class MainComponent implements OnInit {
             this.generatorForm.get(type)?.setValue(text);
             this.generatorForm.get(type)?.markAsDirty();
         }).catch(err => {
-            console.error(err);
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Paste Failed',
+                detail: 'Failed to paste due to permission denied'
+            });
         });
     }
 
@@ -104,6 +112,16 @@ export class MainComponent implements OnInit {
             this.branchNameResult = [{key: type, value: branch}];
             this.copyToClipboard(branch);
         } else {
+            this.hasSubmitted = true;
+            this.formChangedAfterSubmit = false;
+            if (localStorage.getItem('dontShowSubmitAlert') !== 'true') {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Name generated successfully',
+                    data: {showDontShowAgain: true, type: 'submit'}
+                });
+            }
             this.branchNameResult = [];
             switch (this.parsedWorkItem.type) {
                 case workItemTypes.Requirement: {
@@ -163,10 +181,18 @@ export class MainComponent implements OnInit {
         navigator.clipboard
             .writeText(value)
             .then(() => {
-                // todo: Success message or any other action you want to take on success
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Copied successfully',
+                    detail: '<span>Copied \'<b>' + value + '</b>\' to clipboard</span>'
+                });
             })
             .catch((err) => {
-                // todo: Error message
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Copy Failed',
+                    detail: 'Failed to copy to clipboard'
+                });
             });
     }
 
@@ -251,17 +277,30 @@ export class MainComponent implements OnInit {
         };
     }
 
+    private handleFormChange() {
+        if (
+            this.hasSubmitted &&
+            !this.formChangedAfterSubmit &&
+            localStorage.getItem('dontShowFormChangeAlert') !== 'true'
+        ) {
+            this.formChangedAfterSubmit = true;
+            setTimeout(() => {
+                if (this.formChangedAfterSubmit) {
+                    this.messageService.add({
+                        severity: 'warn',
+                        summary: 'Notice',
+                        detail: 'You\'ve made changes, click `submit` again to apply.',
+                        data: {showDontShowAgain: true, type: 'formChange'}
+                    });
+                }
+            }, 5000);
+        }
+    }
+
 }
 
 // todo:
-// a - add alert when:
-//              1) user clicks on submit 'name generated successfully' [add 'dont show again' option].
-//              2) user clicks on 'copy' icon 'copied successfully' (or text next to the icon for 2 seconds)
-//                  [p.s. alert if we don't succeed to copy to clipboard].
-//              3) user changed the form after generating (wait 3 sec) 'notice you've made changes,
-//                  click `submit` again to apply the changes' (show once after submit clicked)
-//                  [add 'dont show again' option].
-// b - add theme switch
-// c - add limit to branch name
-// d - do order with colors that 1- will be generic (for theme), 2- order the 'surface', 'card' to fit their purpose
-// e - get the validation errors in generic way
+// 1 - add theme switch
+// 2 - add limit to branch name on alert and also in input fields
+// 3 - do order with colors that 1- will be generic (for theme), 2- order the 'surface', 'card' to fit their purpose
+// 4 - allow user to eset their preference like 'showWelcomeMsg', 'dontShowSubmitAlert', 'dontShowFormChangeAlert' and 'isSnkeOSMode'.

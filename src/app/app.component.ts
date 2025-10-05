@@ -15,18 +15,26 @@ export class AppComponent implements OnInit {
                 private messageService: MessageService) {
     }
 
-  ngOnInit() {
-    this.primengConfig.ripple = true;
-    this.primengConfig.inputStyle = 'filled';
+    ngOnInit() {
+        this.primengConfig.ripple = true;
+        this.primengConfig.inputStyle = 'filled';
         this.onShowWelcomeMessage();
         console.log(initialMessage);
+    }
+
+    dontShowAgain(type: 'submit' | 'formChange') {
+        if (type === 'submit') {
+            localStorage.setItem('dontShowSubmitAlert', 'true');
+        } else if (type === 'formChange') {
+            localStorage.setItem('dontShowFormChangeAlert', 'true');
+        }
     }
 
     private onShowWelcomeMessage() {
         let showWelcomeMsg: boolean = stringToBoolean(localStorage.getItem('showWelcomeMsg') as 'false' | 'true');
         if (showWelcomeMsg) {
             this.confirmationService.confirm({
-        header: 'Welcome to the \'Branch Name Generator\'!',
+                header: 'Welcome to the \'Branch Name Generator\'!',
                 message: welcomeMessage,
                 acceptVisible: true,
                 rejectVisible: false,
@@ -35,7 +43,7 @@ export class AppComponent implements OnInit {
                 dismissableMask: false,
                 defaultFocus: "none",
                 accept: (() => {
-          localStorage.setItem('showWelcomeMsg', 'false');
+                    localStorage.setItem('showWelcomeMsg', 'false');
                 })
             });
         }

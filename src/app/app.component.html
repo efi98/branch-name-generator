@@ -17,8 +17,21 @@
         </footer>
     </div>
 </div>
-<p-toast [life]="1000000" [preventOpenDuplicates]="true" position="top-center">
+<p-toast [preventOpenDuplicates]="true" position="top-center"
+         showTransformOptions="translateY(-100%)">
+    <ng-template let-message pTemplate="message">
+        <div class="flex flex-column items-start flex-auto">
+            <div class="flex items-center gap-2">
+                <span class="font-bold">{{ message.summary }}</span>
+            </div>
+            <div [innerHTML]="message.detail" class="font-medium text-lg my-4"></div>
+            <p-button severity="danger" (click)="dontShowAgain(message.data.type); $event.stopPropagation()"
+                      *ngIf="message.data?.showDontShowAgain" label="don't show again"
+                      size="small"/>
+        </div>
+    </ng-template>
 </p-toast>
+
 <p-confirmDialog [acceptVisible]="false" [dismissableMask]="true" [rejectVisible]="false" defaultFocus="close"
                  position="top">
 </p-confirmDialog>

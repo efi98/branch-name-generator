@@ -80,7 +80,7 @@
                                 id="snkeosType">
                 </p-selectButton>
             </div>
-            <div class="flex-1 p-inputgroup flex-column">
+            <div class="flex-1 flex flex-column">
                 <input class="flex-1 w-full" formControlName="snkeosInput" id="snkeosInput" pInputText>
                 <small *ngIf="snkeOSForm.get('snkeosInput')?.hasError('versionPattern') && snkeOSForm.get('snkeosInput')?.dirty" class="text-red-600">
                     Version must be in the format vMAJOR.MINOR.PATCH (e.g., v1.2.3)
