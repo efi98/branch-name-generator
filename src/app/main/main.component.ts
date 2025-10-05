@@ -303,4 +303,4 @@ export class MainComponent implements OnInit {
 // 1 - add theme switch
 // 2 - add limit to branch name on alert and also in input fields
 // 3 - do order with colors that 1- will be generic (for theme), 2- order the 'surface', 'card' to fit their purpose
-// 4 - allow user to eset their preference like 'showWelcomeMsg', 'dontShowSubmitAlert', 'dontShowFormChangeAlert' and 'isSnkeOSMode'.
+// 4 - allow user to reset their preference like 'showWelcomeMsg', 'dontShowSubmitAlert', 'dontShowFormChangeAlert' and 'isSnkeOSMode'.
