@@ -31,7 +31,7 @@ A web app to generate branch names based on Azure DevOps or SnkeOS guidelines.
 
 ### Online
 You can use the app directly in your browser (no installation needed):
-[https://efi98.github.io/branch-name-generator](branch-name-generator)
+[branch-name-generator](https://efi98.github.io/branch-name-generator)
 <hr></hr>
 
 ## Usage
