@@ -20,12 +20,16 @@
             </p-card>
 
             <p-card header="Mode">
-                <div class="field-checkbox">
-                    <p-checkbox [binary]="true" formControlName="showModeSwitch"
-                                inputId="showModeSwitch"></p-checkbox>
-                    <label for="showModeSwitch">Show mode switch</label>
-                    <span class="ml-3 surface-ground">Current Mode:<span
-                            class="font-bold">{{ currentMode }}</span></span>
+                <div class="flex flex-column gap-3">
+                    <div class="field-checkbox">
+                        <p-checkbox [binary]="true" formControlName="showModeSwitch"
+                                    inputId="showModeSwitch"></p-checkbox>
+                        <label for="showModeSwitch">Show mode switch on main page</label>
+                    </div>
+                    <div class="flex align-items-center gap-2">
+                        <p-inputSwitch formControlName="isSnkeOSMode"></p-inputSwitch>
+                        <p>Current Mode: <span class="font-bold">{{ currentMode }}</span></p>
+                    </div>
                 </div>
             </p-card>
 

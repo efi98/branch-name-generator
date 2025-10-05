@@ -19,10 +19,16 @@ export class SettingsComponent implements OnInit {
         private messageService: MessageService
     ) {
     }
-
     get currentMode(): mode {
-        return stringToBoolean((localStorage.getItem('isSnkeOSMode') as 'false' | 'true') ?? 'false') ? mode.snkeOS : mode.azureDevOps;
+        const formValue = this.settingsForm?.get('isSnkeOSMode')?.value;
+
+        const isSnkeOSMode: boolean =
+            formValue ??
+            stringToBoolean((localStorage.getItem('isSnkeOSMode') as 'true' |'false') ?? 'false');
+
+        return isSnkeOSMode ? mode.snkeOS : mode.azureDevOps;
     }
+
 
     ngOnInit(): void {
 
@@ -42,6 +48,7 @@ export class SettingsComponent implements OnInit {
         this.settingsForm = this.fb.group({
             theme: this.fb.nonNullable.control(DEFAULTS.theme),
             showModeSwitch: this.fb.nonNullable.control(DEFAULTS.showModeSwitch),
+            isSnkeOSMode: this.fb.nonNullable.control(DEFAULTS.isSnkeOSMode),
             showWelcomeMsg: this.fb.nonNullable.control(DEFAULTS.showWelcomeMsg),
             showSubmitAlert: this.fb.nonNullable.control(DEFAULTS.showSubmitAlert),
             showFormChangeAlert: this.fb.nonNullable.control(DEFAULTS.showFormChangeAlert)
@@ -50,6 +57,7 @@ export class SettingsComponent implements OnInit {
         const fromLS: Partial<typeof DEFAULTS> = {
             theme: readTheme(),
             showModeSwitch: readBool('showModeSwitch', DEFAULTS.showModeSwitch),
+            isSnkeOSMode: readBool('isSnkeOSMode', DEFAULTS.isSnkeOSMode),
             showWelcomeMsg: readBool('showWelcomeMsg', DEFAULTS.showWelcomeMsg),
             showSubmitAlert: !readBool('dontShowSubmitAlert', !DEFAULTS.showSubmitAlert),
             showFormChangeAlert: !readBool('dontShowFormChangeAlert', !DEFAULTS.showFormChangeAlert),
@@ -62,6 +70,7 @@ export class SettingsComponent implements OnInit {
         const formValues = this.settingsForm.value;
         localStorage.setItem('theme', formValues.theme);
         localStorage.setItem('showModeSwitch', formValues.showModeSwitch);
+        localStorage.setItem('isSnkeOSMode', formValues.isSnkeOSMode);
         localStorage.setItem('showWelcomeMsg', formValues.showWelcomeMsg);
         localStorage.setItem('dontShowSubmitAlert', (!formValues.showSubmitAlert).toString());
         localStorage.setItem('dontShowFormChangeAlert', (!formValues.showFormChangeAlert).toString());
