@@ -6,7 +6,7 @@ import {
     FieldType,
     formatTitleWithHyphens,
     ParsedWorkItem,
-    snkeOsType,
+    snkeOsType, stringToBoolean,
     templateWorkItemFormat,
     workItemTypes
 } from "@app-utils";
@@ -23,6 +23,7 @@ export class MainComponent implements OnInit {
     isSnkeOSMode!: boolean;
     snkeOSForm!: FormGroup;
     snkeOsOptions!: string[];
+    showModeSwitch: boolean = true;
     private hasSubmitted = false;
     private formChangedAfterSubmit = false;
     private parsedWorkItem!: ParsedWorkItem;
@@ -32,6 +33,7 @@ export class MainComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.showModeSwitch = stringToBoolean((localStorage.getItem('showModeSwitch') as 'true' | 'false') ?? 'true');
         this.isSnkeOSMode = localStorage.getItem('isSnkeOSMode') === 'true';
         this.generatorForm = this.formBuilder.group({
             workItem: [{value: '', disabled: false}, [Validators.required, this.workItemValidator('workItem')]],

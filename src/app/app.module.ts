@@ -19,12 +19,16 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {KeyFilterModule} from "primeng/keyfilter";
 import { InputSwitchModule } from "primeng/inputswitch";
 import { SelectButtonModule } from "primeng/selectbutton";
+import { SettingsComponent } from './settings/settings.component';
+import { RadioButtonModule } from "primeng/radiobutton";
+import { ToggleButtonModule } from "primeng/togglebutton";
 
 @NgModule({
     bootstrap: [AppComponent],
     declarations: [
         AppComponent,
-        MainComponent
+        MainComponent,
+        SettingsComponent
     ],
     imports: [
         BrowserModule,
@@ -44,7 +48,9 @@ import { SelectButtonModule } from "primeng/selectbutton";
         KeyFilterModule,
         InputSwitchModule,
         FormsModule,
-        SelectButtonModule
+        SelectButtonModule,
+        RadioButtonModule,
+        ToggleButtonModule
     ],
     providers: []
 })

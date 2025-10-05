@@ -80,3 +80,8 @@ a:hover {
 .p-tooltip {
    max-width: 30rem;
 }
+
+.content-area {
+  height: calc(100vh - 90px); // Adjust 90px based on your header and footer height
+  overflow-y: auto;
+}

@@ -10,3 +10,13 @@ export enum snkeOsType {
     hotfix = 'hotfix',
     version = 'version'
 }
+
+export enum theme {
+    light = 'light',
+    dark = 'dark'
+}
+
+export enum mode {
+    snkeOS = 'snkeOS',
+    azureDevOps = 'azureDevOps'
+}

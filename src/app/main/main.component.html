@@ -1,4 +1,4 @@
-<div class="flex align-items-center gap-2">
+<div *ngIf="showModeSwitch" class="flex align-items-center gap-2">
     <p-inputSwitch (click)="toggleMode()" [(ngModel)]="isSnkeOSMode">
     </p-inputSwitch>
     <p>{{ isSnkeOSMode ? '(current: SnkeOS) Switch to azure devops Mode' : '(current: azure) Switch to SnkeOS Mode' }}</p>
@@ -71,7 +71,7 @@
                 icon="pi pi-send" label="Submit" pButton></button>
     </form>
 </div>
-<div *ngIf="isSnkeOSMode">
+<div *ngIf="isSnkeOSMode" class="mt-3">
     <form [formGroup]="snkeOSForm">
         <div class="flex h-3rem gap-2">
             <div>
