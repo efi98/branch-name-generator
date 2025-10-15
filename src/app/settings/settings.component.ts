@@ -100,7 +100,7 @@ export class SettingsComponent implements OnInit {
     }
 
     onCancel(): void {
-        switchPrimeTheme(localStorage.getItem('theme') as theme);
+        switchPrimeTheme(localStorage.getItem('theme') as theme || USER_THEME);
         this.router.navigate(['/']);
     }
 
