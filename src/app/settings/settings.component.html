@@ -7,12 +7,12 @@
                     <label class="font-bold">Theme</label>
                     <div class="flex align-items-center gap-3">
                         <p-selectButton [allowEmpty]="false" [options]="themeOptions"
-                                        optionLabel="label"
-                                        optionValue="value"
                                         formControlName="theme"
-                                        id="snkeosType">
+                                        id="snkeosType"
+                                        optionLabel="label"
+                                        optionValue="value">
                             <ng-template #item let-item>
-                                <i [class]="item.icon"></i><span>{{item.label}}</span>
+                                <i [class]="item.icon"></i><span>{{ item.label }}</span>
                             </ng-template>
                         </p-selectButton>
                     </div>
@@ -43,18 +43,21 @@
                     <div class="field-checkbox">
                         <p-checkbox [binary]="true" formControlName="showSubmitAlert"
                                     inputId="showSubmitAlert"></p-checkbox>
-                        <label for="showSubmitAlert">Show success alert on submit</label>
+                        <label [ngClass]="{'text-gray-400': currentMode === mode.snkeOS}" for="showSubmitAlert">Show
+                            success alert on submit</label>
                     </div>
                     <div class="field-checkbox">
                         <p-checkbox [binary]="true" formControlName="showFormChangeAlert"
                                     inputId="showFormChangeAlert"></p-checkbox>
-                        <label for="showFormChangeAlert">Show warning when form changes after submit</label>
+                        <label [ngClass]="{'text-gray-400': currentMode === mode.snkeOS}" for="showFormChangeAlert">Show
+                            warning when form changes after submit</label>
                     </div>
                 </div>
             </p-card>
 
             <p-card header="Danger Zone">
-                <button (click)="onReset()" class="p-button-danger" [disabled]="isDefaultState()" icon="pi pi-refresh" label="Reset All Settings"
+                <button (click)="onReset()" [disabled]="isDefaultState()" class="p-button-danger" icon="pi pi-refresh"
+                        label="Reset All Settings"
                         pButton
                         type="button"></button>
             </p-card>

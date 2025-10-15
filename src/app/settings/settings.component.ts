@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { DEFAULTS, mode, stringToBoolean, theme } from "@app-utils";
 import { ConfirmationService, MessageService } from "primeng/api";
+import { startWith } from "rxjs";
 
 @Component({
     selector: 'app-settings',
@@ -11,7 +12,9 @@ import { ConfirmationService, MessageService } from "primeng/api";
 })
 export class SettingsComponent implements OnInit {
     settingsForm!: FormGroup;
-    themeOptions!: { label:string, value: theme, icon: string }[];
+    themeOptions!: { label: string, value: theme, icon: string }[];
+    protected readonly mode = mode;
+
     constructor(
         private fb: FormBuilder,
         private router: Router,
@@ -19,16 +22,16 @@ export class SettingsComponent implements OnInit {
         private messageService: MessageService
     ) {
     }
+
     get currentMode(): mode {
         const formValue = this.settingsForm?.get('isSnkeOSMode')?.value;
 
         const isSnkeOSMode: boolean =
             formValue ??
-            stringToBoolean((localStorage.getItem('isSnkeOSMode') as 'true' |'false') ?? 'false');
+            stringToBoolean((localStorage.getItem('isSnkeOSMode') as 'true' | 'false') ?? 'false');
 
         return isSnkeOSMode ? mode.snkeOS : mode.azureDevOps;
     }
-
 
     ngOnInit(): void {
 
@@ -44,7 +47,11 @@ export class SettingsComponent implements OnInit {
             return raw === 'true';
         };
 
-        this.themeOptions = [{value: theme.light, label: theme.light, icon: 'pi pi-sun'}, {value: theme.dark,label: theme.dark, icon: 'pi pi-moon'}];
+        this.themeOptions = [{value: theme.light, label: theme.light, icon: 'pi pi-sun'}, {
+            value: theme.dark,
+            label: theme.dark,
+            icon: 'pi pi-moon'
+        }];
         this.settingsForm = this.fb.group({
             theme: this.fb.nonNullable.control(DEFAULTS.theme),
             showModeSwitch: this.fb.nonNullable.control(DEFAULTS.showModeSwitch),
@@ -64,6 +71,13 @@ export class SettingsComponent implements OnInit {
         };
 
         this.settingsForm.patchValue(fromLS);
+
+        this.settingsForm.get('isSnkeOSMode')?.valueChanges.pipe(startWith(this.settingsForm.get('isSnkeOSMode')?.value)).subscribe(
+            (value: boolean) => {
+                this.settingsForm.get('showSubmitAlert')?.[value ? 'disable' : 'enable']();
+                this.settingsForm.get('showFormChangeAlert')?.[value ? 'disable' : 'enable']();
+            }
+        )
     }
 
     onSave(): void {
@@ -115,5 +129,4 @@ export class SettingsComponent implements OnInit {
             !this.settingsForm.touched
         );
     }
-
 }
