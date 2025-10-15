@@ -1,15 +1,17 @@
-import {Component, OnInit} from "@angular/core";
-import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
-import {ConfirmationService, MessageService} from "primeng/api";
+import { Component, OnInit } from "@angular/core";
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
+import { ConfirmationService, MessageService } from "primeng/api";
 import {
     branchNameConf,
     FieldType,
     formatTitleWithHyphens,
     ParsedWorkItem,
+    snkeOsType,
+    stringToBoolean,
     templateWorkItemFormat,
     workItemTypes
 } from "@app-utils";
-import {debounceTime, distinctUntilChanged} from "rxjs";
+import { debounceTime, distinctUntilChanged } from "rxjs";
 
 @Component({
     selector: "app-main",
@@ -19,6 +21,12 @@ import {debounceTime, distinctUntilChanged} from "rxjs";
 export class MainComponent implements OnInit {
     generatorForm!: FormGroup;
     branchNameResult!: { key: string, value: string }[];
+    isSnkeOSMode!: boolean;
+    snkeOSForm!: FormGroup;
+    snkeOsOptions!: { value: snkeOsType, label: snkeOsType, disabled: boolean }[];
+    showModeSwitch: boolean = true;
+    private hasSubmitted = false;
+    private formChangedAfterSubmit = false;
     private parsedWorkItem!: ParsedWorkItem;
     private parsedRequirement!: { number: number, title: string };
 
@@ -26,11 +34,29 @@ export class MainComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.showModeSwitch = stringToBoolean((localStorage.getItem('showModeSwitch') as 'true' | 'false') ?? 'true');
+        this.isSnkeOSMode = localStorage.getItem('isSnkeOSMode') === 'true';
         this.generatorForm = this.formBuilder.group({
             workItem: [{value: '', disabled: false}, [Validators.required, this.workItemValidator('workItem')]],
             requirement: [{value: '', disabled: true}, [Validators.required, this.workItemValidator('requirement')]],
             isReqIncluded: [{value: false, disabled: true}]
         });
+        this.snkeOSForm = this.formBuilder.group({
+            snkeosType: [snkeOsType.feature, [Validators.required]],
+            snkeosInput: ['', [Validators.required, this.snkeosInputValidator()]]
+        });
+
+        this.snkeOSForm.get('snkeosType')?.valueChanges.subscribe(() => {
+            this.snkeOSForm.get('snkeosInput')?.updateValueAndValidity();
+        });
+
+        this.snkeOsOptions = [
+            {value: snkeOsType.feature, label: snkeOsType.feature, disabled: false},
+            {value: snkeOsType.bugfix, label: snkeOsType.bugfix, disabled: false},
+            {value: snkeOsType.hotfix, label: snkeOsType.hotfix, disabled: false},
+            {value: snkeOsType.version, label: snkeOsType.version, disabled: true}
+        ];
+
 
         this.generatorForm.get('workItem')?.valueChanges
             .subscribe((workItemValue: string) => {
@@ -52,6 +78,12 @@ export class MainComponent implements OnInit {
                     this.parseReq(requirement);
                 }
             });
+        this.generatorForm.valueChanges.subscribe(() => this.handleFormChange());
+        this.snkeOSForm.valueChanges.subscribe(() => this.handleFormChange());
+    }
+
+    toggleMode() {
+        localStorage.setItem('isSnkeOSMode', this.isSnkeOSMode.toString());
     }
 
     pasteTextFromClipboard(type: FieldType) {
@@ -59,50 +91,86 @@ export class MainComponent implements OnInit {
             this.generatorForm.get(type)?.setValue(text);
             this.generatorForm.get(type)?.markAsDirty();
         }).catch(err => {
-            console.error(err);
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Paste Failed',
+                detail: 'Failed to paste due to permission denied'
+            });
         });
     }
 
     onSubmit() {
-        this.branchNameResult = [];
-        switch (this.parsedWorkItem.type) {
-            case workItemTypes.Requirement: {
-                const {number, title} = this.parsedWorkItem;
-                this.branchNameResult.push({
-                    key: workItemTypes.Requirement,
-                    value: branchNameConf.Requirement.setBranchName(number.toString(), title)
-                });
-                break;
+        if (this.isSnkeOSMode) {
+            const type = this.snkeOSForm.get('snkeosType')?.value;
+            const input = formatTitleWithHyphens(this.snkeOSForm.get('snkeosInput')?.value);
+            let branch = '';
+            switch (type) {
+                case snkeOsType.feature:
+                    branch = `feat/${input}`;
+                    break;
+                case snkeOsType.bugfix:
+                    branch = `fix/${input}`;
+                    break;
+                case snkeOsType.hotfix:
+                    branch = `hotfix/${input}`;
+                    break;
+                case snkeOsType.version:
+                    branch = input;
+                    break;
             }
-            case workItemTypes.Task: {
-                this.branchNameResult.push({
-                    key: workItemTypes.Requirement,
-                    value: branchNameConf.Requirement.setBranchName(this.parsedRequirement.number, this.parsedRequirement.title)
+            this.branchNameResult = [{key: type, value: branch}];
+            this.copyToClipboard(branch);
+        } else {
+            this.hasSubmitted = true;
+            this.formChangedAfterSubmit = false;
+            if (localStorage.getItem('dontShowSubmitAlert') !== 'true') {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Name generated successfully',
+                    data: {showDontShowAgain: true, type: 'submit'}
                 });
-                this.branchNameResult.push({
-                    key: workItemTypes.Task,
-                    value: branchNameConf.Task.setBranchName(this.parsedRequirement.number, this.parsedRequirement.title, this.parsedWorkItem.number, this.parsedWorkItem.title)
-                });
-                break;
             }
-            case workItemTypes.Bug: {
-                const {number, title} = this.parsedWorkItem;
-                if (this.generatorForm.get('isReqIncluded')?.value) {
+            this.branchNameResult = [];
+            switch (this.parsedWorkItem.type) {
+                case workItemTypes.Requirement: {
+                    const {number, title} = this.parsedWorkItem;
+                    this.branchNameResult.push({
+                        key: workItemTypes.Requirement,
+                        value: branchNameConf.Requirement.setBranchName(number.toString(), title)
+                    });
+                    break;
+                }
+                case workItemTypes.Task: {
                     this.branchNameResult.push({
                         key: workItemTypes.Requirement,
                         value: branchNameConf.Requirement.setBranchName(this.parsedRequirement.number, this.parsedRequirement.title)
                     });
                     this.branchNameResult.push({
-                        key: workItemTypes.Bug,
-                        value: branchNameConf.Bug.setBranchName(number, title, this.parsedRequirement.number, this.parsedRequirement.title)
+                        key: workItemTypes.Task,
+                        value: branchNameConf.Task.setBranchName(this.parsedRequirement.number, this.parsedRequirement.title, this.parsedWorkItem.number, this.parsedWorkItem.title)
                     });
-                } else {
-                    this.branchNameResult.push({
-                        key: workItemTypes.Bug,
-                        value: branchNameConf.Bug.setBranchName(number, title),
-                    });
+                    break;
                 }
-                break;
+                case workItemTypes.Bug: {
+                    const {number, title} = this.parsedWorkItem;
+                    if (this.generatorForm.get('isReqIncluded')?.value) {
+                        this.branchNameResult.push({
+                            key: workItemTypes.Requirement,
+                            value: branchNameConf.Requirement.setBranchName(this.parsedRequirement.number, this.parsedRequirement.title)
+                        });
+                        this.branchNameResult.push({
+                            key: workItemTypes.Bug,
+                            value: branchNameConf.Bug.setBranchName(number, title, this.parsedRequirement.number, this.parsedRequirement.title)
+                        });
+                    } else {
+                        this.branchNameResult.push({
+                            key: workItemTypes.Bug,
+                            value: branchNameConf.Bug.setBranchName(number, title),
+                        });
+                    }
+                    break;
+                }
             }
         }
     }
@@ -122,10 +190,18 @@ export class MainComponent implements OnInit {
         navigator.clipboard
             .writeText(value)
             .then(() => {
-                // todo: Success message or any other action you want to take on success
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Copied successfully',
+                    detail: '<span>Copied \'<b>' + value + '</b>\' to clipboard</span>'
+                });
             })
             .catch((err) => {
-                // todo: Error message
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Copy Failed',
+                    detail: 'Failed to copy to clipboard'
+                });
             });
     }
 
@@ -171,7 +247,6 @@ export class MainComponent implements OnInit {
     }
 
     private handleWorkItemsByType() {
-        // this.messageService.add({summary: '123', severity: 'info', detail: '0088', data: {}})
         switch (this.parsedWorkItem.type) {
             case workItemTypes.Requirement:
                 this.generatorForm.get('requirement')?.disable({emitEvent: false});
@@ -191,21 +266,50 @@ export class MainComponent implements OnInit {
                 break;
         }
     }
+
+    private snkeosInputValidator(): ValidatorFn {
+        return (control: AbstractControl): ValidationErrors | null => {
+            const parent = control.parent;
+            const value = control.value;
+            if (!parent) return null;
+            const type = parent.get('snkeosType')?.value;
+            if (type === snkeOsType.version && value) {
+                if (!/^v\d+\.\d+\.\d+$/.test(value)) {
+                    return {versionPattern: true};
+                }
+            } else {
+                if (/^\s+$/.test(value)) {
+                    return {noWhitespace: true};
+                }
+            }
+            return null;
+        };
+    }
+
+    private handleFormChange() {
+        if (
+            this.hasSubmitted &&
+            !this.formChangedAfterSubmit &&
+            localStorage.getItem('dontShowFormChangeAlert') !== 'true'
+        ) {
+            this.formChangedAfterSubmit = true;
+            setTimeout(() => {
+                if (this.formChangedAfterSubmit) {
+                    this.messageService.add({
+                        severity: 'warn',
+                        summary: 'Notice',
+                        detail: 'You\'ve made changes, click `submit` again to apply.',
+                        data: {showDontShowAgain: true, type: 'formChange'}
+                    });
+                }
+            }, 5000);
+        }
+    }
+
 }
 
 // todo:
-// a - add alert when:
-//              1) user clicks on submit 'name generated successfully' [add 'dont show again' option].
-//              2) user clicks on 'copy' icon 'copied successfully' (or text next to the icon for 2 seconds)
-//                  [p.s. alert if we don't succeed to copy to clipboard].
-//              3) user changed the form after generating (wait 3 sec) 'notice you've made changes,
-//                  click `submit` again to apply the changes' (show once after submit clicked)
-//                  [add 'dont show again' option].
-// b - add theme switch
-// c - add limit to branch name
-// d - do order with colors that 1- will be generic (for theme), 2- order the 'surface', 'card' to fit their purpose
-// e - add call for feedback and open issues (on readme).
-// f - update readme in order to align to the current data flow.
-// g - remove the " and ' char from branch name also
-// h - icons from another source that will give us more custom icons
-// i - get the validation errors in generic way
+// 1 - add theme switch
+// 2 - add limit to branch name on alert and also in input fields
+// 3 - do order with colors that 1- will be generic (for theme), 2- order the 'surface', 'card' to fit their purpose
+// 4 - allow user to reset their preference like 'showWelcomeMsg', 'dontShowSubmitAlert', 'dontShowFormChangeAlert' and 'isSnkeOSMode'.

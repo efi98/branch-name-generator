@@ -1,0 +1,76 @@
+<div class="p-4">
+    <h2 class="mt-0">Settings</h2>
+    <form (ngSubmit)="onSave()" [formGroup]="settingsForm">
+        <div class="grid-container">
+            <p-card header="Appearance">
+                <div class="field">
+                    <label class="font-bold">Theme</label>
+                    <div class="flex align-items-center gap-3">
+                        <p-selectButton [allowEmpty]="false" [options]="themeOptions"
+                                        formControlName="theme"
+                                        id="snkeosType"
+                                        optionLabel="label"
+                                        optionValue="value">
+                            <ng-template #item let-item>
+                                <i [class]="item.icon"></i><span>{{ item.label }}</span>
+                            </ng-template>
+                        </p-selectButton>
+                        <button pButton type="button" class="p-button-text"
+                                pTooltip="Reset to current device theme" tooltipPosition="top"
+                                (click)="resetToDeviceTheme()">Reset to device theme</button>
+                    </div>
+                </div>
+            </p-card>
+
+            <p-card header="Mode">
+                <div class="flex flex-column gap-3">
+                    <div class="field-checkbox">
+                        <p-checkbox [binary]="true" formControlName="showModeSwitch"
+                                    inputId="showModeSwitch"></p-checkbox>
+                        <label for="showModeSwitch">Show mode switch on main page</label>
+                    </div>
+                    <div class="flex align-items-center gap-2">
+                        <p-inputSwitch formControlName="isSnkeOSMode"></p-inputSwitch>
+                        <p>Current Mode: <span class="font-bold">{{ currentMode }}</span></p>
+                    </div>
+                </div>
+            </p-card>
+
+            <p-card header="Alerts">
+                <div class="flex flex-column gap-3">
+                    <div class="field-checkbox">
+                        <p-checkbox [binary]="true" formControlName="showWelcomeMsg"
+                                    inputId="showWelcomeMsg"></p-checkbox>
+                        <label for="showWelcomeMsg">Show welcome message on startup</label>
+                    </div>
+                    <div class="field-checkbox">
+                        <p-checkbox [binary]="true" formControlName="showSubmitAlert"
+                                    inputId="showSubmitAlert"></p-checkbox>
+                        <label [ngClass]="{'text-gray-400': currentMode === mode.snkeOS}" for="showSubmitAlert">Show
+                            success alert on submit</label>
+                    </div>
+                    <div class="field-checkbox">
+                        <p-checkbox [binary]="true" formControlName="showFormChangeAlert"
+                                    inputId="showFormChangeAlert"></p-checkbox>
+                        <label [ngClass]="{'text-gray-400': currentMode === mode.snkeOS}" for="showFormChangeAlert">Show
+                            warning when form changes after submit</label>
+                    </div>
+                </div>
+            </p-card>
+
+            <p-card header="Danger Zone">
+                <button (click)="onReset()" [disabled]="isDefaultState()" class="p-button-danger" icon="pi pi-refresh"
+                        label="Reset All Settings"
+                        pButton
+                        type="button"></button>
+            </p-card>
+
+        </div>
+        <br>
+        <div class="flex justify-content-end gap-2">
+            <button (click)="onCancel()" class="p-button-secondary" icon="pi pi-times" label="Cancel" pButton
+                    type="button"></button>
+            <button class="p-button-success" icon="pi pi-check" label="Apply and Save" pButton type="submit"></button>
+        </div>
+    </form>
+</div>
