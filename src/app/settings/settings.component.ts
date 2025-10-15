@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
-import { DEFAULTS, mode, stringToBoolean, theme, USER_THEME } from "@app-utils";
+import { DEFAULTS, mode, stringToBoolean, switchPrimeTheme, theme, USER_THEME } from "@app-utils";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { startWith } from "rxjs";
 
@@ -78,6 +78,12 @@ export class SettingsComponent implements OnInit {
                 this.settingsForm.get('showFormChangeAlert')?.[value ? 'disable' : 'enable']();
             }
         )
+
+        this.settingsForm.get('theme')?.valueChanges.subscribe(
+            (theme: any) => {
+                switchPrimeTheme(theme);
+            }
+        )
     }
 
     onSave(): void {
@@ -89,17 +95,12 @@ export class SettingsComponent implements OnInit {
         localStorage.setItem('dontShowSubmitAlert', (!formValues.showSubmitAlert).toString());
         localStorage.setItem('dontShowFormChangeAlert', (!formValues.showFormChangeAlert).toString());
 
-        // // Apply theme immediately todo
-        // const themeLink = document.getElementById('app-theme') as HTMLLinkElement;
-        // if (themeLink) {
-        //     themeLink.href = `${formValues.theme}.css`;
-        // }
-
         this.messageService.add({severity: 'success', summary: 'Success', detail: 'Settings saved successfully!'});
         this.router.navigate(['/']);
     }
 
     onCancel(): void {
+        switchPrimeTheme(localStorage.getItem('theme') as theme);
         this.router.navigate(['/']);
     }
 
@@ -131,6 +132,7 @@ export class SettingsComponent implements OnInit {
     }
 
     resetToDeviceTheme() {
+        localStorage.removeItem('theme');
         this.settingsForm.get('theme')?.setValue(USER_THEME);
     }
 }

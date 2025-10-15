@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
-import { initialMessage, stringToBoolean, theme, USER_THEME, welcomeMessage } from "@app-utils";
+import { initialMessage, stringToBoolean, switchPrimeTheme, theme, USER_THEME, welcomeMessage } from "@app-utils";
 import { filter } from "rxjs";
 import { NavigationEnd, Router } from "@angular/router";
 
@@ -16,7 +16,6 @@ export class AppComponent implements OnInit {
 
     constructor(private primengConfig: PrimeNGConfig,
                 private confirmationService: ConfirmationService,
-                private messageService: MessageService,
                 private router: Router) {
     }
 
@@ -31,6 +30,7 @@ export class AppComponent implements OnInit {
             filter((event): event is NavigationEnd => event instanceof NavigationEnd)
         ).subscribe((event: NavigationEnd) => {
             this.showSettingsButtons = event.urlAfterRedirects !== '/settings';
+            this.isDarkTheme = localStorage.getItem('theme') === theme.dark;
         });
     }
 
@@ -50,8 +50,14 @@ export class AppComponent implements OnInit {
     }
 
     private applyTheme() {
-        const currentTheme = localStorage.getItem('theme') || USER_THEME;
+        const currentTheme = (localStorage.getItem('theme') as theme) || USER_THEME;
         this.isDarkTheme = currentTheme === theme.dark;
+        if (this.isDarkTheme) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+        switchPrimeTheme(currentTheme);
     }
 
     private onShowWelcomeMessage() {
