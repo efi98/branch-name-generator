@@ -52,10 +52,6 @@ export class AppComponent implements OnInit {
     private applyTheme() {
         const currentTheme = localStorage.getItem('theme') || USER_THEME;
         this.isDarkTheme = currentTheme === theme.dark;
-        // const themeLink = document.getElementById('app-theme') as HTMLLinkElement;
-        // if (themeLink) {
-        //     themeLink.href = `${theme}.css`;
-        // }
     }
 
     private onShowWelcomeMessage() {
