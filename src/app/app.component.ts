@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
-import { initialMessage, stringToBoolean, theme, welcomeMessage } from "@app-utils";
+import { initialMessage, stringToBoolean, theme, USER_THEME, welcomeMessage } from "@app-utils";
 import { filter } from "rxjs";
 import { NavigationEnd, Router } from "@angular/router";
 
@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
     }
 
     private applyTheme() {
-        const currentTheme = localStorage.getItem('theme') || theme.light;
+        const currentTheme = localStorage.getItem('theme') || USER_THEME;
         this.isDarkTheme = currentTheme === theme.dark;
         // const themeLink = document.getElementById('app-theme') as HTMLLinkElement;
         // if (themeLink) {

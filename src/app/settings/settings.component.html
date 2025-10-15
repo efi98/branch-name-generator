@@ -15,6 +15,8 @@
                                 <i [class]="item.icon"></i><span>{{ item.label }}</span>
                             </ng-template>
                         </p-selectButton>
+                        <button pButton type="button" class="p-button-text"
+                                (click)="resetToDeviceTheme()">Reset to device theme</button>
                     </div>
                 </div>
             </p-card>

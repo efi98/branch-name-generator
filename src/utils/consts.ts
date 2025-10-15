@@ -1,7 +1,9 @@
 import { theme } from "./enums";
 
+export const USER_THEME: theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? theme.dark : theme.light;
+
 export const DEFAULTS = {
-    theme: theme.light,
+    theme: USER_THEME,
     isSnkeOSMode: false,
     showModeSwitch: true,
     showWelcomeMsg: true,

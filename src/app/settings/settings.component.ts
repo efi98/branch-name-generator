@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
-import { DEFAULTS, mode, stringToBoolean, theme } from "@app-utils";
+import { DEFAULTS, mode, stringToBoolean, theme, USER_THEME } from "@app-utils";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { startWith } from "rxjs";
 
@@ -38,7 +38,7 @@ export class SettingsComponent implements OnInit {
         const readTheme = () => {
             const v = localStorage.getItem('theme') as theme | null;
             if (v && [theme.dark, theme.light].includes(v)) return v;
-            return theme.light;
+            return USER_THEME;
         };
 
         const readBool = (key: string, fallback: boolean) => {
@@ -128,5 +128,9 @@ export class SettingsComponent implements OnInit {
             this.settingsForm.pristine &&
             !this.settingsForm.touched
         );
+    }
+
+    resetToDeviceTheme() {
+        this.settingsForm.get('theme')?.setValue(USER_THEME);
     }
 }
