@@ -5,13 +5,13 @@ export function stringToBoolean(boolStr: 'false' | 'true'): boolean {
   return boolStr === 'true' || boolStr === null;
 }
 
-export function formatTitleWithHyphens(title: any): string {
+export function formatTitleWithHyphens(title: string): string {
   return title
     .replaceAll('"', '')
     .replaceAll(/[\s_]+/g, '-')
     .replaceAll(/-+/g, '-')
     .replaceAll(/\/+/g, '/')
-    .replaceAll(/[-/]+$/, '');
+    .replaceAll(/([-/]+)$/g, '');
 }
 
 export function switchPrimeTheme(current: theme) {
