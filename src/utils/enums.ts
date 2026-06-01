@@ -8,7 +8,6 @@ export enum snkeOsType {
   feature = 'feature',
   bugfix = 'bugfix',
   hotfix = 'hotfix',
-  version = 'version',
 }
 
 export enum theme {

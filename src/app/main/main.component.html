@@ -106,12 +106,6 @@
         <div class="flex h-3rem gap-2">
           <div class="flex-1 flex flex-column">
             <input class="flex-1 w-full" formControlName="snkeosInput" id="snkeosInput" pInputText>
-            @if (snkeOSForm.get('snkeosInput')?.hasError('versionPattern') && snkeOSForm.get('snkeosInput')?.dirty) {
-              <small
-                class="text-red-600">
-                Version must be in the format vMAJOR.MINOR.PATCH (e.g., v1.2.3)
-              </small>
-            }
           </div>
           <button (click)="onSubmit()" [disabled]="!snkeOSForm.valid" pButton [icon]="'pi pi-copy'">Submit & copy
           </button>

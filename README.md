@@ -8,7 +8,7 @@ A web app to generate branch names based on Azure DevOps or SnkeOS guidelines.
 
 - Toggle between Azure DevOps and SnkeOS branch naming modes.
 - Paste or manually enter work item titles (auto-detects type: Bug, Task, Requirement).
-- For SnkeOS: select branch type (feature, bugfix, hotfix, version) and enter a name or version.
+- For SnkeOS: select branch type (feature, bugfix, hotfix) and enter a name.
 - Form validation for input format and forbidden characters.
 - Submit to generate and copy branch name to clipboard.
 - Copy branch name from results with a single click.
@@ -48,16 +48,15 @@ You can use the app directly in your browser (no installation needed):
 
 2. **SnkeOS Mode**:
     - Toggle to SnkeOS mode.
-    - Select branch type (feature, bugfix, hotfix, version).
-    - Enter a name (no only-whitespace, no spaces for non-version types) or version (`vMAJOR.MINOR.PATCH`).
+    - Select branch type (feature, bugfix, hotfix).
+    - Enter a name (no only-whitespace, no spaces).
     - Click **Submit & copy** to generate and copy the branch name.
 
 ## Validation
 
 - Azure DevOps: Enforces strict format and disallows forbidden characters.
 - SnkeOS:
-    - For `version`, input must match `vMAJOR.MINOR.PATCH`.
-    - For others, input cannot be only whitespace.
+    - input cannot be only whitespace.
 
 ## Contact Options
 
@@ -66,4 +65,4 @@ efigal148@gmail.com
 
 ## Version
 
-Current Version: 3.0.0
+Current Version: 4.0.0

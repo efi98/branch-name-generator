@@ -14,6 +14,6 @@ export const DEFAULTS = {
 };
 
 export const THEME_MAP: Record<theme, string> = {
-  light: 'lara-light-blue',
-  dark: 'lara-dark-blue',
+  light: 'lara',
+  dark: 'lara',
 };

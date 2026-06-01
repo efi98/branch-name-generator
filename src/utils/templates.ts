@@ -38,7 +38,7 @@ export const welcomeMessage: string = `
     <li>Fill in all required fields, then click <b>Submit</b> to generate your branch name.</li>
     
  <h5>SnkeOS</h5>
-    <li>Select the branch type and enter a name or version.</li>
+    <li>Select the branch type and enter a name.</li>
     <li>Click <b>Submit & copy</b> to copy the generated branch name to your clipboard.</li>
   </ul>
   <p>Enjoy! For feedback or issues, visit the <a href="https://github.com/efi98/branch-name-generator" target="_blank">GitHub repo</a>.</p>

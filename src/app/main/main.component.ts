@@ -373,12 +373,7 @@ export class MainComponent implements OnInit {
       const parent = control.parent;
       const value = control.value;
       if (!parent) return null;
-      const type = parent.get('snkeosType')?.value;
-      if (type === snkeOsType.version && value) {
-        if (!/^v\d+\.\d+\.\d+$/.test(value)) {
-          return { versionPattern: true };
-        }
-      } else if (/^\s+$/.test(value)) {
+      if (/^\s+$/.test(value)) {
         return { noWhitespace: true };
       }
       return null;

@@ -3,7 +3,7 @@ import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import { ButtonDirective } from 'primeng/button';
+import { Button, ButtonDirective, ButtonModule } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { filter } from 'rxjs';
 import {
@@ -21,7 +21,7 @@ import {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   providers: [MessageService, ConfirmationService],
-  imports: [RouterOutlet, RouterLink, Toast, ConfirmDialog, ButtonDirective, Tooltip],
+  imports: [RouterOutlet, RouterLink, Toast, ConfirmDialog, ButtonDirective, Tooltip, Button],
 })
 export class AppComponent implements OnInit {
   isDarkTheme: boolean = false;
