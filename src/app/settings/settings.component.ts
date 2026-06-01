@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { Router } from "@angular/router";
-import { DEFAULTS, mode, stringToBoolean, switchPrimeTheme, theme, USER_THEME } from "@app-utils";
-import { ConfirmationService, MessageService } from "primeng/api";
-import { startWith } from "rxjs";
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { DEFAULTS, mode, stringToBoolean, switchPrimeTheme, theme, USER_THEME } from '@app-utils';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { startWith } from 'rxjs';
 
 @Component({
   selector: 'app-settings',
