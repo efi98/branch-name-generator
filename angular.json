@@ -44,9 +44,7 @@
             "outputPath": "dist/branch-name-generator",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -58,10 +56,7 @@
                 "output": "assets/primeng-themes"
               }
             ],
-            "styles": [
-              "node_modules/primeng/resources/primeng.min.css",
-              "src/styles.scss"
-            ],
+            "styles": ["node_modules/primeng/resources/primeng.min.css", "src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -113,20 +108,11 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "node_modules/primeng/resources/primeng.min.css",
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["node_modules/primeng/resources/primeng.min.css", "src/styles.scss"],
             "scripts": []
           }
         }

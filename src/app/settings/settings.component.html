@@ -4,11 +4,11 @@
         <div class="grid-container">
             <p-card header="Appearance">
                 <div class="field">
-                    <label class="font-bold">Theme</label>
+                    <label class="font-bold" for="themeSelect">Theme</label>
                     <div class="flex align-items-center gap-3">
                         <p-selectButton [allowEmpty]="false" [options]="themeOptions"
                                         formControlName="theme"
-                                        id="snkeosType"
+                                        id="themeSelect"
                                         optionLabel="label"
                                         optionValue="value">
                             <ng-template #item let-item>
