@@ -12,10 +12,11 @@ import { filter } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  providers: [MessageService, ConfirmationService],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    providers: [MessageService, ConfirmationService],
+    standalone: false
 })
 export class AppComponent implements OnInit {
   isDarkTheme: boolean = false;
