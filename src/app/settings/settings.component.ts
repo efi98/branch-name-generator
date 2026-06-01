@@ -1,14 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { NgClass } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DEFAULTS, mode, stringToBoolean, switchPrimeTheme, theme, USER_THEME } from '@app-utils';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Card } from 'primeng/card';
+import { ButtonDirective } from 'primeng/button';
+import { SelectButton } from 'primeng/selectbutton';
+import { Checkbox } from 'primeng/checkbox';
+import { ToggleSwitch } from 'primeng/toggleswitch';
+import { Tooltip } from 'primeng/tooltip';
 import { startWith } from 'rxjs';
+import { DEFAULTS, mode, stringToBoolean, switchPrimeTheme, theme, USER_THEME } from '@app-utils';
 
 @Component({
   selector: 'app-settings',
+  standalone: true,
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
+  imports: [
+    NgClass,
+    ReactiveFormsModule,
+    Card,
+    ButtonDirective,
+    SelectButton,
+    Checkbox,
+    ToggleSwitch,
+    Tooltip,
+  ],
 })
 export class SettingsComponent implements OnInit {
   settingsForm!: FormGroup;
@@ -24,11 +42,9 @@ export class SettingsComponent implements OnInit {
 
   get currentMode(): mode {
     const formValue = this.settingsForm?.get('isSnkeOSMode')?.value;
-
     const isSnkeOSMode: boolean =
       formValue ??
       stringToBoolean((localStorage.getItem('isSnkeOSMode') as 'true' | 'false') ?? 'false');
-
     return isSnkeOSMode ? mode.snkeOS : mode.azureDevOps;
   }
 
@@ -47,12 +63,9 @@ export class SettingsComponent implements OnInit {
 
     this.themeOptions = [
       { value: theme.light, label: theme.light, icon: 'pi pi-sun' },
-      {
-        value: theme.dark,
-        label: theme.dark,
-        icon: 'pi pi-moon',
-      },
+      { value: theme.dark, label: theme.dark, icon: 'pi pi-moon' },
     ];
+
     this.settingsForm = this.fb.group({
       theme: this.fb.nonNullable.control(DEFAULTS.theme),
       showModeSwitch: this.fb.nonNullable.control(DEFAULTS.showModeSwitch),
@@ -61,6 +74,7 @@ export class SettingsComponent implements OnInit {
       showSubmitAlert: this.fb.nonNullable.control(DEFAULTS.showSubmitAlert),
       showFormChangeAlert: this.fb.nonNullable.control(DEFAULTS.showFormChangeAlert),
     });
+
     const fromLS: Partial<typeof DEFAULTS> = {
       theme: readTheme(),
       showModeSwitch: readBool('showModeSwitch', DEFAULTS.showModeSwitch),
@@ -80,8 +94,8 @@ export class SettingsComponent implements OnInit {
         this.settingsForm.get('showFormChangeAlert')?.[value ? 'disable' : 'enable']();
       });
 
-    this.settingsForm.get('theme')?.valueChanges.subscribe((theme: theme) => {
-      switchPrimeTheme(theme);
+    this.settingsForm.get('theme')?.valueChanges.subscribe((t: theme) => {
+      switchPrimeTheme(t);
     });
   }
 

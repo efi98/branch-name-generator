@@ -1,7 +1,7 @@
 @if (showModeSwitch) {
   <div class="flex align-items-center gap-2">
-    <p-inputSwitch (click)="toggleMode()" (keydown.enter)="toggleMode()" [(ngModel)]="isSnkeOSMode">
-    </p-inputSwitch>
+    <p-toggleswitch (click)="toggleMode()" (keydown.enter)="toggleMode()" [(ngModel)]="isSnkeOSMode">
+    </p-toggleswitch>
     <p>{{ isSnkeOSMode ? '(current: SnkeOS) Switch to azure devops Mode' : '(current: azure) Switch to SnkeOS Mode' }}</p>
   </div>
 }
@@ -10,78 +10,78 @@
     <form [formGroup]="generatorForm" class="flex flex-column gap-3 mt-3">
       <div class="flex flex-column gap-2">
         <label class="flex align-items-baseline gap-1" for="workItem"><i class="pi pi-pencil text-xs"></i>
-      work Item:</label>
-      <div class="p-inputgroup">
-        <input formControlName="workItem" id="workItem" pInputText placeholder="Bug 12345: this is a bug">
-        <button (click)="pasteTextFromClipboard('workItem')"
-          [pTooltip]="'Click here to paste your work item title'"
-          label="Paste" pButton
-        tooltipPosition="top" type="button"></button>
-      </div>
-      <small id="workItem-help">Enter work item title
-        <i (click)="showWorkItemFormatModal()"
-          (keydown)="showWorkItemFormatModal()"
-          class="pi pi-question text-xs vertical-align-top"
-          pTooltip="Click for more details"
-        tooltipPosition="top"></i></small>
+          work Item:</label>
+        <div class="p-inputgroup">
+          <input formControlName="workItem" id="workItem" pInputText placeholder="Bug 12345: this is a bug">
+          <button (click)="pasteTextFromClipboard('workItem')"
+                  [pTooltip]="'Click here to paste your work item title'"
+                  label="Paste" pButton
+                  tooltipPosition="top" type="button"></button>
+        </div>
+        <small id="workItem-help">Enter work item title
+          <i (click)="showWorkItemFormatModal()"
+             (keydown)="showWorkItemFormatModal()"
+             class="pi pi-question text-xs vertical-align-top"
+             pTooltip="Click for more details"
+             tooltipPosition="top"></i></small>
         @if (generatorForm.get('workItem')?.errors && generatorForm.get('workItem')?.dirty) {
           @if (generatorForm.get('workItem')?.hasError('required')) {
             <small
-            class="text-red-600">This field is required.</small>
+              class="text-red-600">This field is required.</small>
           }
           @if (generatorForm.get('workItem')?.hasError('workItemSyntax')) {
             <small
-            class="text-red-600">Please enter value in the format.</small>
+              class="text-red-600">Please enter value in the format.</small>
           }
           @if (generatorForm.get('workItem')?.hasError('forbiddenChars')) {
             <small
               class="text-red-600">These chars (*^\:?~) and Hebrew chars are not allowed on branch
-            name!</small>
+              name!</small>
           }
         }
       </div>
       <div class="flex gap-5 justify-content-between">
         <p-checkbox [binary]="true" formControlName="isReqIncluded"
-          id="isReqIncluded"
-        label="is Req. Included"></p-checkbox>
+                    id="isReqIncluded"
+                    label="is Req. Included"></p-checkbox>
         <div [ngClass]="{'text-600 pointer-events-none': generatorForm.get('requirement')?.disabled}"
-          class="flex flex-column gap-2 flex-1">
+             class="flex flex-column gap-2 flex-1">
           <label class="flex align-items-baseline gap-1" for="req"><i class="pi pi-pencil text-xs"></i>
-        Requirement:</label>
-        <div class="p-inputgroup">
-          <input formControlName="requirement" id="req" pInputText
-            placeholder="Requirement 98777: this is a req.">
-          <button (click)="pasteTextFromClipboard('requirement')"
-            [disabled]="generatorForm.get('requirement')?.disabled"
-            [pTooltip]="'Click here to paste your Req. title'"
-            label="Paste" pButton
-          tooltipPosition="top" type="button"></button>
-        </div>
-        <small id="req-help">Enter Requirement title
-          <i (click)="showReqFormatModal()"
-            (keydown)="showReqFormatModal()"
-            class="pi pi-question text-xs vertical-align-top"
-            pTooltip="Click for more details"
-          tooltipPosition="top"></i></small>
+            Requirement:</label>
+          <div class="p-inputgroup">
+            <input formControlName="requirement" id="req" pInputText
+                   placeholder="Requirement 98777: this is a req.">
+            <button (click)="pasteTextFromClipboard('requirement')"
+                    [disabled]="generatorForm.get('requirement')?.disabled"
+                    [pTooltip]="'Click here to paste your Req. title'"
+                    label="Paste" pButton
+                    tooltipPosition="top" type="button"></button>
+          </div>
+          <small id="req-help">Enter Requirement title
+            <i (click)="showReqFormatModal()"
+               (keydown)="showReqFormatModal()"
+               class="pi pi-question text-xs vertical-align-top"
+               pTooltip="Click for more details"
+               tooltipPosition="top"></i></small>
           @if (generatorForm.get('requirement')?.errors && generatorForm.get('requirement')?.dirty) {
             @if (generatorForm.get('requirement')?.hasError('required')) {
               <small
-              class="text-red-600">This field is required.</small>
+                class="text-red-600">This field is required.</small>
             }
             @if (generatorForm.get('requirement')?.hasError('workItemSyntax')) {
               <small
-              class="text-red-600">Please enter value in the format.</small>
+                class="text-red-600">Please enter value in the format.</small>
             }
             @if (generatorForm.get('requirement')?.hasError('forbiddenChars')) {
               <small class="text-red-600">
-              These chars (*^\:?~) and Hebrew chars are not allowed on branch name!</small>
+                These chars (*^\:?~) and Hebrew chars are not allowed on branch name!</small>
             }
           }
         </div>
       </div>
       <button (click)="onSubmit()" [disabled]="!generatorForm.valid"
-        class="p-button-success align-self-end"
-      icon="pi pi-send" label="Submit" pButton></button>
+              class="p-button-success align-self-end"
+              icon="pi pi-send" label="Submit" pButton></button>
     </form>
   </div>
 }
@@ -91,17 +91,17 @@
       <div class="flex flex-column gap-2">
         <div class="flex align-items-center gap-2">
           <p-selectButton [allowEmpty]="false" [options]="snkeOsOptions"
-            formControlName="snkeosType"
-            id="snkeosType">
+                          formControlName="snkeosType"
+                          id="snkeosType">
           </p-selectButton>
           <button (click)="showSnkeOSBranchingGuide()"
-            icon="pi pi-lightbulb"
-            label="Branching guidelines"
-            class="p-button-text p-button-sm"
-            pButton
-            type="button"
-            pTooltip="Learn when to use feature, bugfix or hotfix"
-          tooltipPosition="right"></button>
+                  icon="pi pi-lightbulb"
+                  label="Branching guidelines"
+                  class="p-button-text p-button-sm"
+                  pButton
+                  type="button"
+                  pTooltip="Learn when to use feature, bugfix or hotfix"
+                  tooltipPosition="right"></button>
         </div>
         <div class="flex h-3rem gap-2">
           <div class="flex-1 flex flex-column">
@@ -113,7 +113,8 @@
               </small>
             }
           </div>
-          <button (click)="onSubmit()" [disabled]="!snkeOSForm.valid" pButton [icon]="'pi pi-copy'">Submit & copy</button>
+          <button (click)="onSubmit()" [disabled]="!snkeOSForm.valid" pButton [icon]="'pi pi-copy'">Submit & copy
+          </button>
         </div>
       </div>
     </form>
@@ -128,16 +129,16 @@
             <div class="flex flex-column gap-1">
               <span class="font-semibold">{{ result.key }}:
                 &nbsp;<i (click)="copyToClipboard(result.value)"
-                (keydown)="copyToClipboard(result.value)"
-              class="pi pi-copy text-sm border-round-sm cursor-pointer"></i></span><span
-            class="result-line-value text-sm">{{ result.value }}</span>
+                         (keydown)="copyToClipboard(result.value)"
+                         class="pi pi-copy text-sm border-round-sm cursor-pointer"></i></span><span
+              class="result-line-value text-sm">{{ result.value }}</span>
+            </div>
           </div>
-        </div>
-      }
-    </div>
-  }
-  @if (false) {
-    [empty message]
-  }
-</p-card>
+        }
+      </div>
+    }
+    @if (false) {
+      [empty message]
+    }
+  </p-card>
 }

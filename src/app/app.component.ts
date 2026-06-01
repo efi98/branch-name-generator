@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Toast } from 'primeng/toast';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { ButtonDirective } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
+import { filter } from 'rxjs';
 import {
   initialMessage,
   stringToBoolean,
@@ -8,14 +14,14 @@ import {
   USER_THEME,
   welcomeMessage,
 } from '@app-utils';
-import { filter } from 'rxjs';
-import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   providers: [MessageService, ConfirmationService],
+  imports: [RouterOutlet, RouterLink, Toast, ConfirmDialog, ButtonDirective, Tooltip],
 })
 export class AppComponent implements OnInit {
   isDarkTheme: boolean = false;
