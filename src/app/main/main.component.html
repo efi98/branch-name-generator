@@ -1,5 +1,5 @@
 <div *ngIf="showModeSwitch" class="flex align-items-center gap-2">
-  <p-inputSwitch (click)="toggleMode()" [(ngModel)]="isSnkeOSMode">
+  <p-inputSwitch (click)="toggleMode()" (keydown.enter)="toggleMode()" [(ngModel)]="isSnkeOSMode">
   </p-inputSwitch>
   <p>{{ isSnkeOSMode ? '(current: SnkeOS) Switch to azure devops Mode' : '(current: azure) Switch to SnkeOS Mode' }}</p>
 </div>

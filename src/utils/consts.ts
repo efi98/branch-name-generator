@@ -1,6 +1,6 @@
 import { theme } from './enums';
 
-export const USER_THEME: theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+export const USER_THEME: theme = globalThis.matchMedia('(prefers-color-scheme: dark)').matches
   ? theme.dark
   : theme.light;
 

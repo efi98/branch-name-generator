@@ -38,9 +38,9 @@ export class MainComponent implements OnInit {
   private parsedRequirement!: { number: number; title: string };
 
   constructor(
-    private formBuilder: FormBuilder,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService,
+    private readonly formBuilder: FormBuilder,
+    private readonly confirmationService: ConfirmationService,
+    private readonly messageService: MessageService,
   ) {}
 
   ngOnInit(): void {
@@ -166,43 +166,47 @@ export class MainComponent implements OnInit {
           break;
         }
         case workItemTypes.Task: {
-          this.branchNameResult.push({
-            key: workItemTypes.Requirement,
-            value: branchNameConf.Requirement.setBranchName(
-              this.parsedRequirement.number,
-              this.parsedRequirement.title,
-            ),
-          });
-          this.branchNameResult.push({
-            key: workItemTypes.Task,
-            value: branchNameConf.Task.setBranchName(
-              this.parsedRequirement.number,
-              this.parsedRequirement.title,
-              this.parsedWorkItem.number,
-              this.parsedWorkItem.title,
-            ),
-          });
-          break;
-        }
-        case workItemTypes.Bug: {
-          const { number, title } = this.parsedWorkItem;
-          if (this.generatorForm.get('isReqIncluded')?.value) {
-            this.branchNameResult.push({
+          this.branchNameResult.push(
+            {
               key: workItemTypes.Requirement,
               value: branchNameConf.Requirement.setBranchName(
                 this.parsedRequirement.number,
                 this.parsedRequirement.title,
               ),
-            });
-            this.branchNameResult.push({
-              key: workItemTypes.Bug,
-              value: branchNameConf.Bug.setBranchName(
-                number,
-                title,
+            },
+            {
+              key: workItemTypes.Task,
+              value: branchNameConf.Task.setBranchName(
                 this.parsedRequirement.number,
                 this.parsedRequirement.title,
+                this.parsedWorkItem.number,
+                this.parsedWorkItem.title,
               ),
-            });
+            },
+          );
+          break;
+        }
+        case workItemTypes.Bug: {
+          const { number, title } = this.parsedWorkItem;
+          if (this.generatorForm.get('isReqIncluded')?.value) {
+            this.branchNameResult.push(
+              {
+                key: workItemTypes.Requirement,
+                value: branchNameConf.Requirement.setBranchName(
+                  this.parsedRequirement.number,
+                  this.parsedRequirement.title,
+                ),
+              },
+              {
+                key: workItemTypes.Bug,
+                value: branchNameConf.Bug.setBranchName(
+                  number,
+                  title,
+                  this.parsedRequirement.number,
+                  this.parsedRequirement.title,
+                ),
+              },
+            );
           } else {
             this.branchNameResult.push({
               key: workItemTypes.Bug,
@@ -281,9 +285,9 @@ export class MainComponent implements OnInit {
 
   private workItemValidator(type: FieldType): ValidatorFn {
     const validWorkItemTypes: string = type === 'workItem' ? 'Bug|Task|Requirement' : 'Requirement';
-    const workItemRegExp: RegExp = new RegExp(`^(${validWorkItemTypes})\\s\\d{5}:\\s.+$`);
+    const workItemRegExp: RegExp = new RegExp(String.raw`^(${validWorkItemTypes})\s\d{5}:\s.+$`);
     const branchRegExp: RegExp = new RegExp(
-      `^(${validWorkItemTypes})\\s\\d{5}:\\s([^*^\\\\:?~\\u05D0-\\u05EA]+)$`,
+      String.raw`^(${validWorkItemTypes})\s\d{5}:\s([^*^\\:?~\u05D0-\u05EA]+)$`,
     );
 
     return (control: AbstractControl): ValidationErrors | null => {
@@ -298,14 +302,14 @@ export class MainComponent implements OnInit {
   }
 
   private parseWorkItem(workItemValue: string) {
-    const regexMatch: any = workItemValue.match(
+    const regexMatch = new RegExp(
       /^(Bug|Task|Requirement)\s(\d{5}):\s([^*^\\:?~\u05D0-\u05EA]+)$/,
-    );
+    ).exec(workItemValue);
     if (regexMatch) {
       const [_, type, number, title] = regexMatch;
       this.parsedWorkItem = {
         type: type as workItemTypes,
-        number: parseInt(number),
+        number: Number.parseInt(number),
         title: formatTitleWithHyphens(title),
       };
       console.log('parsedWorkItem: ', this.parsedWorkItem);
@@ -313,11 +317,13 @@ export class MainComponent implements OnInit {
   }
 
   private parseReq(reqValue: string) {
-    const regexMatch: any = reqValue.match(/^Requirement\s(\d{5}):\s([^*^\\:?~\u05D0-\u05EA]+)$/);
+    const regexMatch = new RegExp(/^Requirement\s(\d{5}):\s([^*^\\:?~\u05D0-\u05EA]+)$/).exec(
+      reqValue,
+    );
     if (regexMatch) {
       const [_, number, title] = regexMatch;
       this.parsedRequirement = {
-        number: parseInt(number),
+        number: Number.parseInt(number),
         title: formatTitleWithHyphens(title),
       };
       console.log('parsedReq: ', this.parsedRequirement);
@@ -355,10 +361,8 @@ export class MainComponent implements OnInit {
         if (!/^v\d+\.\d+\.\d+$/.test(value)) {
           return { versionPattern: true };
         }
-      } else {
-        if (/^\s+$/.test(value)) {
-          return { noWhitespace: true };
-        }
+      } else if (/^\s+$/.test(value)) {
+        return { noWhitespace: true };
       }
       return null;
     };
@@ -386,7 +390,5 @@ export class MainComponent implements OnInit {
 }
 
 // todo:
-// 1 - add theme switch
-// 2 - add limit to branch name on alert and also in input fields
-// 3 - do order with colors that 1- will be generic (for theme), 2- order the 'surface', 'card' to fit their purpose
-// 4 - allow user to reset their preference like 'showWelcomeMsg', 'dontShowSubmitAlert', 'dontShowFormChangeAlert' and 'isSnkeOSMode'.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+// 1 - add limit to branch name on alert and also in input fields
+// 2 - do order with colors that 1- will be generic (for theme), 2- order the 'surface', 'card' to fit their purpose

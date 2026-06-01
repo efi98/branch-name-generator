@@ -34,7 +34,7 @@ fork_right
         <span class="font-bold">{{ message.summary }}</span>
       </div>
       <div [innerHTML]="message.detail" class="font-medium text-lg my-4"></div>
-      <p-button (click)="dontShowAgain(message.data.type); $event.stopPropagation()"
+      <p-button (click)="dontShowAgain(message.data.type); $event.stopPropagation()" (keydown.enter)="dontShowAgain(message.data.type)"
                 *ngIf="message.data?.showDontShowAgain"
                 label="don't show again" severity="danger"
                 size="small" />

@@ -7,11 +7,11 @@ export function stringToBoolean(boolStr: 'false' | 'true'): boolean {
 
 export function formatTitleWithHyphens(title: any): string {
   return title
-    .replace(/"/g, '')
-    .replace(/[\s_]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/\/+/g, '/')
-    .replace(/[-\/]+$/, '');
+    .replaceAll('"', '')
+    .replaceAll(/[\s_]+/g, '-')
+    .replaceAll(/-+/g, '-')
+    .replaceAll(/\/+/g, '/')
+    .replaceAll(/[-/]+$/, '');
 }
 
 export function switchPrimeTheme(current: theme) {
