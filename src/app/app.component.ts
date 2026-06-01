@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import {
   initialMessage,
   stringToBoolean,
@@ -12,25 +12,21 @@ import { filter } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    providers: [MessageService, ConfirmationService],
-    standalone: false
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  providers: [MessageService, ConfirmationService],
 })
 export class AppComponent implements OnInit {
   isDarkTheme: boolean = false;
   showSettingsButtons: boolean = true;
 
   constructor(
-    private readonly primengConfig: PrimeNGConfig,
     private readonly confirmationService: ConfirmationService,
     private readonly router: Router,
   ) {}
 
   ngOnInit() {
-    this.primengConfig.ripple = true;
-    this.primengConfig.inputStyle = 'filled';
     this.applyTheme();
     this.onShowWelcomeMessage();
     console.log(initialMessage);
