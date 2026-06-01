@@ -80,7 +80,7 @@ export class SettingsComponent implements OnInit {
         this.settingsForm.get('showFormChangeAlert')?.[value ? 'disable' : 'enable']();
       });
 
-    this.settingsForm.get('theme')?.valueChanges.subscribe((theme: any) => {
+    this.settingsForm.get('theme')?.valueChanges.subscribe((theme: theme) => {
       switchPrimeTheme(theme);
     });
   }

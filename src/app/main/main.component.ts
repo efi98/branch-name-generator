@@ -114,7 +114,7 @@ export class MainComponent implements OnInit {
         this.generatorForm.get(type)?.setValue(text);
         this.generatorForm.get(type)?.markAsDirty();
       })
-      .catch((err) => {
+      .catch(() => {
         this.messageService.add({
           severity: 'error',
           summary: 'Paste Failed',
@@ -274,7 +274,7 @@ export class MainComponent implements OnInit {
           detail: "<span>Copied '<b>" + value + "</b>' to clipboard</span>",
         });
       })
-      .catch((err) => {
+      .catch(() => {
         this.messageService.add({
           severity: 'error',
           summary: 'Copy Failed',
@@ -306,6 +306,7 @@ export class MainComponent implements OnInit {
       /^(Bug|Task|Requirement)\s(\d{5}):\s([^*^\\:?~\u05D0-\u05EA]+)$/,
     ).exec(workItemValue);
     if (regexMatch) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, type, number, title] = regexMatch;
       this.parsedWorkItem = {
         type: type as workItemTypes,
@@ -321,6 +322,7 @@ export class MainComponent implements OnInit {
       reqValue,
     );
     if (regexMatch) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, number, title] = regexMatch;
       this.parsedRequirement = {
         number: Number.parseInt(number),
