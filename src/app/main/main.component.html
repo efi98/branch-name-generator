@@ -79,6 +79,11 @@
                                 formControlName="snkeosType"
                                 id="snkeosType">
                 </p-selectButton>
+                <i (click)="showSnkeOSBranchingGuide()"
+                   (keydown)="showSnkeOSBranchingGuide()"
+                   class="pi pi-question text-base cursor-pointer"
+                   pTooltip="Branching guidelines"
+                   tooltipPosition="right"></i>
             </div>
             <div class="flex-1 flex flex-column">
                 <input class="flex-1 w-full" formControlName="snkeosInput" id="snkeosInput" pInputText>

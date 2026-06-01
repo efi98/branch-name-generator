@@ -1,6 +1,7 @@
 # Branch name generator
 
 ## Description
+
 A web app to generate branch names based on Azure DevOps or SnkeOS guidelines.
 
 ## Features
@@ -12,9 +13,11 @@ A web app to generate branch names based on Azure DevOps or SnkeOS guidelines.
 - Submit to generate and copy branch name to clipboard.
 - Copy branch name from results with a single click.
 - Welcome and help dialogs for guidance.
-<hr></hr>
+
+<hr>
 
 ## Running the App
+
 ### Locally
 
 1. **Install dependencies**  
@@ -30,9 +33,10 @@ A web app to generate branch names based on Azure DevOps or SnkeOS guidelines.
    The app will be available at `http://localhost:3000`.
 
 ### Online
+
 You can use the app directly in your browser (no installation needed):
 [branch-name-generator](https://efi98.github.io/branch-name-generator)
-<hr></hr>
+<hr>
 
 ## Usage
 
@@ -56,7 +60,10 @@ You can use the app directly in your browser (no installation needed):
     - For others, input cannot be only whitespace.
 
 ## Contact Options
-If you have any questions, suggestions, or encounter issues while using this App, feel free to contact me via email: efigal148@gmail.com
+
+If you have any questions, suggestions, or encounter issues while using this App, feel free to contact me via email:
+efigal148@gmail.com
 
 ## Version
+
 Current Version: 3.0.0

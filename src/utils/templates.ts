@@ -1,8 +1,8 @@
-import {FieldType} from "@app-utils";
+import { FieldType } from '@app-utils';
 
 export const templateWorkItemFormat = (type: FieldType): string => {
-    const templateType = type === 'workItem' ? 'work item' : 'requirement';
-    return `<div>
+  const templateType = type === 'workItem' ? 'work item' : 'requirement';
+  return `<div>
     <div><strong>Valid values must adhere strictly to the following format:</strong></div>
     <div>[(${templateType} Type) (${templateType} Number): (${templateType} Title)]</div>
     <br>
@@ -15,12 +15,16 @@ export const templateWorkItemFormat = (type: FieldType): string => {
         <span><strong>Example${type === 'workItem' ? 's' : ''}:</strong></span>
         <br>
         <small>Requirement 12345: Example Title - of req. & more</small>
-        ${type === 'workItem' ? `<br>
+        ${
+          type === 'workItem'
+            ? `<br>
         <small>Task 67785: the 7 of this UNDEFINED again</small>
         <br>
-        <small>Bug 93332: all THESE are valid 1234567890-./,;|[]{}-=_+)(&%$#@!</small>` : ''}
+        <small>Bug 93332: all THESE are valid 1234567890-./,;|[]{}-=_+)(&%$#@!</small>`
+            : ''
+        }
     </div>
-</div>`
+</div>`;
 };
 
 export const welcomeMessage: string = `
@@ -40,12 +44,12 @@ export const welcomeMessage: string = `
   <p>Enjoy! For feedback or issues, visit the <a href="https://github.com/efi98/branch-name-generator" target="_blank">GitHub repo</a>.</p>
 
 </div>
-`
+`;
 
 export const initialMessage: string =
-    '//  ___                  _                                                       _           \n' +
-    '// | _ )_ _ __ _ _ _  __| |_    _ _  __ _ _ __  ___   __ _ ___ _ _  ___ _ _ __ _| |_ ___ _ _ \n' +
-    '// | _ \\ \'_/ _` | \' \\/ _| \' \\  | \' \\/ _` | \'  \\/ -_) / _` / -_) \' \\/ -_) \'_/ _` |  _/ _ \\ \'_|\n' +
-    '// |___/_| \\__,_|_||_\\__|_||_| |_||_\\__,_|_|_|_\\___| \\__, \\___|_||_\\___|_| \\__,_|\\__\\___/_|  \n' +
-    '//                                                   |___/                                   \n'
-    + '//  Repo: https://github.com/efi98/branch-name-generator';
+  '//  ___                  _                                                       _           \n' +
+  '// | _ )_ _ __ _ _ _  __| |_    _ _  __ _ _ __  ___   __ _ ___ _ _  ___ _ _ __ _| |_ ___ _ _ \n' +
+  "// | _ \\ '_/ _` | ' \\/ _| ' \\  | ' \\/ _` | '  \\/ -_) / _` / -_) ' \\/ -_) '_/ _` |  _/ _ \\ '_|\n" +
+  '// |___/_| \\__,_|_||_\\__|_||_| |_||_\\__,_|_|_|_\\___| \\__, \\___|_||_\\___|_| \\__,_|\\__\\___/_|  \n' +
+  '//                                                   |___/                                   \n' +
+  '//  Repo: https://github.com/efi98/branch-name-generator';

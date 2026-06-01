@@ -30,7 +30,8 @@ export class AppComponent implements OnInit {
             filter((event): event is NavigationEnd => event instanceof NavigationEnd)
         ).subscribe((event: NavigationEnd) => {
             this.showSettingsButtons = event.urlAfterRedirects !== '/settings';
-            this.isDarkTheme = localStorage.getItem('theme') === theme.dark;
+            const storedTheme = localStorage.getItem('theme') as theme;
+                    this.isDarkTheme = (storedTheme || USER_THEME) === theme.dark;
         });
     }
 

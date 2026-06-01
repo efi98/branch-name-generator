@@ -4,13 +4,13 @@ import { MainComponent } from './main/main.component';
 import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
-  {path: '', component: MainComponent},
-  {path: 'settings', component: SettingsComponent},
-  {path: '**', redirectTo: ''}
+  { path: '', component: MainComponent },
+  { path: 'settings', component: SettingsComponent },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
