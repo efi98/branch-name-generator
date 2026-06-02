@@ -1,29 +1,58 @@
 import { Component, OnInit } from '@angular/core';
+import { NgClass } from '@angular/common';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
   ValidationErrors,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Card } from 'primeng/card';
+import { ButtonDirective, ButtonIcon, ButtonLabel } from 'primeng/button';
+import { InputText } from 'primeng/inputtext';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { SelectButton } from 'primeng/selectbutton';
+import { Checkbox } from 'primeng/checkbox';
+import { ToggleSwitch } from 'primeng/toggleswitch';
+import { Tooltip } from 'primeng/tooltip';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import {
   branchNameConf,
   FieldType,
   formatTitleWithHyphens,
   ParsedWorkItem,
+  snkeosBranchingGuidelines,
   snkeOsType,
   stringToBoolean,
   templateWorkItemFormat,
   workItemTypes,
 } from '@app-utils';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
+  imports: [
+    NgClass,
+    ReactiveFormsModule,
+    InputGroupModule,
+    InputGroupAddonModule,
+    FormsModule,
+    Card,
+    ButtonDirective,
+    InputText,
+    SelectButton,
+    Checkbox,
+    ToggleSwitch,
+    Tooltip,
+    ButtonIcon,
+    ButtonLabel,
+  ],
 })
 export class MainComponent implements OnInit {
   generatorForm!: FormGroup;
@@ -72,7 +101,6 @@ export class MainComponent implements OnInit {
       { value: snkeOsType.feature, label: snkeOsType.feature, disabled: false },
       { value: snkeOsType.bugfix, label: snkeOsType.bugfix, disabled: false },
       { value: snkeOsType.hotfix, label: snkeOsType.hotfix, disabled: false },
-      { value: snkeOsType.version, label: snkeOsType.version, disabled: true },
     ];
 
     this.generatorForm.get('workItem')?.valueChanges.subscribe((workItemValue: string) => {
@@ -137,9 +165,6 @@ export class MainComponent implements OnInit {
           break;
         case snkeOsType.hotfix:
           branch = `hotfix/${input}`;
-          break;
-        case snkeOsType.version:
-          branch = input;
           break;
       }
       this.branchNameResult = [{ key: type, value: branch }];
@@ -220,48 +245,15 @@ export class MainComponent implements OnInit {
   }
 
   showSnkeOSBranchingGuide() {
-    this.confirmationService.confirm({
-      header: 'SnkeOS Branching Guidelines',
-      message: `
-                <div style="max-height:60vh;overflow-y:auto;line-height:1.6">
-                    <p>Commits must <strong>never</strong> be made directly on <code>main</code> or release branches (<code>vMAJOR.MINOR.x</code>). Use one of the following branch types:</p>
-                    <hr/>
-                    <h4>🌟 feature / feat</h4>
-                    <p>Use for <strong>new functionality</strong>. Branch off <code>main</code>, merge back into <code>main</code> via pull request. Even small changes must have their own branch.</p>
-                    <p><code>feat/my-new-feature</code></p>
-                    <hr/>
-                    <h4>🐛 bugfix / fix</h4>
-                    <p>Use for <strong>bug fixes on main</strong> (not yet released). Branch off <code>main</code>, merge back into <code>main</code> via pull request.</p>
-                    <p><code>fix/login-crash</code></p>
-                    <hr/>
-                    <h4>🔥 hotfix</h4>
-                    <p>Use to <strong>patch a released version</strong>. Following the <em>upstream-first policy</em>:</p>
-                    <ol>
-                        <li>Create a <code>bugfix</code> branch from <code>main</code> and merge the fix into <code>main</code> first.</li>
-                        <li>Then create a <code>hotfix</code> branch from the release branch (<code>vMAJOR.MINOR.x</code>) and cherry-pick the fix commits.</li>
-                        <li>Merge the <code>hotfix</code> branch into the release branch via pull request.</li>
-                    </ol>
-                    <p>If the same fix <strong>cannot</strong> be applied to both branches, create two independent fixes.</p>
-                    <p><code>hotfix/critical-data-loss</code></p>
-                    <hr/>
-                    <p style="font-size:0.85em;color:gray">Branch names must use <code>-</code> as separator. <a href="https://automatic-system-313ec0d8.pages.github.io/guidelines/branching_guidelines/" target="_blank">See the full guidelines</a> for naming conventions and release tags.</p>
-                </div>
-            `,
-    });
+    this.showInfoDialog('SnkeOS Branching Guidelines', snkeosBranchingGuidelines);
   }
 
   showWorkItemFormatModal() {
-    this.confirmationService.confirm({
-      header: 'Work item Format:',
-      message: templateWorkItemFormat('workItem'),
-    });
+    this.showInfoDialog('Work item Format:', templateWorkItemFormat('workItem'));
   }
 
   showReqFormatModal() {
-    this.confirmationService.confirm({
-      header: 'Requirement Format:',
-      message: templateWorkItemFormat('requirement'),
-    });
+    this.showInfoDialog('Requirement Format:', templateWorkItemFormat('requirement'));
   }
 
   copyToClipboard(value: string) {
@@ -281,6 +273,19 @@ export class MainComponent implements OnInit {
           detail: 'Failed to copy to clipboard',
         });
       });
+  }
+
+  private showInfoDialog(header: string, message: string): void {
+    this.confirmationService.confirm({
+      header,
+      message,
+      acceptVisible: false,
+      rejectVisible: false,
+      dismissableMask: true,
+      icon: '',
+      closeOnEscape: true,
+      defaultFocus: 'close',
+    });
   }
 
   private workItemValidator(type: FieldType): ValidatorFn {
@@ -306,14 +311,12 @@ export class MainComponent implements OnInit {
       /^(Bug|Task|Requirement)\s(\d{5}):\s([^*^\\:?~\u05D0-\u05EA]+)$/,
     ).exec(workItemValue);
     if (regexMatch) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [_, type, number, title] = regexMatch;
+      const [, type, number, title] = regexMatch;
       this.parsedWorkItem = {
         type: type as workItemTypes,
         number: Number.parseInt(number),
         title: formatTitleWithHyphens(title),
       };
-      console.log('parsedWorkItem: ', this.parsedWorkItem);
     }
   }
 
@@ -322,13 +325,11 @@ export class MainComponent implements OnInit {
       reqValue,
     );
     if (regexMatch) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const [_, number, title] = regexMatch;
+      const [, number, title] = regexMatch;
       this.parsedRequirement = {
         number: Number.parseInt(number),
         title: formatTitleWithHyphens(title),
       };
-      console.log('parsedReq: ', this.parsedRequirement);
     }
   }
 
@@ -358,12 +359,7 @@ export class MainComponent implements OnInit {
       const parent = control.parent;
       const value = control.value;
       if (!parent) return null;
-      const type = parent.get('snkeosType')?.value;
-      if (type === snkeOsType.version && value) {
-        if (!/^v\d+\.\d+\.\d+$/.test(value)) {
-          return { versionPattern: true };
-        }
-      } else if (/^\s+$/.test(value)) {
+      if (/^\s+$/.test(value)) {
         return { noWhitespace: true };
       }
       return null;
@@ -390,7 +386,3 @@ export class MainComponent implements OnInit {
     }
   }
 }
-
-// todo:
-// 1 - add limit to branch name on alert and also in input fields
-// 2 - do order with colors that 1- will be generic (for theme), 2- order the 'surface', 'card' to fit their purpose

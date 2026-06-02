@@ -1,36 +1,49 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
+import { Toast } from 'primeng/toast';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Button, ButtonDirective, ButtonIcon, ButtonLabel } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
+import { filter } from 'rxjs';
 import {
   initialMessage,
   stringToBoolean,
-  switchPrimeTheme,
+  switchTheme,
   theme,
   USER_THEME,
   welcomeMessage,
 } from '@app-utils';
-import { filter } from 'rxjs';
-import { NavigationEnd, Router } from '@angular/router';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [MessageService, ConfirmationService],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    Toast,
+    ConfirmDialog,
+    ButtonDirective,
+    Tooltip,
+    Button,
+    ButtonLabel,
+    ButtonIcon,
+    NgClass,
+  ],
 })
 export class AppComponent implements OnInit {
   isDarkTheme: boolean = false;
   showSettingsButtons: boolean = true;
 
   constructor(
-    private readonly primengConfig: PrimeNGConfig,
     private readonly confirmationService: ConfirmationService,
     private readonly router: Router,
   ) {}
 
   ngOnInit() {
-    this.primengConfig.ripple = true;
-    this.primengConfig.inputStyle = 'filled';
-    this.applyTheme();
+    switchTheme();
     this.onShowWelcomeMessage();
     console.log(initialMessage);
 
@@ -47,7 +60,7 @@ export class AppComponent implements OnInit {
     this.isDarkTheme = !this.isDarkTheme;
     const currentTheme: theme = this.isDarkTheme ? theme.dark : theme.light;
     localStorage.setItem('theme', currentTheme);
-    this.applyTheme();
+    switchTheme(currentTheme);
   }
 
   dontShowAgain(type: 'submit' | 'formChange') {
@@ -56,17 +69,6 @@ export class AppComponent implements OnInit {
     } else if (type === 'formChange') {
       localStorage.setItem('dontShowFormChangeAlert', 'true');
     }
-  }
-
-  private applyTheme() {
-    const currentTheme = (localStorage.getItem('theme') as theme) || USER_THEME;
-    this.isDarkTheme = currentTheme === theme.dark;
-    if (this.isDarkTheme) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    switchPrimeTheme(currentTheme);
   }
 
   private onShowWelcomeMessage() {

@@ -1,117 +1,140 @@
-<div *ngIf="showModeSwitch" class="flex align-items-center gap-2">
-  <p-inputSwitch (click)="toggleMode()" (keydown.enter)="toggleMode()" [(ngModel)]="isSnkeOSMode">
-  </p-inputSwitch>
-  <p>{{ isSnkeOSMode ? '(current: SnkeOS) Switch to azure devops Mode' : '(current: azure) Switch to SnkeOS Mode' }}</p>
-</div>
-<div *ngIf="!isSnkeOSMode">
-  <form [formGroup]="generatorForm" class="flex flex-column gap-3 mt-3">
-    <div class="flex flex-column gap-2">
-      <label class="flex align-items-baseline gap-1" for="workItem"><i class="pi pi-pencil text-xs"></i>
-        work Item:</label>
-      <div class="p-inputgroup">
-        <input formControlName="workItem" id="workItem" pInputText placeholder="Bug 12345: this is a bug">
-        <button (click)="pasteTextFromClipboard('workItem')"
-                [pTooltip]="'Click here to paste your work item title'"
-                label="Paste" pButton
-                tooltipPosition="top" type="button"></button>
-      </div>
-      <small id="workItem-help">Enter work item title
-        <i (click)="showWorkItemFormatModal()"
-           (keydown)="showWorkItemFormatModal()"
-           class="pi pi-question text-xs vertical-align-top"
-           pTooltip="Click for more details"
-           tooltipPosition="top"></i></small>
-      <ng-container *ngIf="generatorForm.get('workItem')?.errors && generatorForm.get('workItem')?.dirty">
-        <small *ngIf="generatorForm.get('workItem')?.hasError('required')"
-               class="text-red-600">This field is required.</small>
-        <small *ngIf="generatorForm.get('workItem')?.hasError('workItemSyntax')"
-               class="text-red-600">Please enter value in the format.</small>
-        <small *ngIf="generatorForm.get('workItem')?.hasError('forbiddenChars')"
-               class="text-red-600">These chars (*^\:?~) and Hebrew chars are not allowed on branch
-          name!</small>
-      </ng-container>
-    </div>
-    <div class="flex gap-5 justify-content-between">
-      <p-checkbox [binary]="true" formControlName="isReqIncluded"
-                  id="isReqIncluded"
-                  label="is Req. Included"></p-checkbox>
-      <div [ngClass]="{'text-600 pointer-events-none': generatorForm.get('requirement')?.disabled}"
-           class="flex flex-column gap-2 flex-1">
-        <label class="flex align-items-baseline gap-1" for="req"><i class="pi pi-pencil text-xs"></i>
-          Requirement:</label>
-        <div class="p-inputgroup">
-          <input formControlName="requirement" id="req" pInputText
-                 placeholder="Requirement 98777: this is a req.">
-          <button (click)="pasteTextFromClipboard('requirement')"
-                  [disabled]="generatorForm.get('requirement')?.disabled"
-                  [pTooltip]="'Click here to paste your Req. title'"
-                  label="Paste" pButton
-                  tooltipPosition="top" type="button"></button>
-        </div>
-        <small id="req-help">Enter Requirement title
-          <i (click)="showReqFormatModal()"
-             (keydown)="showReqFormatModal()"
+@if (showModeSwitch) {
+  <div class="flex align-items-center gap-2">
+    <p-toggleswitch (click)="toggleMode()" (keydown.enter)="toggleMode()" [(ngModel)]="isSnkeOSMode">
+    </p-toggleswitch>
+    <p>{{ isSnkeOSMode ? '(current: SnkeOS) Switch to azure devops Mode' : '(current: azure) Switch to SnkeOS Mode' }}</p>
+  </div>
+}
+@if (!isSnkeOSMode) {
+  <div>
+    <form [formGroup]="generatorForm" class="flex flex-column gap-3 mt-3">
+      <div class="flex flex-column gap-2">
+        <label class="flex align-items-baseline gap-1" for="workItem"><i class="pi pi-pencil text-xs"></i>
+          work Item:</label>
+        <p-inputgroup>
+          <input formControlName="workItem" id="workItem" pInputText placeholder="Bug 12345: this is a bug">
+          <button pButton (click)="pasteTextFromClipboard('workItem')"
+                  [pTooltip]="'Click here to paste your work item title'" tooltipPosition="top" type="button">
+            <i class="pi pi-clipboard" pButtonIcon></i>
+            <span pButtonLabel>Paste</span>
+          </button>
+        </p-inputgroup>
+        <small id="workItem-help">Enter work item title
+          <i (click)="showWorkItemFormatModal()"
+             (keydown)="showWorkItemFormatModal()"
              class="pi pi-question text-xs vertical-align-top"
              pTooltip="Click for more details"
              tooltipPosition="top"></i></small>
-        <ng-container
-          *ngIf="generatorForm.get('requirement')?.errors && generatorForm.get('requirement')?.dirty">
-          <small *ngIf="generatorForm.get('requirement')?.hasError('required')"
-                 class="text-red-600">This field is required.</small>
-          <small *ngIf="generatorForm.get('requirement')?.hasError('workItemSyntax')"
-                 class="text-red-600">Please enter value in the format.</small>
-          <small *ngIf="generatorForm.get('requirement')?.hasError('forbiddenChars')" class="text-red-600">
-            These chars (*^\:?~) and Hebrew chars are not allowed on branch name!</small>
-        </ng-container>
+        @if (generatorForm.get('workItem')?.errors && generatorForm.get('workItem')?.dirty) {
+          @if (generatorForm.get('workItem')?.hasError('required')) {
+            <small
+              class="text-red-600">This field is required.</small>
+          }
+          @if (generatorForm.get('workItem')?.hasError('workItemSyntax')) {
+            <small
+              class="text-red-600">Please enter value in the format.</small>
+          }
+          @if (generatorForm.get('workItem')?.hasError('forbiddenChars')) {
+            <small
+              class="text-red-600">These chars (*^\:?~) and Hebrew chars are not allowed on branch
+              name!</small>
+          }
+        }
       </div>
-    </div>
-
-    <button (click)="onSubmit()" [disabled]="!generatorForm.valid"
-            class="p-button-success align-self-end"
-            icon="pi pi-send" label="Submit" pButton></button>
-  </form>
-</div>
-<div *ngIf="isSnkeOSMode" class="mt-3">
-  <form [formGroup]="snkeOSForm">
-    <div class="flex flex-column gap-2">
-      <div class="flex align-items-center gap-2">
-        <p-selectButton [allowEmpty]="false" [options]="snkeOsOptions"
-                        formControlName="snkeosType"
-                        id="snkeosType">
-        </p-selectButton>
-        <button (click)="showSnkeOSBranchingGuide()"
-                icon="pi pi-lightbulb"
-                label="Branching guidelines"
-                class="p-button-text p-button-sm"
-                pButton
-                type="button"
-                pTooltip="Learn when to use feature, bugfix or hotfix"
-                tooltipPosition="right"></button>
-      </div>
-      <div class="flex h-3rem gap-2">
-        <div class="flex-1 flex flex-column">
-          <input class="flex-1 w-full" formControlName="snkeosInput" id="snkeosInput" pInputText>
-          <small *ngIf="snkeOSForm.get('snkeosInput')?.hasError('versionPattern') && snkeOSForm.get('snkeosInput')?.dirty"
-                 class="text-red-600">
-            Version must be in the format vMAJOR.MINOR.PATCH (e.g., v1.2.3)
-          </small>
+      <div class="flex gap-5 justify-content-between">
+        <div class="field-checkbox">
+          <p-checkbox [binary]="true" formControlName="isReqIncluded"
+                      inputId="isReqIncluded"></p-checkbox>
+          <label for="isReqIncluded">is Req. Included</label>
         </div>
-        <button (click)="onSubmit()" [disabled]="!snkeOSForm.valid" pButton [icon]="'pi pi-copy'">Submit & copy</button>
+        <div [ngClass]="{'text-600 pointer-events-none': generatorForm.get('requirement')?.disabled}"
+             class="flex flex-column gap-2 flex-1">
+          <label class="flex align-items-baseline gap-1" for="req"><i class="pi pi-pencil text-xs"></i>
+            Requirement:</label>
+          <p-inputgroup>
+            <input formControlName="requirement" id="req" pInputText
+                   placeholder="Requirement 98777: this is a req.">
+            <button pButton (click)="pasteTextFromClipboard('requirement')"
+                    [disabled]="generatorForm.get('requirement')?.disabled"
+                    [pTooltip]="'Click here to paste your Req. title'" tooltipPosition="top" type="button">
+              <i class="pi pi-clipboard" pButtonIcon></i>
+              <span pButtonLabel>Paste</span>
+            </button>
+          </p-inputgroup>
+          <small id="req-help">Enter Requirement title
+            <i (click)="showReqFormatModal()"
+               (keydown)="showReqFormatModal()"
+               class="pi pi-question text-xs vertical-align-top"
+               pTooltip="Click for more details"
+               tooltipPosition="top"></i></small>
+          @if (generatorForm.get('requirement')?.errors && generatorForm.get('requirement')?.dirty) {
+            @if (generatorForm.get('requirement')?.hasError('required')) {
+              <small
+                class="text-red-600">This field is required.</small>
+            }
+            @if (generatorForm.get('requirement')?.hasError('workItemSyntax')) {
+              <small
+                class="text-red-600">Please enter value in the format.</small>
+            }
+            @if (generatorForm.get('requirement')?.hasError('forbiddenChars')) {
+              <small class="text-red-600">
+                These chars (*^\:?~) and Hebrew chars are not allowed on branch name!</small>
+            }
+          }
+        </div>
       </div>
-    </div>
-  </form>
-</div>
-<p-card *ngIf="!isSnkeOSMode" [styleClass]="'h-13rem mt-3 text-600 surface-card'" header="Results:">
-  <div *ngIf="true" class="flex flex-column gap-3">
-    <div *ngFor="let result of branchNameResult" class="result-line text-900 ">
-      <div class="flex flex-column gap-1">
-                    <span class="font-semibold">{{ result.key }}:
-                        &nbsp;<i (click)="copyToClipboard(result.value)"
-                                 (keydown)="copyToClipboard(result.value)"
-                                 class="pi pi-copy text-sm border-round-sm cursor-pointer"></i></span><span
-        class="result-line-value text-sm">{{ result.value }}</span>
-      </div>
-    </div>
+      <button pButton (click)="onSubmit()" [disabled]="!generatorForm.valid" class="p-button-success align-self-end">
+        <i class="pi pi-send" pButtonIcon></i>
+        <span pButtonLabel>Submit</span>
+      </button>
+    </form>
   </div>
-  <ng-container *ngIf="false">[empty message]</ng-container>
-</p-card>
+}
+@if (isSnkeOSMode) {
+  <div class="mt-3">
+    <form [formGroup]="snkeOSForm">
+      <div class="flex flex-column gap-2">
+        <div class="flex align-items-center gap-2">
+          <p-selectButton [allowEmpty]="false" [options]="snkeOsOptions"
+                          formControlName="snkeosType"
+                          id="snkeosType">
+          </p-selectButton>
+          <button pButton (click)="showSnkeOSBranchingGuide()" class="p-button-text p-button-sm" type="button"
+                  pTooltip="Learn when to use feature, bugfix or hotfix" tooltipPosition="right">
+            <i class="pi pi-lightbulb" pButtonIcon></i>
+            <span pButtonLabel>Branching guidelines</span>
+          </button>
+        </div>
+        <div class="flex h-3rem gap-2">
+          <div class="flex-1 flex flex-column">
+            <input class="flex-1 w-full" formControlName="snkeosInput" id="snkeosInput" pInputText>
+          </div>
+          <button (click)="onSubmit()" [disabled]="!snkeOSForm.valid" pButton [icon]="'pi pi-copy'">Submit & copy
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+}
+@if (!isSnkeOSMode) {
+  <p-card [styleClass]="'h-13rem mt-3 text-600 surface-card'" header="Results:">
+    @if (true) {
+      <div class="flex flex-column gap-3">
+        @for (result of branchNameResult; track result) {
+          <div class="result-line text-900 ">
+            <div class="flex flex-column gap-1">
+              <span class="font-semibold">{{ result.key }}:
+                &nbsp;<i (click)="copyToClipboard(result.value)"
+                         (keydown)="copyToClipboard(result.value)"
+                         class="pi pi-copy text-sm border-round-sm cursor-pointer"></i></span><span
+              class="result-line-value text-sm">{{ result.value }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+    @if (false) {
+      [empty message]
+    }
+  </p-card>
+}

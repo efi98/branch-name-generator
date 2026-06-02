@@ -12,8 +12,3 @@ export const DEFAULTS = {
   showSubmitAlert: true,
   showFormChangeAlert: true,
 };
-
-export const THEME_MAP: Record<theme, string> = {
-  light: 'lara-light-blue',
-  dark: 'lara-dark-blue',
-};
