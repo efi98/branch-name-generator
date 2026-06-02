@@ -69,9 +69,14 @@
     </div>
     <br>
     <div class="flex justify-content-end gap-2">
-      <button (click)="onCancel()" class="p-button-secondary" icon="pi pi-times" label="Cancel" pButton
-              type="button"></button>
-      <button class="p-button-success" icon="pi pi-check" label="Apply and Save" pButton type="submit"></button>
+      <button pButton (click)="onCancel()" class="p-button-secondary" outlined severity="contrast">
+        <i class="pi pi-times" pButtonIcon></i>
+        <span pButtonLabel>Cancel</span>
+      </button>
+      <button pButton class="p-button-success"  type="submit">
+        <i class="pi pi-check" pButtonIcon></i>
+        <span pButtonLabel>Apply and Save</span>
+      </button>
     </div>
   </form>
 </div>

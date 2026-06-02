@@ -10,6 +10,7 @@ import { Checkbox } from 'primeng/checkbox';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { Tooltip } from 'primeng/tooltip';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import isEqual from 'lodash/isEqual';
 import { startWith } from 'rxjs';
 import { DEFAULTS, mode, stringToBoolean, switchTheme, theme, USER_THEME } from '@app-utils';
 
@@ -17,7 +18,6 @@ import { DEFAULTS, mode, stringToBoolean, switchTheme, theme, USER_THEME } from 
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
-  providers: [ConfirmationService, MessageService],
   imports: [
     NgClass,
     ReactiveFormsModule,
@@ -133,6 +133,16 @@ export class SettingsComponent implements OnInit {
         'Are you sure you want to reset all settings? This will clear all your saved preferences.',
       header: 'Reset Confirmation',
       icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Reset',
+        severity: 'danger',
+      },
+      defaultFocus: 'reject',
       accept: () => {
         this.messageService.add({
           severity: 'success',
@@ -146,11 +156,7 @@ export class SettingsComponent implements OnInit {
 
   isDefaultState(): boolean {
     const current = this.settingsForm.getRawValue();
-    return (
-      JSON.stringify(current) === JSON.stringify(DEFAULTS) &&
-      this.settingsForm.pristine &&
-      !this.settingsForm.touched
-    );
+    return isEqual(current, DEFAULTS) && this.settingsForm.pristine && !this.settingsForm.touched;
   }
 
   resetToDeviceTheme() {

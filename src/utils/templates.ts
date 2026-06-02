@@ -27,6 +27,32 @@ export const templateWorkItemFormat = (type: FieldType): string => {
 </div>`;
 };
 
+export const snkeosBranchingGuidelines: string = `
+<div>
+          <p>Commits must <strong>never</strong> be made directly on <code>main</code> or release branches (<code>vMAJOR.MINOR.x</code>). Use one of the following branch types:</p>
+          <hr/>
+          <h4>🌟 feature / feat</h4>
+          <p>Use for <strong>new functionality</strong>. Branch off <code>main</code>, merge back into <code>main</code> via pull request. Even small changes must have their own branch.</p>
+          <p><code>feat/my-new-feature</code></p>
+          <hr/>
+          <h4>🐛 bugfix / fix</h4>
+          <p>Use for <strong>bug fixes on main</strong> (not yet released). Branch off <code>main</code>, merge back into <code>main</code> via pull request.</p>
+          <p><code>fix/login-crash</code></p>
+          <hr/>
+          <h4>🔥 hotfix</h4>
+          <p>Use to <strong>patch a released version</strong>. Following the <em>upstream-first policy</em>:</p>
+          <ol>
+            <li>Create a <code>bugfix</code> branch from <code>main</code> and merge the fix into <code>main</code> first.</li>
+            <li>Then create a <code>hotfix</code> branch from the release branch (<code>vMAJOR.MINOR.x</code>) and cherry-pick the fix commits.</li>
+            <li>Merge the <code>hotfix</code> branch into the release branch via pull request.</li>
+          </ol>
+          <p>If the same fix <strong>cannot</strong> be applied to both branches, create two independent fixes.</p>
+          <p><code>hotfix/critical-data-loss</code></p>
+          <hr/>
+          <p style="font-size:0.85em;color:gray">Branch names must use <code>-</code> as separator. <a href="https://automatic-system-313ec0d8.pages.github.io/guidelines/branching_guidelines/" target="_blank">See the full guidelines</a> for naming conventions and release tags.</p>
+        </div>
+`;
+
 export const welcomeMessage: string = `
 <div>
 <h4>Here are few guidelines for you:</h4>

@@ -13,10 +13,11 @@
           work Item:</label>
         <p-inputgroup>
           <input formControlName="workItem" id="workItem" pInputText placeholder="Bug 12345: this is a bug">
-          <button (click)="pasteTextFromClipboard('workItem')"
-                  [pTooltip]="'Click here to paste your work item title'"
-                  label="Paste" pButton
-                  tooltipPosition="top" type="button"></button>
+          <button pButton (click)="pasteTextFromClipboard('workItem')"
+                  [pTooltip]="'Click here to paste your work item title'" tooltipPosition="top" type="button">
+            <i class="pi pi-clipboard" pButtonIcon></i>
+            <span pButtonLabel>Paste</span>
+          </button>
         </p-inputgroup>
         <small id="workItem-help">Enter work item title
           <i (click)="showWorkItemFormatModal()"
@@ -53,11 +54,12 @@
           <p-inputgroup>
             <input formControlName="requirement" id="req" pInputText
                    placeholder="Requirement 98777: this is a req.">
-            <button (click)="pasteTextFromClipboard('requirement')"
+            <button pButton (click)="pasteTextFromClipboard('requirement')"
                     [disabled]="generatorForm.get('requirement')?.disabled"
-                    [pTooltip]="'Click here to paste your Req. title'"
-                    label="Paste" pButton
-                    tooltipPosition="top" type="button"></button>
+                    [pTooltip]="'Click here to paste your Req. title'" tooltipPosition="top" type="button">
+              <i class="pi pi-clipboard" pButtonIcon></i>
+              <span pButtonLabel>Paste</span>
+            </button>
           </p-inputgroup>
           <small id="req-help">Enter Requirement title
             <i (click)="showReqFormatModal()"
@@ -81,9 +83,10 @@
           }
         </div>
       </div>
-      <button (click)="onSubmit()" [disabled]="!generatorForm.valid"
-              class="p-button-success align-self-end"
-              icon="pi pi-send" label="Submit" pButton></button>
+      <button pButton (click)="onSubmit()" [disabled]="!generatorForm.valid" class="p-button-success align-self-end">
+        <i class="pi pi-send" pButtonIcon></i>
+        <span pButtonLabel>Submit</span>
+      </button>
     </form>
   </div>
 }
@@ -96,14 +99,11 @@
                           formControlName="snkeosType"
                           id="snkeosType">
           </p-selectButton>
-          <button (click)="showSnkeOSBranchingGuide()"
-                  icon="pi pi-lightbulb"
-                  label="Branching guidelines"
-                  class="p-button-text p-button-sm"
-                  pButton
-                  type="button"
-                  pTooltip="Learn when to use feature, bugfix or hotfix"
-                  tooltipPosition="right"></button>
+          <button pButton (click)="showSnkeOSBranchingGuide()" class="p-button-text p-button-sm" type="button"
+                  pTooltip="Learn when to use feature, bugfix or hotfix" tooltipPosition="right">
+            <i class="pi pi-lightbulb" pButtonIcon></i>
+            <span pButtonLabel>Branching guidelines</span>
+          </button>
         </div>
         <div class="flex h-3rem gap-2">
           <div class="flex-1 flex flex-column">

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Button, ButtonDirective, ButtonIcon, ButtonLabel } from 'primeng/button';
@@ -8,7 +8,8 @@ import { Tooltip } from 'primeng/tooltip';
 import { filter } from 'rxjs';
 import {
   initialMessage,
-  stringToBoolean, switchTheme,
+  stringToBoolean,
+  switchTheme,
   theme,
   USER_THEME,
   welcomeMessage,
@@ -19,7 +20,6 @@ import { NgClass } from '@angular/common';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [MessageService, ConfirmationService],
   imports: [
     RouterOutlet,
     RouterLink,
@@ -92,3 +92,6 @@ export class AppComponent implements OnInit {
     }
   }
 }
+
+// Todo:
+// - replace green with else
