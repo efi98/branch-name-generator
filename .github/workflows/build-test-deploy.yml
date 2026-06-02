@@ -7,26 +7,13 @@ on:
 
 jobs:
 
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: checkout repo
-        uses: actions/checkout@v4
-      - name: use node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24.x'
-      - run: npm i
-      - run: npm run build
-
   lint:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: use node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '24.x'
       - run: npm i
@@ -35,14 +22,13 @@ jobs:
         run: git --no-pager diff
 
   test:
-    needs: build
     runs-on: ubuntu-latest
 
     steps:
       - name: checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: use node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '24.x'
 
@@ -55,7 +41,7 @@ jobs:
       - run: npm test
 
   deploy:
-    needs: test
+    needs: [lint, test]
 
     environment:
       name: 'github-pages'
@@ -69,9 +55,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: 18.19.0
+          node-version: '22.x'
+
+      - run: node --version
+      - run: npm --version
 
       - id: build-publish
         uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
