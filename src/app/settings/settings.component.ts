@@ -10,7 +10,6 @@ import { Checkbox } from 'primeng/checkbox';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { Tooltip } from 'primeng/tooltip';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
-import isEqual from 'lodash/isEqual';
 import { startWith } from 'rxjs';
 import { DEFAULTS, mode, stringToBoolean, switchTheme, theme, USER_THEME } from '@app-utils';
 
@@ -156,7 +155,8 @@ export class SettingsComponent implements OnInit {
 
   isDefaultState(): boolean {
     const current = this.settingsForm.getRawValue();
-    return isEqual(current, DEFAULTS) && this.settingsForm.pristine && !this.settingsForm.touched;
+    const isDefaultEqual = Object.keys(DEFAULTS).every((key) => current[key] === DEFAULTS[key]);
+    return isDefaultEqual && this.settingsForm.pristine && !this.settingsForm.touched;
   }
 
   resetToDeviceTheme() {

@@ -47,12 +47,13 @@ export class AppComponent implements OnInit {
     this.onShowWelcomeMessage();
     console.log(initialMessage);
 
+    const storedTheme = localStorage.getItem('theme') as theme | null;
+    this.isDarkTheme = (storedTheme || USER_THEME) === theme.dark;
+
     this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.showSettingsButtons = event.urlAfterRedirects !== '/settings';
-        const storedTheme = localStorage.getItem('theme') as theme;
-        this.isDarkTheme = (storedTheme || USER_THEME) === theme.dark;
       });
   }
 
