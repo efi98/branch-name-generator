@@ -1,3 +1,5 @@
+[![build-test-deploy](https://github.com/efi98/branch-name-generator/actions/workflows/build-test-deploy.yml/badge.svg?branch=main)](https://github.com/efi98/branch-name-generator/actions/workflows/build-test-deploy.yml)
+
 # Branch name generator
 
 ## Description
