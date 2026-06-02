@@ -11,7 +11,7 @@ import { ToggleSwitch } from 'primeng/toggleswitch';
 import { Tooltip } from 'primeng/tooltip';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { startWith } from 'rxjs';
-import { DEFAULTS, mode, stringToBoolean, switchPrimeTheme, theme, USER_THEME } from '@app-utils';
+import { DEFAULTS, mode, stringToBoolean, switchTheme, theme, USER_THEME } from '@app-utils';
 
 @Component({
   selector: 'app-settings',
@@ -97,7 +97,7 @@ export class SettingsComponent implements OnInit {
       });
 
     this.settingsForm.get('theme')?.valueChanges.subscribe((t: theme) => {
-      switchPrimeTheme(t);
+      switchTheme(t);
     });
   }
 
@@ -119,7 +119,7 @@ export class SettingsComponent implements OnInit {
   }
 
   onCancel(): void {
-    switchPrimeTheme((localStorage.getItem('theme') as theme) || USER_THEME);
+    switchTheme((localStorage.getItem('theme') as theme) || USER_THEME);
     this.router.navigate(['/']);
   }
 

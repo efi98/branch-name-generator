@@ -2,14 +2,15 @@
   <div class="main-content sm:w-12 md:w-11 lg:w-10 xl:w-9 h-full">
     <header
       class="font-medium border-bottom-1 border-500 surface-card p-2 text-xl text-800 vertical-align-middle flex justify-content-between align-items-center">
-      <span class="flex align-items-center gap-2"><span class="material-symbols-outlined">
+      <span class="flex align-items-center gap-2 app-header"><span class="material-symbols-outlined">
         fork_right
       </span>Branch name generator</span>
       @if (showSettingsButtons) {
         <div class="flex align-items-center gap-2">
-          <button (click)="toggleTheme()" [icon]="!isDarkTheme ? 'pi pi-sun' : 'pi pi-moon'"
-            [label]="isDarkTheme ? 'dark' : 'light'" class="p-button-text" pButton pTooltip="Toggle Theme"
-          tooltipPosition="bottom"></button>
+          <button pButton (click)="toggleTheme()" class="p-button-text" pTooltip="Toggle Theme" tooltipPosition="bottom">
+            <i [ngClass]="!isDarkTheme ? 'pi pi-sun' : 'pi pi-moon'" pButtonIcon></i>
+            <span pButtonLabel>{{ isDarkTheme ? 'dark' : 'light' }}</span>
+          </button>
           <button [routerLink]="['/settings']" class="p-button-outlined" icon="pi pi-cog" label="settings"
           pButton></button>
         </div>

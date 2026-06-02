@@ -11,13 +11,13 @@
       <div class="flex flex-column gap-2">
         <label class="flex align-items-baseline gap-1" for="workItem"><i class="pi pi-pencil text-xs"></i>
           work Item:</label>
-        <div class="p-inputgroup">
+        <p-inputgroup>
           <input formControlName="workItem" id="workItem" pInputText placeholder="Bug 12345: this is a bug">
           <button (click)="pasteTextFromClipboard('workItem')"
                   [pTooltip]="'Click here to paste your work item title'"
                   label="Paste" pButton
                   tooltipPosition="top" type="button"></button>
-        </div>
+        </p-inputgroup>
         <small id="workItem-help">Enter work item title
           <i (click)="showWorkItemFormatModal()"
              (keydown)="showWorkItemFormatModal()"
@@ -41,14 +41,16 @@
         }
       </div>
       <div class="flex gap-5 justify-content-between">
-        <p-checkbox [binary]="true" formControlName="isReqIncluded"
-                    id="isReqIncluded"
-                    label="is Req. Included"></p-checkbox>
+        <div class="field-checkbox">
+          <p-checkbox [binary]="true" formControlName="isReqIncluded"
+                      inputId="isReqIncluded"></p-checkbox>
+          <label for="isReqIncluded">is Req. Included</label>
+        </div>
         <div [ngClass]="{'text-600 pointer-events-none': generatorForm.get('requirement')?.disabled}"
              class="flex flex-column gap-2 flex-1">
           <label class="flex align-items-baseline gap-1" for="req"><i class="pi pi-pencil text-xs"></i>
             Requirement:</label>
-          <div class="p-inputgroup">
+          <p-inputgroup>
             <input formControlName="requirement" id="req" pInputText
                    placeholder="Requirement 98777: this is a req.">
             <button (click)="pasteTextFromClipboard('requirement')"
@@ -56,7 +58,7 @@
                     [pTooltip]="'Click here to paste your Req. title'"
                     label="Paste" pButton
                     tooltipPosition="top" type="button"></button>
-          </div>
+          </p-inputgroup>
           <small id="req-help">Enter Requirement title
             <i (click)="showReqFormatModal()"
                (keydown)="showReqFormatModal()"

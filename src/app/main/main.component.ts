@@ -14,6 +14,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Card } from 'primeng/card';
 import { ButtonDirective } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { SelectButton } from 'primeng/selectbutton';
 import { Checkbox } from 'primeng/checkbox';
 import { ToggleSwitch } from 'primeng/toggleswitch';
@@ -37,6 +39,8 @@ import {
   imports: [
     NgClass,
     ReactiveFormsModule,
+    InputGroupModule,
+    InputGroupAddonModule,
     FormsModule,
     Card,
     ButtonDirective,
