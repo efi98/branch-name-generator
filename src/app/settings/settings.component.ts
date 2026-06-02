@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Card } from 'primeng/card';
-import { ButtonDirective } from 'primeng/button';
+import { ButtonDirective, ButtonIcon, ButtonLabel } from 'primeng/button';
 import { SelectButton } from 'primeng/selectbutton';
 import { Checkbox } from 'primeng/checkbox';
 import { ToggleSwitch } from 'primeng/toggleswitch';
@@ -28,6 +28,8 @@ import { DEFAULTS, mode, stringToBoolean, switchTheme, theme, USER_THEME } from 
     Checkbox,
     ToggleSwitch,
     Tooltip,
+    ButtonIcon,
+    ButtonLabel,
   ],
 })
 export class SettingsComponent implements OnInit {
