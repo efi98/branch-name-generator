@@ -3,7 +3,7 @@ import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import { Button, ButtonDirective, ButtonModule } from 'primeng/button';
+import { Button, ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { filter } from 'rxjs';
 import {
@@ -17,7 +17,6 @@ import {
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   providers: [MessageService, ConfirmationService],

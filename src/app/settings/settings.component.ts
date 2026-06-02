@@ -9,17 +9,19 @@ import { SelectButton } from 'primeng/selectbutton';
 import { Checkbox } from 'primeng/checkbox';
 import { ToggleSwitch } from 'primeng/toggleswitch';
 import { Tooltip } from 'primeng/tooltip';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { startWith } from 'rxjs';
 import { DEFAULTS, mode, stringToBoolean, switchPrimeTheme, theme, USER_THEME } from '@app-utils';
 
 @Component({
   selector: 'app-settings',
-  standalone: true,
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
+  providers: [ConfirmationService, MessageService],
   imports: [
     NgClass,
     ReactiveFormsModule,
+    ConfirmPopupModule,
     Card,
     ButtonDirective,
     SelectButton,
