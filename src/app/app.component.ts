@@ -92,6 +92,3 @@ export class AppComponent implements OnInit {
     }
   }
 }
-
-// Todo:
-// - replace green with else
