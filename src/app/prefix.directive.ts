@@ -19,8 +19,8 @@ export class PrefixDirective implements OnInit, OnChanges {
   private prefix = '';
 
   constructor(
-    private el: ElementRef<HTMLInputElement>,
-    private ngControl: NgControl,
+    private readonly el: ElementRef<HTMLInputElement>,
+    private readonly ngControl: NgControl,
   ) {}
 
   ngOnInit(): void {
@@ -80,7 +80,7 @@ export class PrefixDirective implements OnInit, OnChanges {
     this.keepCursorAfterPrefix();
   }
 
-private removeKnownPrefix(value: string): string {
-  return value.replace(/^((feat|fix|hotfix)\s*\/?\s*)+/i, '');
-}
+  private removeKnownPrefix(value: string): string {
+    return value.replace(/^((feat|fix|hotfix)\s*\/?\s*)+/i, '');
+  }
 }
