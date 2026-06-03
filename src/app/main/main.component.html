@@ -107,10 +107,12 @@
         </div>
         <div class="flex h-3rem gap-2">
           <div class="flex-1 flex flex-column">
-            <input class="flex-1 w-full" formControlName="snkeosInput" id="snkeosInput" pInputText>
+            <input class="flex-1 w-full" formControlName="snkeosInput" id="snkeosInput" pInputText
+                   [customPrefix]="snkeOSForm.get('snkeosType')?.value" placeholder="Enter your branch name">
           </div>
-          <button (click)="onSubmit()" [disabled]="!snkeOSForm.valid" pButton [icon]="'pi pi-copy'">Submit & copy
-          </button>
+          <button pButton (click)="onSubmit()" [disabled]="!snkeOSForm.valid">
+            <i class="pi pi-copy" pButtonIcon></i>
+            <span pButtonLabel>Submit & copy</span></button>
         </div>
       </div>
     </form>
