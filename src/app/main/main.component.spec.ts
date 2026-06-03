@@ -66,7 +66,7 @@ describe('MainComponent', () => {
     it('should generate feat/ branch for feature type', () => {
       const fixture = createComponent();
       const c = fixture.componentInstance;
-      c.snkeOSForm.setValue({ snkeosType: snkeOsType.feature, snkeosInput: 'my feature' });
+      c.snkeOSForm.setValue({ snkeosType: snkeOsType.feature, snkeosInput: 'feat / my feature' });
       c.onSubmit();
       expect(c.branchNameResult[0].value).toBe('feat/my-feature');
     });
@@ -74,7 +74,7 @@ describe('MainComponent', () => {
     it('should generate fix/ branch for bugfix type', () => {
       const fixture = createComponent();
       const c = fixture.componentInstance;
-      c.snkeOSForm.setValue({ snkeosType: snkeOsType.bugfix, snkeosInput: 'login crash' });
+      c.snkeOSForm.setValue({ snkeosType: snkeOsType.bugfix, snkeosInput: 'fix / login crash' });
       c.onSubmit();
       expect(c.branchNameResult[0].value).toBe('fix/login-crash');
     });
@@ -82,7 +82,7 @@ describe('MainComponent', () => {
     it('should generate hotfix/ branch for hotfix type', () => {
       const fixture = createComponent();
       const c = fixture.componentInstance;
-      c.snkeOSForm.setValue({ snkeosType: snkeOsType.hotfix, snkeosInput: 'critical bug' });
+      c.snkeOSForm.setValue({ snkeosType: snkeOsType.hotfix, snkeosInput: 'hotfix / critical bug' });
       c.onSubmit();
       expect(c.branchNameResult[0].value).toBe('hotfix/critical-bug');
     });
