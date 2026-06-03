@@ -1,4 +1,4 @@
-import { theme } from './enums';
+import { snkeOsType, theme } from './enums';
 
 export const USER_THEME: theme = globalThis.matchMedia('(prefers-color-scheme: dark)').matches
   ? theme.dark
@@ -11,4 +11,10 @@ export const DEFAULTS = {
   showWelcomeMsg: true,
   showSubmitAlert: true,
   showFormChangeAlert: true,
+};
+
+export const SNKEOS_PREFIX: Record<snkeOsType, string> = {
+  [snkeOsType.feature]: 'feat / ',
+  [snkeOsType.bugfix]: 'fix / ',
+  [snkeOsType.hotfix]: 'hotfix / ',
 };

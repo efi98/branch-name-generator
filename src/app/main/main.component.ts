@@ -32,6 +32,7 @@ import {
   templateWorkItemFormat,
   workItemTypes,
 } from '@app-utils';
+import { PrefixDirective } from '../prefix.directive';
 
 @Component({
   selector: 'app-main',
@@ -52,6 +53,7 @@ import {
     Tooltip,
     ButtonIcon,
     ButtonLabel,
+    PrefixDirective,
   ],
 })
 export class MainComponent implements OnInit {
@@ -153,21 +155,11 @@ export class MainComponent implements OnInit {
 
   onSubmit() {
     if (this.isSnkeOSMode) {
-      const type = this.snkeOSForm.get('snkeosType')?.value;
-      const input = formatTitleWithHyphens(this.snkeOSForm.get('snkeosInput')?.value);
-      let branch = '';
-      switch (type) {
-        case snkeOsType.feature:
-          branch = `feat/${input}`;
-          break;
-        case snkeOsType.bugfix:
-          branch = `fix/${input}`;
-          break;
-        case snkeOsType.hotfix:
-          branch = `hotfix/${input}`;
-          break;
-      }
-      this.branchNameResult = [{ key: type, value: branch }];
+      const value = this.snkeOSForm.get('snkeosInput')?.value ?? '';
+      const [prefix, ...rest] = value.split(' / ');
+      const input = formatTitleWithHyphens(rest.join('/').trim());
+      const branch = `${prefix}/${input}`;
+      this.branchNameResult = [{ key: value, value: branch }];
       this.copyToClipboard(branch);
     } else {
       this.hasSubmitted = true;
