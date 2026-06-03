@@ -110,9 +110,10 @@
             <input class="flex-1 w-full" formControlName="snkeosInput" id="snkeosInput" pInputText
                    [customPrefix]="snkeOSForm.get('snkeosType')?.value" placeholder="Enter your branch name">
           </div>
-          <button pButton (click)="onSubmit()" [disabled]="!snkeOSForm.valid">
+          <button pButton (click)="onSubmit()" [disabled]="!canSubmitSnkeOS">
             <i class="pi pi-copy" pButtonIcon></i>
-            <span pButtonLabel>Submit & copy</span></button>
+            <span pButtonLabel>Submit & copy</span>
+          </button>
         </div>
       </div>
     </form>

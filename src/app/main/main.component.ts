@@ -74,6 +74,12 @@ export class MainComponent implements OnInit {
     private readonly messageService: MessageService,
   ) {}
 
+  protected get canSubmitSnkeOS(): boolean {
+    const value = this.snkeOSForm.get('snkeosInput')?.value ?? '';
+    const [, branchName] = value.split(' / ');
+    return branchName.length > 0 && branchName.replaceAll('-', '').trim().length > 0;
+  }
+
   ngOnInit(): void {
     this.showModeSwitch = stringToBoolean(
       (localStorage.getItem('showModeSwitch') as 'true' | 'false') ?? 'true',
@@ -156,8 +162,8 @@ export class MainComponent implements OnInit {
   onSubmit() {
     if (this.isSnkeOSMode) {
       const value = this.snkeOSForm.get('snkeosInput')?.value ?? '';
-      const [prefix, ...rest] = value.split(' / ');
-      const input = formatTitleWithHyphens(rest.join('/').trim());
+      const [prefix, rest] = value.split(' / ');
+      const input = formatTitleWithHyphens(rest.trim());
       const branch = `${prefix}/${input}`;
       this.branchNameResult = [{ key: value, value: branch }];
       this.copyToClipboard(branch);
